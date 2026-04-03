@@ -10,6 +10,7 @@ This workspace contains a suite of tools and controllers dedicated to the upper-
 - g1_kinematics.py: The primary mathematical engine. It utilizes Pinocchio for robot model wrapping and Casadi for symbolic optimization. It provides the base class for calculating joint targets based on end-effector poses.
 - inverse_kinematics.py: A standard Cartesian controller that allows the user to input X, Y, Z coordinates to move the left arm using a damped least-squares Jacobian approach.
 - inverse_kinematics_collision_avoidance.py: An advanced version of the IK controller. It utilizes Null-Space Projection to perform secondary tasks, such as pushing joints away from their physical limits while maintaining the primary reaching goal.
+- inverse_kinematics_mujoco.py: The same as the last one, but for mujoco. Easy, right?
 
 ### Workspace and Safety
 - workspace_mapper.py: A utility script used to define safe operational volumes. It records the extreme positions of the hand while the user moves the arm manually, saving the results to a configuration file.
