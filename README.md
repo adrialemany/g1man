@@ -3,6 +3,7 @@
 This repository contains a workspace for the robot, a docker for proper use and some scripts for using its sensors and motors. 
 
 ## What you can find
+![G1, tell me more](assets/tell_me_more.jpg)
 - The main directory is the workspace for ROS2 itself.
 - Then we have some subdirectories, such as: 
     - camera: its main purpose of accessing a easy-2-use client and server. It's purpose is to help the Korean students access the cameras and robot movement within certain inputs that can be sent from other clients (not only mine).

@@ -2,6 +2,7 @@
 
 ## Overview
 This workspace contains a suite of tools and controllers dedicated to the upper-body manipulation of the Unitree G1 humanoid robot. It includes scripts for Forward and Inverse Kinematics (FK/IK), safety workspace mapping, manual motor testing, and computer vision integration. While currently focused on physical robot deployment, the logic is designed to be extensible to simulation environments.
+![Saying hi to G1](../assets/hi.jpg)
 
 ## File Structure
 

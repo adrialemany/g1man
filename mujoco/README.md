@@ -5,8 +5,10 @@ Here is provided a complete environment for simulating the Unitree G1 humanoid r
 
 ## File Structure
 - run_sim_ai_g1.py: The entry point script. It initializes the DDS communication on Domain 1 and launches the physical simulation and the AI controller simultaneously using subprocess management.
+![Mujoco Simulation with fastsac](../assets/robot_mujoco.png)
 - fastsac_g1_29dof.onnx: The pre-trained neural network model for G1 locomotion (29 degrees of freedom).
 - vision.py: A ZMQ-based client designed to receive and display the torso-mounted RealSense camera stream.
+![Simulated Robot's vision](../assets/sim_vision.png)
 - g1_actions.py: Contains auxiliary definitions for robot poses and specific action mappings used by the controller (which are obsolete, now we should work with the scripts at manipulation subdirectory).
 - simulator/: Directory containing core simulation assets and the physics engine bridge.
   - unitree_mujoco.py: The bridge script between the MuJoCo engine and Unitree SDK2 protocols. It includes the VisionServerThread for image streaming.
@@ -28,3 +30,7 @@ The system requires the following dependencies: mujoco, onnxruntime, rclpy, pyzm
 
 ## Manipulation Development
 Work in progress...
+
+## Demonstrative video
+![Flying robots before GTA VI](../assets/spin.gif)
+This gif is intended to me seen as a joke, as it is configured right now, this should not happen.
