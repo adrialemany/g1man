@@ -1,8 +1,0 @@
-Metadata-Version: 2.1
-Name: g1pilot
-Version: 0.0.0
-Summary: ROS 2 package to control the G1 robot
-Maintainer: Clemente Donoso
-Maintainer-email: clemente.donoso@inria.fr
-License: BSD 3
-License-File: LICENSE
