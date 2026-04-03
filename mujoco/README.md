@@ -33,4 +33,5 @@ Work in progress...
 
 ## Demonstrative video
 ![Flying robots before GTA VI](../assets/spin.gif)
+
 This gif is intended to me seen as a joke, as it is configured right now, this should not happen.
