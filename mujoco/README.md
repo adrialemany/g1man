@@ -4,7 +4,7 @@
 Here is provided a complete environment for simulating the Unitree G1 humanoid robot using MuJoCo and the Unitree SDK2. It integrates a Reinforcement Learning model for stable locomotion and a vision server for real-time camera feedback.
 
 ## File Structure
-- run_sim_ai_g1.py: The entry point script. It initializes the DDS communication on Domain 1 and launches the physical simulation and the AI controller simultaneously using subprocess management.
+- run_sim_ai_g1.py: The entry point script. It initializes the DDS communication on Domain 1, launches the physical simulation and the AI controller simultaneously using subprocess management and waits for arm controls and movement speed.
 ![Mujoco Simulation with fastsac](../assets/robot_mujoco.png)
 - fastsac_g1_29dof.onnx: The pre-trained neural network model for G1 locomotion (29 degrees of freedom).
 - vision.py: A ZMQ-based client designed to receive and display the torso-mounted RealSense camera stream.
@@ -23,6 +23,8 @@ The system requires the following dependencies: mujoco, onnxruntime, rclpy, pyzm
 ## Execution Steps
 1. Simulation and Control: Launch the master script by executing python3 run_sim_ai_g1.py.
 2. Vision Stream: To view the live feed from the robot's perspective, run python3 vision.py in a separate terminal.
+3. Teleoperation and Vision: run the client from ../camera/g1_client_mujoco.py to move with WASD+QE and see it in real time.
+4. Manipulation: use scripts from ../manipulation/*_mujoco.py to do the desired tasks.
 
 ## Physics and Network Configuration
 - Network: The system is configured to use the local loopback interface (127.0.0.1) and DDS Domain 1 to ensure zero interference with physical robot hardware on the same network.
