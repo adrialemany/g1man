@@ -42,4 +42,4 @@ Using the same instructions that the g1_client_mujoco.py uses, and adding a gene
 ## Demonstrative video
 ![Flying robots before GTA VI](../assets/spin.gif)
 
-This gif is intended to me seen as a joke, as it is configured right now, this should not happen.
+This gif is intended to be seen as a joke, as it is configured right now, this should not happen.
