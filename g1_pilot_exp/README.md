@@ -2,6 +2,8 @@
 
 This guide documents how to run the g1pilot stack over a wireless network, bypassing the requirement for a physical Ethernet connection to the Unitree G1.
 
+![g1pilot 1](../assets/g1pilot1.png)
+
 ## Overview
 
 The G1 internal architecture uses two PCs. PC1 handles low-level motor control and broadcasts data via Multicast over an internal Ethernet bridge. Since Wi-Fi routers typically block or degrade Multicast traffic, standard ROS 2 discovery fails. 
@@ -57,5 +59,7 @@ ros2 launch g1pilot bringup_launcher.launch.py
 ```
 
 ---
+
+![G1 pilot squat](../assets/g1pilot2.png)
 
 Still working on how to move the motors from the station. Working on it. Will try Motion 2 or this repo: https://github.com/sharan05032000/Unitree-G1-MoveIt2-Arm-Manipulation/tree/main

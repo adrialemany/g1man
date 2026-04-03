@@ -2,6 +2,8 @@
 
 This repository contains a graphical client (g1_client.py) for connecting to and monitoring the camera streams of a Unitree G1 humanoid robot over a local network. 
 
+![g1 client](../assets/client.png)
+
 ## System Overview
 The client is designed to interface with a custom server running on the robot. The system architecture operates as follows:
 1. A server script (just been included in this repository as g1_server.py) runs inside a Docker container directly on the Unitree G1 robot. 
