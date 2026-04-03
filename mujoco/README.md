@@ -31,7 +31,13 @@ The system requires the following dependencies: mujoco, onnxruntime, rclpy, pyzm
 - Stability: Proportional gains (Kp) for the hip roll actuators are increased to support torso weight effectively during the walking cycle.
 
 ## Manipulation Development
-Work in progress...
+For manipulation tasks, execute scripts from ../manipulation/*_mujoco.py. The run_sim_ai_g1.py script already accepts external commands for the arm movement.
+
+## Teleoperation
+Use the ../camera/g1_client_mujoco.py.
+
+## Navigation Development
+Using the same instructions that the g1_client_mujoco.py uses, and adding a generic LIDAR, should let you develop useful navigation tasks.
 
 ## Demonstrative video
 ![Flying robots before GTA VI](../assets/spin.gif)
