@@ -1,0 +1,852 @@
+[0.052s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build']
+[0.052s] DEBUG:colcon:Parsed command line arguments: Namespace(log_base=None, log_level=None, verb_name='build', build_base='build', install_base='install', merge_install=False, symlink_install=False, test_result_base=None, continue_on_error=False, executor='parallel', parallel_workers=28, event_handlers=None, ignore_user_meta=False, metas=['./colcon.meta'], base_paths=['.'], packages_ignore=None, packages_ignore_regex=None, paths=None, packages_up_to=None, packages_up_to_regex=None, packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_select_by_dep=None, packages_skip_by_dep=None, packages_skip_up_to=None, packages_select_build_failed=False, packages_skip_build_finished=False, packages_select_test_failures=False, packages_skip_test_passed=False, packages_select=None, packages_skip=None, packages_select_regex=None, packages_skip_regex=None, packages_start=None, packages_end=None, allow_overriding=[], cmake_args=None, cmake_target=None, cmake_target_skip_unavailable=False, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, ament_cmake_args=None, catkin_cmake_args=None, catkin_skip_building_tests=False, verb_parser=<colcon_defaults.argument_parser.defaults.DefaultArgumentsDecorator object at 0x7faadf5f4860>, verb_extension=<colcon_core.verb.build.BuildVerb object at 0x7faadf519250>, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0x7faadf519250>>)
+[0.071s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[0.071s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[0.071s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[0.071s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[0.071s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[0.071s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[0.071s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/alemany/robot_ws'
+[0.071s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[0.071s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[0.071s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[0.071s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[0.071s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[0.071s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[0.071s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[0.071s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[0.071s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[0.084s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['cmake', 'python']
+[0.084s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'cmake'
+[0.084s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python'
+[0.084s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['python_setup_py']
+[0.084s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python_setup_py'
+[0.084s] Level 1:colcon.colcon_core.package_identification:_identify(assets) by extensions ['ignore', 'ignore_ament_install']
+[0.084s] Level 1:colcon.colcon_core.package_identification:_identify(assets) by extension 'ignore'
+[0.084s] Level 1:colcon.colcon_core.package_identification:_identify(assets) by extension 'ignore_ament_install'
+[0.084s] Level 1:colcon.colcon_core.package_identification:_identify(assets) by extensions ['colcon_pkg']
+[0.084s] Level 1:colcon.colcon_core.package_identification:_identify(assets) by extension 'colcon_pkg'
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(assets) by extensions ['colcon_meta']
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(assets) by extension 'colcon_meta'
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(assets) by extensions ['ros']
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(assets) by extension 'ros'
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(assets) by extensions ['cmake', 'python']
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(assets) by extension 'cmake'
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(assets) by extension 'python'
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(assets) by extensions ['python_setup_py']
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(assets) by extension 'python_setup_py'
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extensions ['ignore', 'ignore_ament_install']
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extension 'ignore'
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(build) ignored
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(camera) by extensions ['ignore', 'ignore_ament_install']
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(camera) by extension 'ignore'
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(camera) by extension 'ignore_ament_install'
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(camera) by extensions ['colcon_pkg']
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(camera) by extension 'colcon_pkg'
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(camera) by extensions ['colcon_meta']
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(camera) by extension 'colcon_meta'
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(camera) by extensions ['ros']
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(camera) by extension 'ros'
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(camera) by extensions ['cmake', 'python']
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(camera) by extension 'cmake'
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(camera) by extension 'python'
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(camera) by extensions ['python_setup_py']
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(camera) by extension 'python_setup_py'
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(fastlio2_exp) by extensions ['ignore', 'ignore_ament_install']
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(fastlio2_exp) by extension 'ignore'
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(fastlio2_exp) by extension 'ignore_ament_install'
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(fastlio2_exp) by extensions ['colcon_pkg']
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(fastlio2_exp) by extension 'colcon_pkg'
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(fastlio2_exp) by extensions ['colcon_meta']
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(fastlio2_exp) by extension 'colcon_meta'
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(fastlio2_exp) by extensions ['ros']
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(fastlio2_exp) by extension 'ros'
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(fastlio2_exp) by extensions ['cmake', 'python']
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(fastlio2_exp) by extension 'cmake'
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(fastlio2_exp) by extension 'python'
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(fastlio2_exp) by extensions ['python_setup_py']
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(fastlio2_exp) by extension 'python_setup_py'
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(g1_pilot_exp) by extensions ['ignore', 'ignore_ament_install']
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(g1_pilot_exp) by extension 'ignore'
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(g1_pilot_exp) by extension 'ignore_ament_install'
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(g1_pilot_exp) by extensions ['colcon_pkg']
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(g1_pilot_exp) by extension 'colcon_pkg'
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(g1_pilot_exp) by extensions ['colcon_meta']
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(g1_pilot_exp) by extension 'colcon_meta'
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(g1_pilot_exp) by extensions ['ros']
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(g1_pilot_exp) by extension 'ros'
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(g1_pilot_exp) by extensions ['cmake', 'python']
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(g1_pilot_exp) by extension 'cmake'
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(g1_pilot_exp) by extension 'python'
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(g1_pilot_exp) by extensions ['python_setup_py']
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(g1_pilot_exp) by extension 'python_setup_py'
+[0.085s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extensions ['ignore', 'ignore_ament_install']
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extension 'ignore'
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(install) ignored
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extensions ['ignore', 'ignore_ament_install']
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extension 'ignore'
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(log) ignored
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(manipulation) by extensions ['ignore', 'ignore_ament_install']
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(manipulation) by extension 'ignore'
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(manipulation) by extension 'ignore_ament_install'
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(manipulation) by extensions ['colcon_pkg']
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(manipulation) by extension 'colcon_pkg'
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(manipulation) by extensions ['colcon_meta']
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(manipulation) by extension 'colcon_meta'
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(manipulation) by extensions ['ros']
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(manipulation) by extension 'ros'
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(manipulation) by extensions ['cmake', 'python']
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(manipulation) by extension 'cmake'
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(manipulation) by extension 'python'
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(manipulation) by extensions ['python_setup_py']
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(manipulation) by extension 'python_setup_py'
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco) by extensions ['ignore', 'ignore_ament_install']
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco) by extension 'ignore'
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco) by extension 'ignore_ament_install'
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco) by extensions ['colcon_pkg']
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco) by extension 'colcon_pkg'
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco) by extensions ['colcon_meta']
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco) by extension 'colcon_meta'
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco) by extensions ['ros']
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco) by extension 'ros'
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco) by extensions ['cmake', 'python']
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco) by extension 'cmake'
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco) by extension 'python'
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco) by extensions ['python_setup_py']
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco) by extension 'python_setup_py'
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator) by extensions ['ignore', 'ignore_ament_install']
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator) by extension 'ignore'
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator) by extension 'ignore_ament_install'
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator) by extensions ['colcon_pkg']
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator) by extension 'colcon_pkg'
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator) by extensions ['colcon_meta']
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator) by extension 'colcon_meta'
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator) by extensions ['ros']
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator) by extension 'ros'
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator) by extensions ['cmake', 'python']
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator) by extension 'cmake'
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator) by extension 'python'
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator) by extensions ['python_setup_py']
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator) by extension 'python_setup_py'
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/__pycache__) by extensions ['ignore', 'ignore_ament_install']
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/__pycache__) by extension 'ignore'
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/__pycache__) by extension 'ignore_ament_install'
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/__pycache__) by extensions ['colcon_pkg']
+[0.086s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/__pycache__) by extension 'colcon_pkg'
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/__pycache__) by extensions ['colcon_meta']
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/__pycache__) by extension 'colcon_meta'
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/__pycache__) by extensions ['ros']
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/__pycache__) by extension 'ros'
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/__pycache__) by extensions ['cmake', 'python']
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/__pycache__) by extension 'cmake'
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/__pycache__) by extension 'python'
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/__pycache__) by extensions ['python_setup_py']
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/__pycache__) by extension 'python_setup_py'
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/images) by extensions ['ignore', 'ignore_ament_install']
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/images) by extension 'ignore'
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/images) by extension 'ignore_ament_install'
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/images) by extensions ['colcon_pkg']
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/images) by extension 'colcon_pkg'
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/images) by extensions ['colcon_meta']
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/images) by extension 'colcon_meta'
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/images) by extensions ['ros']
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/images) by extension 'ros'
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/images) by extensions ['cmake', 'python']
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/images) by extension 'cmake'
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/images) by extension 'python'
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/images) by extensions ['python_setup_py']
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/images) by extension 'python_setup_py'
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/meshes) by extensions ['ignore', 'ignore_ament_install']
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/meshes) by extension 'ignore'
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/meshes) by extension 'ignore_ament_install'
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/meshes) by extensions ['colcon_pkg']
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/meshes) by extension 'colcon_pkg'
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/meshes) by extensions ['colcon_meta']
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/meshes) by extension 'colcon_meta'
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/meshes) by extensions ['ros']
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/meshes) by extension 'ros'
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/meshes) by extensions ['cmake', 'python']
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/meshes) by extension 'cmake'
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/meshes) by extension 'python'
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/meshes) by extensions ['python_setup_py']
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(mujoco/simulator/meshes) by extension 'python_setup_py'
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(rviz2) by extensions ['ignore', 'ignore_ament_install']
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(rviz2) by extension 'ignore'
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(rviz2) by extension 'ignore_ament_install'
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(rviz2) by extensions ['colcon_pkg']
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(rviz2) by extension 'colcon_pkg'
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(rviz2) by extensions ['colcon_meta']
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(rviz2) by extension 'colcon_meta'
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(rviz2) by extensions ['ros']
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(rviz2) by extension 'ros'
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(rviz2) by extensions ['cmake', 'python']
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(rviz2) by extension 'cmake'
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(rviz2) by extension 'python'
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(rviz2) by extensions ['python_setup_py']
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(rviz2) by extension 'python_setup_py'
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ignore', 'ignore_ament_install']
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore'
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore_ament_install'
+[0.087s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_pkg']
+[0.088s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_pkg'
+[0.088s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_meta']
+[0.088s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_meta'
+[0.088s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ros']
+[0.088s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ros'
+[0.088s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['cmake', 'python']
+[0.088s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'cmake'
+[0.088s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python'
+[0.088s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['python_setup_py']
+[0.088s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python_setup_py'
+[0.088s] Level 1:colcon.colcon_core.package_identification:_identify(src/astroviz_interfaces) by extensions ['ignore', 'ignore_ament_install']
+[0.088s] Level 1:colcon.colcon_core.package_identification:_identify(src/astroviz_interfaces) by extension 'ignore'
+[0.088s] Level 1:colcon.colcon_core.package_identification:_identify(src/astroviz_interfaces) by extension 'ignore_ament_install'
+[0.088s] Level 1:colcon.colcon_core.package_identification:_identify(src/astroviz_interfaces) by extensions ['colcon_pkg']
+[0.088s] Level 1:colcon.colcon_core.package_identification:_identify(src/astroviz_interfaces) by extension 'colcon_pkg'
+[0.088s] Level 1:colcon.colcon_core.package_identification:_identify(src/astroviz_interfaces) by extensions ['colcon_meta']
+[0.088s] Level 1:colcon.colcon_core.package_identification:_identify(src/astroviz_interfaces) by extension 'colcon_meta'
+[0.088s] Level 1:colcon.colcon_core.package_identification:_identify(src/astroviz_interfaces) by extensions ['ros']
+[0.088s] Level 1:colcon.colcon_core.package_identification:_identify(src/astroviz_interfaces) by extension 'ros'
+[0.089s] DEBUG:colcon.colcon_core.package_identification:Package 'src/astroviz_interfaces' with type 'ros.ament_cmake' and name 'astroviz_interfaces'
+[0.089s] Level 1:colcon.colcon_core.package_identification:_identify(src/g1pilot) by extensions ['ignore', 'ignore_ament_install']
+[0.089s] Level 1:colcon.colcon_core.package_identification:_identify(src/g1pilot) by extension 'ignore'
+[0.089s] Level 1:colcon.colcon_core.package_identification:_identify(src/g1pilot) by extension 'ignore_ament_install'
+[0.089s] Level 1:colcon.colcon_core.package_identification:_identify(src/g1pilot) by extensions ['colcon_pkg']
+[0.089s] Level 1:colcon.colcon_core.package_identification:_identify(src/g1pilot) by extension 'colcon_pkg'
+[0.089s] Level 1:colcon.colcon_core.package_identification:_identify(src/g1pilot) by extensions ['colcon_meta']
+[0.089s] Level 1:colcon.colcon_core.package_identification:_identify(src/g1pilot) by extension 'colcon_meta'
+[0.089s] Level 1:colcon.colcon_core.package_identification:_identify(src/g1pilot) by extensions ['ros']
+[0.089s] Level 1:colcon.colcon_core.package_identification:_identify(src/g1pilot) by extension 'ros'
+[0.090s] DEBUG:colcon.colcon_core.package_identification:Package 'src/g1pilot' with type 'ros.ament_python' and name 'g1pilot'
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/livox_ros_driver2) by extensions ['ignore', 'ignore_ament_install']
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/livox_ros_driver2) by extension 'ignore'
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/livox_ros_driver2) ignored
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2) by extensions ['ignore', 'ignore_ament_install']
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2) by extension 'ignore'
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2) by extension 'ignore_ament_install'
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2) by extensions ['colcon_pkg']
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2) by extension 'colcon_pkg'
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2) by extensions ['colcon_meta']
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2) by extension 'colcon_meta'
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2) by extensions ['ros']
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2) by extension 'ros'
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2) by extensions ['cmake', 'python']
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2) by extension 'cmake'
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2) by extension 'python'
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2) by extensions ['python_setup_py']
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2) by extension 'python_setup_py'
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws) by extensions ['ignore', 'ignore_ament_install']
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws) by extension 'ignore'
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws) by extension 'ignore_ament_install'
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws) by extensions ['colcon_pkg']
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws) by extension 'colcon_pkg'
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws) by extensions ['colcon_meta']
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws) by extension 'colcon_meta'
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws) by extensions ['ros']
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws) by extension 'ros'
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws) by extensions ['cmake', 'python']
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws) by extension 'cmake'
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws) by extension 'python'
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws) by extensions ['python_setup_py']
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws) by extension 'python_setup_py'
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src) by extensions ['ignore', 'ignore_ament_install']
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src) by extension 'ignore'
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src) by extension 'ignore_ament_install'
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src) by extensions ['colcon_pkg']
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src) by extension 'colcon_pkg'
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src) by extensions ['colcon_meta']
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src) by extension 'colcon_meta'
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src) by extensions ['ros']
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src) by extension 'ros'
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src) by extensions ['cmake', 'python']
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src) by extension 'cmake'
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src) by extension 'python'
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src) by extensions ['python_setup_py']
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src) by extension 'python_setup_py'
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree) by extensions ['ignore', 'ignore_ament_install']
+[0.090s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree) by extension 'ignore'
+[0.091s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree) by extension 'ignore_ament_install'
+[0.091s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree) by extensions ['colcon_pkg']
+[0.091s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree) by extension 'colcon_pkg'
+[0.091s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree) by extensions ['colcon_meta']
+[0.091s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree) by extension 'colcon_meta'
+[0.091s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree) by extensions ['ros']
+[0.091s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree) by extension 'ros'
+[0.091s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree) by extensions ['cmake', 'python']
+[0.091s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree) by extension 'cmake'
+[0.091s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree) by extension 'python'
+[0.091s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree) by extensions ['python_setup_py']
+[0.091s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree) by extension 'python_setup_py'
+[0.091s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_api) by extensions ['ignore', 'ignore_ament_install']
+[0.091s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_api) by extension 'ignore'
+[0.091s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_api) by extension 'ignore_ament_install'
+[0.091s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_api) by extensions ['colcon_pkg']
+[0.091s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_api) by extension 'colcon_pkg'
+[0.091s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_api) by extensions ['colcon_meta']
+[0.091s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_api) by extension 'colcon_meta'
+[0.091s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_api) by extensions ['ros']
+[0.091s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_api) by extension 'ros'
+[0.091s] DEBUG:colcon.colcon_core.package_identification:Package 'src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_api' with type 'ros.ament_cmake' and name 'unitree_api'
+[0.091s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_go) by extensions ['ignore', 'ignore_ament_install']
+[0.091s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_go) by extension 'ignore'
+[0.091s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_go) by extension 'ignore_ament_install'
+[0.091s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_go) by extensions ['colcon_pkg']
+[0.091s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_go) by extension 'colcon_pkg'
+[0.091s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_go) by extensions ['colcon_meta']
+[0.091s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_go) by extension 'colcon_meta'
+[0.091s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_go) by extensions ['ros']
+[0.091s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_go) by extension 'ros'
+[0.092s] DEBUG:colcon.colcon_core.package_identification:Package 'src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_go' with type 'ros.ament_cmake' and name 'unitree_go'
+[0.092s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_hg) by extensions ['ignore', 'ignore_ament_install']
+[0.092s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_hg) by extension 'ignore'
+[0.092s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_hg) by extension 'ignore_ament_install'
+[0.092s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_hg) by extensions ['colcon_pkg']
+[0.092s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_hg) by extension 'colcon_pkg'
+[0.092s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_hg) by extensions ['colcon_meta']
+[0.092s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_hg) by extension 'colcon_meta'
+[0.092s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_hg) by extensions ['ros']
+[0.092s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_hg) by extension 'ros'
+[0.092s] DEBUG:colcon.colcon_core.package_identification:Package 'src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_hg' with type 'ros.ament_cmake' and name 'unitree_hg'
+[0.092s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/docs) by extensions ['ignore', 'ignore_ament_install']
+[0.092s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/docs) by extension 'ignore'
+[0.092s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/docs) by extension 'ignore_ament_install'
+[0.092s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/docs) by extensions ['colcon_pkg']
+[0.092s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/docs) by extension 'colcon_pkg'
+[0.092s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/docs) by extensions ['colcon_meta']
+[0.092s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/docs) by extension 'colcon_meta'
+[0.092s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/docs) by extensions ['ros']
+[0.092s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/docs) by extension 'ros'
+[0.092s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/docs) by extensions ['cmake', 'python']
+[0.092s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/docs) by extension 'cmake'
+[0.092s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/docs) by extension 'python'
+[0.092s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/docs) by extensions ['python_setup_py']
+[0.092s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/docs) by extension 'python_setup_py'
+[0.092s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/docs/image) by extensions ['ignore', 'ignore_ament_install']
+[0.092s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/docs/image) by extension 'ignore'
+[0.092s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/docs/image) by extension 'ignore_ament_install'
+[0.092s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/docs/image) by extensions ['colcon_pkg']
+[0.092s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/docs/image) by extension 'colcon_pkg'
+[0.092s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/docs/image) by extensions ['colcon_meta']
+[0.092s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/docs/image) by extension 'colcon_meta'
+[0.092s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/docs/image) by extensions ['ros']
+[0.092s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/docs/image) by extension 'ros'
+[0.092s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/docs/image) by extensions ['cmake', 'python']
+[0.092s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/docs/image) by extension 'cmake'
+[0.092s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/docs/image) by extension 'python'
+[0.093s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/docs/image) by extensions ['python_setup_py']
+[0.093s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/docs/image) by extension 'python_setup_py'
+[0.093s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/example) by extensions ['ignore', 'ignore_ament_install']
+[0.093s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/example) by extension 'ignore'
+[0.093s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/example) by extension 'ignore_ament_install'
+[0.093s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/example) by extensions ['colcon_pkg']
+[0.093s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/example) by extension 'colcon_pkg'
+[0.093s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/example) by extensions ['colcon_meta']
+[0.093s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/example) by extension 'colcon_meta'
+[0.093s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/example) by extensions ['ros']
+[0.093s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/example) by extension 'ros'
+[0.093s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/example) by extensions ['cmake', 'python']
+[0.093s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/example) by extension 'cmake'
+[0.093s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/example) by extension 'python'
+[0.093s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/example) by extensions ['python_setup_py']
+[0.093s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/example) by extension 'python_setup_py'
+[0.093s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/example/src) by extensions ['ignore', 'ignore_ament_install']
+[0.093s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/example/src) by extension 'ignore'
+[0.093s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/example/src) by extension 'ignore_ament_install'
+[0.093s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/example/src) by extensions ['colcon_pkg']
+[0.093s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/example/src) by extension 'colcon_pkg'
+[0.093s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/example/src) by extensions ['colcon_meta']
+[0.093s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/example/src) by extension 'colcon_meta'
+[0.093s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/example/src) by extensions ['ros']
+[0.093s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_ros2/example/src) by extension 'ros'
+[0.093s] DEBUG:colcon.colcon_core.package_identification:Package 'src/unitree_ros2/example/src' with type 'ros.ament_cmake' and name 'unitree_ros2_example'
+[0.093s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_sdk2_python) by extensions ['ignore', 'ignore_ament_install']
+[0.093s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_sdk2_python) by extension 'ignore'
+[0.093s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_sdk2_python) by extension 'ignore_ament_install'
+[0.093s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_sdk2_python) by extensions ['colcon_pkg']
+[0.093s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_sdk2_python) by extension 'colcon_pkg'
+[0.093s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_sdk2_python) by extensions ['colcon_meta']
+[0.093s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_sdk2_python) by extension 'colcon_meta'
+[0.093s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_sdk2_python) by extensions ['ros']
+[0.093s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_sdk2_python) by extension 'ros'
+[0.093s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_sdk2_python) by extensions ['cmake', 'python']
+[0.093s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_sdk2_python) by extension 'cmake'
+[0.093s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_sdk2_python) by extension 'python'
+[0.094s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_sdk2_python) by extensions ['python_setup_py']
+[0.094s] Level 1:colcon.colcon_core.package_identification:_identify(src/unitree_sdk2_python) by extension 'python_setup_py'
+[0.204s] DEBUG:colcon.colcon_core.package_identification:Package 'src/unitree_sdk2_python' with type 'python' and name 'unitree_sdk2py'
+[0.205s] Level 1:colcon.colcon_core.package_identification:_identify(src/xbot2_interface) by extensions ['ignore', 'ignore_ament_install']
+[0.205s] Level 1:colcon.colcon_core.package_identification:_identify(src/xbot2_interface) by extension 'ignore'
+[0.205s] Level 1:colcon.colcon_core.package_identification:_identify(src/xbot2_interface) ignored
+[0.205s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[0.205s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[0.205s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[0.205s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[0.205s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[0.215s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) check parameters
+[0.215s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) discover
+[0.215s] WARNING:colcon.colcon_ros.prefix_path.ament:The path '/home/alemany/robot_ws/install/unitree_ros2_example' in the environment variable AMENT_PREFIX_PATH doesn't exist
+[0.215s] WARNING:colcon.colcon_ros.prefix_path.ament:The path '/home/alemany/robot_ws/install/unitree_hg' in the environment variable AMENT_PREFIX_PATH doesn't exist
+[0.215s] WARNING:colcon.colcon_ros.prefix_path.ament:The path '/home/alemany/robot_ws/install/unitree_go' in the environment variable AMENT_PREFIX_PATH doesn't exist
+[0.215s] WARNING:colcon.colcon_ros.prefix_path.ament:The path '/home/alemany/robot_ws/install/unitree_api' in the environment variable AMENT_PREFIX_PATH doesn't exist
+[0.215s] WARNING:colcon.colcon_ros.prefix_path.ament:The path '/home/alemany/robot_ws/install/g1pilot' in the environment variable AMENT_PREFIX_PATH doesn't exist
+[0.215s] WARNING:colcon.colcon_ros.prefix_path.ament:The path '/home/alemany/robot_ws/install/astroviz_interfaces' in the environment variable AMENT_PREFIX_PATH doesn't exist
+[0.215s] WARNING:colcon.colcon_ros.prefix_path.catkin:The path '/home/alemany/robot_ws/install/unitree_ros2_example' in the environment variable CMAKE_PREFIX_PATH doesn't exist
+[0.215s] WARNING:colcon.colcon_ros.prefix_path.catkin:The path '/home/alemany/robot_ws/install/unitree_hg' in the environment variable CMAKE_PREFIX_PATH doesn't exist
+[0.215s] WARNING:colcon.colcon_ros.prefix_path.catkin:The path '/home/alemany/robot_ws/install/unitree_go' in the environment variable CMAKE_PREFIX_PATH doesn't exist
+[0.215s] WARNING:colcon.colcon_ros.prefix_path.catkin:The path '/home/alemany/robot_ws/install/unitree_api' in the environment variable CMAKE_PREFIX_PATH doesn't exist
+[0.215s] WARNING:colcon.colcon_ros.prefix_path.catkin:The path '/home/alemany/robot_ws/install/astroviz_interfaces' in the environment variable CMAKE_PREFIX_PATH doesn't exist
+[0.215s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 0 installed packages in /home/alemany/robot_ws/install
+[0.216s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 466 installed packages in /opt/ros/jazzy
+[0.217s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) using defaults
+[0.241s] Level 5:colcon.colcon_core.verb:set package 'astroviz_interfaces' build argument 'cmake_args' from command line to 'None'
+[0.241s] Level 5:colcon.colcon_core.verb:set package 'astroviz_interfaces' build argument 'cmake_target' from command line to 'None'
+[0.241s] Level 5:colcon.colcon_core.verb:set package 'astroviz_interfaces' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.241s] Level 5:colcon.colcon_core.verb:set package 'astroviz_interfaces' build argument 'cmake_clean_cache' from command line to 'False'
+[0.241s] Level 5:colcon.colcon_core.verb:set package 'astroviz_interfaces' build argument 'cmake_clean_first' from command line to 'False'
+[0.241s] Level 5:colcon.colcon_core.verb:set package 'astroviz_interfaces' build argument 'cmake_force_configure' from command line to 'False'
+[0.241s] Level 5:colcon.colcon_core.verb:set package 'astroviz_interfaces' build argument 'ament_cmake_args' from command line to 'None'
+[0.241s] Level 5:colcon.colcon_core.verb:set package 'astroviz_interfaces' build argument 'catkin_cmake_args' from command line to 'None'
+[0.241s] Level 5:colcon.colcon_core.verb:set package 'astroviz_interfaces' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.241s] DEBUG:colcon.colcon_core.verb:Building package 'astroviz_interfaces' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/alemany/robot_ws/build/astroviz_interfaces', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/alemany/robot_ws/install/astroviz_interfaces', 'merge_install': False, 'path': '/home/alemany/robot_ws/src/astroviz_interfaces', 'symlink_install': False, 'test_result_base': None}
+[0.241s] Level 5:colcon.colcon_core.verb:set package 'g1pilot' build argument 'cmake_args' from command line to 'None'
+[0.241s] Level 5:colcon.colcon_core.verb:set package 'g1pilot' build argument 'cmake_target' from command line to 'None'
+[0.241s] Level 5:colcon.colcon_core.verb:set package 'g1pilot' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.241s] Level 5:colcon.colcon_core.verb:set package 'g1pilot' build argument 'cmake_clean_cache' from command line to 'False'
+[0.241s] Level 5:colcon.colcon_core.verb:set package 'g1pilot' build argument 'cmake_clean_first' from command line to 'False'
+[0.241s] Level 5:colcon.colcon_core.verb:set package 'g1pilot' build argument 'cmake_force_configure' from command line to 'False'
+[0.241s] Level 5:colcon.colcon_core.verb:set package 'g1pilot' build argument 'ament_cmake_args' from command line to 'None'
+[0.241s] Level 5:colcon.colcon_core.verb:set package 'g1pilot' build argument 'catkin_cmake_args' from command line to 'None'
+[0.241s] Level 5:colcon.colcon_core.verb:set package 'g1pilot' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.241s] DEBUG:colcon.colcon_core.verb:Building package 'g1pilot' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/alemany/robot_ws/build/g1pilot', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/alemany/robot_ws/install/g1pilot', 'merge_install': False, 'path': '/home/alemany/robot_ws/src/g1pilot', 'symlink_install': False, 'test_result_base': None}
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_api' build argument 'cmake_args' from command line to 'None'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_api' build argument 'cmake_target' from command line to 'None'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_api' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_api' build argument 'cmake_clean_cache' from command line to 'False'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_api' build argument 'cmake_clean_first' from command line to 'False'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_api' build argument 'cmake_force_configure' from command line to 'False'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_api' build argument 'ament_cmake_args' from command line to 'None'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_api' build argument 'catkin_cmake_args' from command line to 'None'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_api' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.242s] DEBUG:colcon.colcon_core.verb:Building package 'unitree_api' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/alemany/robot_ws/build/unitree_api', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/alemany/robot_ws/install/unitree_api', 'merge_install': False, 'path': '/home/alemany/robot_ws/src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_api', 'symlink_install': False, 'test_result_base': None}
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_go' build argument 'cmake_args' from command line to 'None'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_go' build argument 'cmake_target' from command line to 'None'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_go' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_go' build argument 'cmake_clean_cache' from command line to 'False'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_go' build argument 'cmake_clean_first' from command line to 'False'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_go' build argument 'cmake_force_configure' from command line to 'False'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_go' build argument 'ament_cmake_args' from command line to 'None'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_go' build argument 'catkin_cmake_args' from command line to 'None'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_go' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.242s] DEBUG:colcon.colcon_core.verb:Building package 'unitree_go' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/alemany/robot_ws/build/unitree_go', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/alemany/robot_ws/install/unitree_go', 'merge_install': False, 'path': '/home/alemany/robot_ws/src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_go', 'symlink_install': False, 'test_result_base': None}
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_hg' build argument 'cmake_args' from command line to 'None'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_hg' build argument 'cmake_target' from command line to 'None'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_hg' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_hg' build argument 'cmake_clean_cache' from command line to 'False'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_hg' build argument 'cmake_clean_first' from command line to 'False'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_hg' build argument 'cmake_force_configure' from command line to 'False'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_hg' build argument 'ament_cmake_args' from command line to 'None'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_hg' build argument 'catkin_cmake_args' from command line to 'None'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_hg' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.242s] DEBUG:colcon.colcon_core.verb:Building package 'unitree_hg' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/alemany/robot_ws/build/unitree_hg', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/alemany/robot_ws/install/unitree_hg', 'merge_install': False, 'path': '/home/alemany/robot_ws/src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_hg', 'symlink_install': False, 'test_result_base': None}
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_sdk2py' build argument 'cmake_args' from command line to 'None'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_sdk2py' build argument 'cmake_target' from command line to 'None'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_sdk2py' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_sdk2py' build argument 'cmake_clean_cache' from command line to 'False'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_sdk2py' build argument 'cmake_clean_first' from command line to 'False'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_sdk2py' build argument 'cmake_force_configure' from command line to 'False'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_sdk2py' build argument 'ament_cmake_args' from command line to 'None'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_sdk2py' build argument 'catkin_cmake_args' from command line to 'None'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_sdk2py' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.242s] DEBUG:colcon.colcon_core.verb:Building package 'unitree_sdk2py' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/alemany/robot_ws/build/unitree_sdk2py', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/alemany/robot_ws/install/unitree_sdk2py', 'merge_install': False, 'path': '/home/alemany/robot_ws/src/unitree_sdk2_python', 'symlink_install': False, 'test_result_base': None}
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_ros2_example' build argument 'cmake_args' from command line to 'None'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_ros2_example' build argument 'cmake_target' from command line to 'None'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_ros2_example' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_ros2_example' build argument 'cmake_clean_cache' from command line to 'False'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_ros2_example' build argument 'cmake_clean_first' from command line to 'False'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_ros2_example' build argument 'cmake_force_configure' from command line to 'False'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_ros2_example' build argument 'ament_cmake_args' from command line to 'None'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_ros2_example' build argument 'catkin_cmake_args' from command line to 'None'
+[0.242s] Level 5:colcon.colcon_core.verb:set package 'unitree_ros2_example' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.242s] DEBUG:colcon.colcon_core.verb:Building package 'unitree_ros2_example' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/alemany/robot_ws/build/unitree_ros2_example', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/alemany/robot_ws/install/unitree_ros2_example', 'merge_install': False, 'path': '/home/alemany/robot_ws/src/unitree_ros2/example/src', 'symlink_install': False, 'test_result_base': None}
+[0.242s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[0.243s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[0.243s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/alemany/robot_ws/src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_api' with build type 'ament_cmake'
+[0.243s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/alemany/robot_ws/src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_api'
+[0.244s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[0.244s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.244s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.246s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/alemany/robot_ws/src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_go' with build type 'ament_cmake'
+[0.246s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/alemany/robot_ws/src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_go'
+[0.246s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.246s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.248s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/alemany/robot_ws/src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_hg' with build type 'ament_cmake'
+[0.248s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/alemany/robot_ws/src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_hg'
+[0.248s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.248s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.250s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/alemany/robot_ws/src/astroviz_interfaces' with build type 'ament_cmake'
+[0.250s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/alemany/robot_ws/src/astroviz_interfaces'
+[0.250s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.250s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.252s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/alemany/robot_ws/src/g1pilot' with build type 'ament_python'
+[0.252s] Level 1:colcon.colcon_core.shell:create_environment_hook('g1pilot', 'ament_prefix_path')
+[0.252s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/g1pilot/share/g1pilot/hook/ament_prefix_path.ps1'
+[0.252s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/alemany/robot_ws/install/g1pilot/share/g1pilot/hook/ament_prefix_path.dsv'
+[0.252s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/g1pilot/share/g1pilot/hook/ament_prefix_path.sh'
+[0.253s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.253s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.254s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/alemany/robot_ws/src/unitree_sdk2_python'
+[0.254s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.254s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.263s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/alemany/robot_ws/build/unitree_api': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/alemany/robot_ws/install/g1pilot:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake /home/alemany/robot_ws/src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_api -DCMAKE_INSTALL_PREFIX=/home/alemany/robot_ws/install/unitree_api
+[0.264s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/alemany/robot_ws/build/unitree_go': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/alemany/robot_ws/install/g1pilot:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake /home/alemany/robot_ws/src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_go -DCMAKE_INSTALL_PREFIX=/home/alemany/robot_ws/install/unitree_go
+[0.265s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/alemany/robot_ws/build/unitree_hg': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/alemany/robot_ws/install/g1pilot:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake /home/alemany/robot_ws/src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_hg -DCMAKE_INSTALL_PREFIX=/home/alemany/robot_ws/install/unitree_hg
+[0.265s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/alemany/robot_ws/build/astroviz_interfaces': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/alemany/robot_ws/install/g1pilot:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake /home/alemany/robot_ws/src/astroviz_interfaces -DCMAKE_INSTALL_PREFIX=/home/alemany/robot_ws/install/astroviz_interfaces
+[0.385s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/alemany/robot_ws/src/g1pilot'
+[0.385s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.385s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.832s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/alemany/robot_ws/src/unitree_sdk2_python': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/alemany/robot_ws/build/unitree_sdk2py/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/alemany/robot_ws/install/unitree_sdk2py/lib/python3.12/site-packages:${PYTHONPATH} VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/unitree_sdk2py build --build-base /home/alemany/robot_ws/build/unitree_sdk2py/build install --record /home/alemany/robot_ws/build/unitree_sdk2py/install.log --single-version-externally-managed
+[0.841s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/alemany/robot_ws/src/g1pilot': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/alemany/robot_ws/build/g1pilot/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/alemany/robot_ws/install/g1pilot/lib/python3.12/site-packages:${PYTHONPATH} VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/g1pilot build --build-base /home/alemany/robot_ws/build/g1pilot/build install --record /home/alemany/robot_ws/build/g1pilot/install.log --single-version-externally-managed install_data
+[1.163s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/alemany/robot_ws/src/unitree_sdk2_python' returned '0': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/alemany/robot_ws/build/unitree_sdk2py/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/alemany/robot_ws/install/unitree_sdk2py/lib/python3.12/site-packages:${PYTHONPATH} VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/unitree_sdk2py build --build-base /home/alemany/robot_ws/build/unitree_sdk2py/build install --record /home/alemany/robot_ws/build/unitree_sdk2py/install.log --single-version-externally-managed
+[1.164s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_sdk2py' for CMake module files
+[1.164s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_sdk2py' for CMake config files
+[1.165s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_sdk2py/lib'
+[1.165s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_sdk2py/bin'
+[1.165s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_sdk2py/lib/pkgconfig/unitree_sdk2py.pc'
+[1.165s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_sdk2py/lib/python3.12/site-packages'
+[1.165s] Level 1:colcon.colcon_core.shell:create_environment_hook('unitree_sdk2py', 'pythonpath')
+[1.166s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_sdk2py/share/unitree_sdk2py/hook/pythonpath.ps1'
+[1.166s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/alemany/robot_ws/install/unitree_sdk2py/share/unitree_sdk2py/hook/pythonpath.dsv'
+[1.166s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_sdk2py/share/unitree_sdk2py/hook/pythonpath.sh'
+[1.167s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_sdk2py/bin'
+[1.167s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(unitree_sdk2py)
+[1.167s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/unitree_sdk2py/share/unitree_sdk2py/package.ps1'
+[1.167s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/alemany/robot_ws/install/unitree_sdk2py/share/unitree_sdk2py/package.dsv'
+[1.168s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/unitree_sdk2py/share/unitree_sdk2py/package.sh'
+[1.168s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/unitree_sdk2py/share/unitree_sdk2py/package.bash'
+[1.168s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/unitree_sdk2py/share/unitree_sdk2py/package.zsh'
+[1.169s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/alemany/robot_ws/install/unitree_sdk2py/share/colcon-core/packages/unitree_sdk2py)
+[1.206s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/g1pilot' for CMake module files
+[1.207s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/alemany/robot_ws/src/g1pilot' returned '0': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/alemany/robot_ws/build/g1pilot/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/alemany/robot_ws/install/g1pilot/lib/python3.12/site-packages:${PYTHONPATH} VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/g1pilot build --build-base /home/alemany/robot_ws/build/g1pilot/build install --record /home/alemany/robot_ws/build/g1pilot/install.log --single-version-externally-managed install_data
+[1.207s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/g1pilot' for CMake config files
+[1.208s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/g1pilot/lib'
+[1.208s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/g1pilot/bin'
+[1.208s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/g1pilot/lib/pkgconfig/g1pilot.pc'
+[1.208s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/g1pilot/lib/python3.12/site-packages'
+[1.208s] Level 1:colcon.colcon_core.shell:create_environment_hook('g1pilot', 'pythonpath')
+[1.208s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/g1pilot/share/g1pilot/hook/pythonpath.ps1'
+[1.209s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/alemany/robot_ws/install/g1pilot/share/g1pilot/hook/pythonpath.dsv'
+[1.209s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/g1pilot/share/g1pilot/hook/pythonpath.sh'
+[1.210s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/g1pilot/bin'
+[1.210s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(g1pilot)
+[1.210s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/g1pilot/share/g1pilot/package.ps1'
+[1.210s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/alemany/robot_ws/install/g1pilot/share/g1pilot/package.dsv'
+[1.211s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/g1pilot/share/g1pilot/package.sh'
+[1.211s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/g1pilot/share/g1pilot/package.bash'
+[1.212s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/g1pilot/share/g1pilot/package.zsh'
+[1.212s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/alemany/robot_ws/install/g1pilot/share/colcon-core/packages/g1pilot)
+[3.028s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/alemany/robot_ws/build/astroviz_interfaces' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/alemany/robot_ws/install/g1pilot:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake /home/alemany/robot_ws/src/astroviz_interfaces -DCMAKE_INSTALL_PREFIX=/home/alemany/robot_ws/install/astroviz_interfaces
+[3.028s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/alemany/robot_ws/build/astroviz_interfaces': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/alemany/robot_ws/install/g1pilot:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake --build /home/alemany/robot_ws/build/astroviz_interfaces -- -j28 -l28
+[3.139s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/alemany/robot_ws/build/unitree_hg' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/alemany/robot_ws/install/g1pilot:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake /home/alemany/robot_ws/src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_hg -DCMAKE_INSTALL_PREFIX=/home/alemany/robot_ws/install/unitree_hg
+[3.139s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/alemany/robot_ws/build/unitree_hg': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/alemany/robot_ws/install/g1pilot:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake --build /home/alemany/robot_ws/build/unitree_hg -- -j28 -l28
+[3.154s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/alemany/robot_ws/build/unitree_api' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/alemany/robot_ws/install/g1pilot:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake /home/alemany/robot_ws/src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_api -DCMAKE_INSTALL_PREFIX=/home/alemany/robot_ws/install/unitree_api
+[3.155s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/alemany/robot_ws/build/unitree_api': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/alemany/robot_ws/install/g1pilot:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake --build /home/alemany/robot_ws/build/unitree_api -- -j28 -l28
+[3.299s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/alemany/robot_ws/build/unitree_go' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/alemany/robot_ws/install/g1pilot:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake /home/alemany/robot_ws/src/unitree_ros2/cyclonedds_ws/src/unitree/unitree_go -DCMAKE_INSTALL_PREFIX=/home/alemany/robot_ws/install/unitree_go
+[3.300s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/alemany/robot_ws/build/unitree_go': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/alemany/robot_ws/install/g1pilot:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake --build /home/alemany/robot_ws/build/unitree_go -- -j28 -l28
+[4.198s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/alemany/robot_ws/build/astroviz_interfaces' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/alemany/robot_ws/install/g1pilot:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake --build /home/alemany/robot_ws/build/astroviz_interfaces -- -j28 -l28
+[4.205s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/alemany/robot_ws/build/astroviz_interfaces': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/alemany/robot_ws/install/g1pilot:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake --install /home/alemany/robot_ws/build/astroviz_interfaces
+[4.281s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(astroviz_interfaces)
+[4.281s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/astroviz_interfaces' for CMake module files
+[4.281s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/alemany/robot_ws/build/astroviz_interfaces' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/alemany/robot_ws/install/g1pilot:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake --install /home/alemany/robot_ws/build/astroviz_interfaces
+[4.282s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/astroviz_interfaces' for CMake config files
+[4.282s] Level 1:colcon.colcon_core.shell:create_environment_hook('astroviz_interfaces', 'cmake_prefix_path')
+[4.282s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/hook/cmake_prefix_path.ps1'
+[4.283s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/hook/cmake_prefix_path.dsv'
+[4.283s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/hook/cmake_prefix_path.sh'
+[4.284s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/astroviz_interfaces/lib'
+[4.284s] Level 1:colcon.colcon_core.shell:create_environment_hook('astroviz_interfaces', 'ld_library_path_lib')
+[4.284s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/hook/ld_library_path_lib.ps1'
+[4.285s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/hook/ld_library_path_lib.dsv'
+[4.285s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/hook/ld_library_path_lib.sh'
+[4.286s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/astroviz_interfaces/bin'
+[4.286s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/astroviz_interfaces/lib/pkgconfig/astroviz_interfaces.pc'
+[4.286s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages'
+[4.286s] Level 1:colcon.colcon_core.shell:create_environment_hook('astroviz_interfaces', 'pythonpath')
+[4.286s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/hook/pythonpath.ps1'
+[4.287s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/hook/pythonpath.dsv'
+[4.287s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/hook/pythonpath.sh'
+[4.288s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/astroviz_interfaces/bin'
+[4.288s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/package.ps1'
+[4.289s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/package.dsv'
+[4.290s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/package.sh'
+[4.290s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/package.bash'
+[4.291s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/package.zsh'
+[4.291s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/alemany/robot_ws/install/astroviz_interfaces/share/colcon-core/packages/astroviz_interfaces)
+[4.292s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(astroviz_interfaces)
+[4.292s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/astroviz_interfaces' for CMake module files
+[4.292s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/astroviz_interfaces' for CMake config files
+[4.293s] Level 1:colcon.colcon_core.shell:create_environment_hook('astroviz_interfaces', 'cmake_prefix_path')
+[4.293s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/hook/cmake_prefix_path.ps1'
+[4.294s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/hook/cmake_prefix_path.dsv'
+[4.294s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/hook/cmake_prefix_path.sh'
+[4.295s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/astroviz_interfaces/lib'
+[4.295s] Level 1:colcon.colcon_core.shell:create_environment_hook('astroviz_interfaces', 'ld_library_path_lib')
+[4.295s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/hook/ld_library_path_lib.ps1'
+[4.295s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/hook/ld_library_path_lib.dsv'
+[4.296s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/hook/ld_library_path_lib.sh'
+[4.296s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/astroviz_interfaces/bin'
+[4.296s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/astroviz_interfaces/lib/pkgconfig/astroviz_interfaces.pc'
+[4.297s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages'
+[4.297s] Level 1:colcon.colcon_core.shell:create_environment_hook('astroviz_interfaces', 'pythonpath')
+[4.297s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/hook/pythonpath.ps1'
+[4.297s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/hook/pythonpath.dsv'
+[4.298s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/hook/pythonpath.sh'
+[4.298s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/astroviz_interfaces/bin'
+[4.299s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/package.ps1'
+[4.299s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/package.dsv'
+[4.300s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/package.sh'
+[4.301s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/package.bash'
+[4.301s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/package.zsh'
+[4.302s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/alemany/robot_ws/install/astroviz_interfaces/share/colcon-core/packages/astroviz_interfaces)
+[4.982s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/alemany/robot_ws/build/unitree_api' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/alemany/robot_ws/install/g1pilot:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake --build /home/alemany/robot_ws/build/unitree_api -- -j28 -l28
+[4.983s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/alemany/robot_ws/build/unitree_api': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/alemany/robot_ws/install/g1pilot:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake --install /home/alemany/robot_ws/build/unitree_api
+[5.032s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(unitree_api)
+[5.033s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_api' for CMake module files
+[5.033s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/alemany/robot_ws/build/unitree_api' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/alemany/robot_ws/install/g1pilot:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake --install /home/alemany/robot_ws/build/unitree_api
+[5.033s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_api' for CMake config files
+[5.034s] Level 1:colcon.colcon_core.shell:create_environment_hook('unitree_api', 'cmake_prefix_path')
+[5.034s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_api/share/unitree_api/hook/cmake_prefix_path.ps1'
+[5.035s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/alemany/robot_ws/install/unitree_api/share/unitree_api/hook/cmake_prefix_path.dsv'
+[5.035s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_api/share/unitree_api/hook/cmake_prefix_path.sh'
+[5.036s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_api/lib'
+[5.036s] Level 1:colcon.colcon_core.shell:create_environment_hook('unitree_api', 'ld_library_path_lib')
+[5.036s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_api/share/unitree_api/hook/ld_library_path_lib.ps1'
+[5.036s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/alemany/robot_ws/install/unitree_api/share/unitree_api/hook/ld_library_path_lib.dsv'
+[5.036s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_api/share/unitree_api/hook/ld_library_path_lib.sh'
+[5.037s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_api/bin'
+[5.037s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_api/lib/pkgconfig/unitree_api.pc'
+[5.037s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_api/lib/python3.12/site-packages'
+[5.037s] Level 1:colcon.colcon_core.shell:create_environment_hook('unitree_api', 'pythonpath')
+[5.037s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_api/share/unitree_api/hook/pythonpath.ps1'
+[5.038s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/alemany/robot_ws/install/unitree_api/share/unitree_api/hook/pythonpath.dsv'
+[5.038s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_api/share/unitree_api/hook/pythonpath.sh'
+[5.038s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_api/bin'
+[5.038s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/unitree_api/share/unitree_api/package.ps1'
+[5.039s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/alemany/robot_ws/install/unitree_api/share/unitree_api/package.dsv'
+[5.039s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/unitree_api/share/unitree_api/package.sh'
+[5.039s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/unitree_api/share/unitree_api/package.bash'
+[5.040s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/unitree_api/share/unitree_api/package.zsh'
+[5.040s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/alemany/robot_ws/install/unitree_api/share/colcon-core/packages/unitree_api)
+[5.040s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(unitree_api)
+[5.040s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_api' for CMake module files
+[5.040s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_api' for CMake config files
+[5.041s] Level 1:colcon.colcon_core.shell:create_environment_hook('unitree_api', 'cmake_prefix_path')
+[5.041s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_api/share/unitree_api/hook/cmake_prefix_path.ps1'
+[5.041s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/alemany/robot_ws/install/unitree_api/share/unitree_api/hook/cmake_prefix_path.dsv'
+[5.041s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_api/share/unitree_api/hook/cmake_prefix_path.sh'
+[5.042s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_api/lib'
+[5.042s] Level 1:colcon.colcon_core.shell:create_environment_hook('unitree_api', 'ld_library_path_lib')
+[5.042s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_api/share/unitree_api/hook/ld_library_path_lib.ps1'
+[5.042s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/alemany/robot_ws/install/unitree_api/share/unitree_api/hook/ld_library_path_lib.dsv'
+[5.042s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_api/share/unitree_api/hook/ld_library_path_lib.sh'
+[5.042s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_api/bin'
+[5.042s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_api/lib/pkgconfig/unitree_api.pc'
+[5.043s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_api/lib/python3.12/site-packages'
+[5.043s] Level 1:colcon.colcon_core.shell:create_environment_hook('unitree_api', 'pythonpath')
+[5.043s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_api/share/unitree_api/hook/pythonpath.ps1'
+[5.043s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/alemany/robot_ws/install/unitree_api/share/unitree_api/hook/pythonpath.dsv'
+[5.043s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_api/share/unitree_api/hook/pythonpath.sh'
+[5.044s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_api/bin'
+[5.044s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/unitree_api/share/unitree_api/package.ps1'
+[5.044s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/alemany/robot_ws/install/unitree_api/share/unitree_api/package.dsv'
+[5.044s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/unitree_api/share/unitree_api/package.sh'
+[5.045s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/unitree_api/share/unitree_api/package.bash'
+[5.045s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/unitree_api/share/unitree_api/package.zsh'
+[5.045s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/alemany/robot_ws/install/unitree_api/share/colcon-core/packages/unitree_api)
+[5.609s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/alemany/robot_ws/build/unitree_hg' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/alemany/robot_ws/install/g1pilot:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake --build /home/alemany/robot_ws/build/unitree_hg -- -j28 -l28
+[5.609s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/alemany/robot_ws/build/unitree_hg': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/alemany/robot_ws/install/g1pilot:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake --install /home/alemany/robot_ws/build/unitree_hg
+[5.685s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(unitree_hg)
+[5.685s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_hg' for CMake module files
+[5.686s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/alemany/robot_ws/build/unitree_hg' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/alemany/robot_ws/install/g1pilot:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake --install /home/alemany/robot_ws/build/unitree_hg
+[5.687s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_hg' for CMake config files
+[5.687s] Level 1:colcon.colcon_core.shell:create_environment_hook('unitree_hg', 'cmake_prefix_path')
+[5.687s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_hg/share/unitree_hg/hook/cmake_prefix_path.ps1'
+[5.687s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/alemany/robot_ws/install/unitree_hg/share/unitree_hg/hook/cmake_prefix_path.dsv'
+[5.688s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_hg/share/unitree_hg/hook/cmake_prefix_path.sh'
+[5.688s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_hg/lib'
+[5.688s] Level 1:colcon.colcon_core.shell:create_environment_hook('unitree_hg', 'ld_library_path_lib')
+[5.688s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_hg/share/unitree_hg/hook/ld_library_path_lib.ps1'
+[5.688s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/alemany/robot_ws/install/unitree_hg/share/unitree_hg/hook/ld_library_path_lib.dsv'
+[5.688s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_hg/share/unitree_hg/hook/ld_library_path_lib.sh'
+[5.689s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_hg/bin'
+[5.689s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_hg/lib/pkgconfig/unitree_hg.pc'
+[5.689s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_hg/lib/python3.12/site-packages'
+[5.689s] Level 1:colcon.colcon_core.shell:create_environment_hook('unitree_hg', 'pythonpath')
+[5.689s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_hg/share/unitree_hg/hook/pythonpath.ps1'
+[5.689s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/alemany/robot_ws/install/unitree_hg/share/unitree_hg/hook/pythonpath.dsv'
+[5.690s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_hg/share/unitree_hg/hook/pythonpath.sh'
+[5.690s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_hg/bin'
+[5.690s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/unitree_hg/share/unitree_hg/package.ps1'
+[5.690s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/alemany/robot_ws/install/unitree_hg/share/unitree_hg/package.dsv'
+[5.691s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/unitree_hg/share/unitree_hg/package.sh'
+[5.691s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/unitree_hg/share/unitree_hg/package.bash'
+[5.691s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/unitree_hg/share/unitree_hg/package.zsh'
+[5.691s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/alemany/robot_ws/install/unitree_hg/share/colcon-core/packages/unitree_hg)
+[5.692s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(unitree_hg)
+[5.692s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_hg' for CMake module files
+[5.692s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_hg' for CMake config files
+[5.693s] Level 1:colcon.colcon_core.shell:create_environment_hook('unitree_hg', 'cmake_prefix_path')
+[5.693s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_hg/share/unitree_hg/hook/cmake_prefix_path.ps1'
+[5.693s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/alemany/robot_ws/install/unitree_hg/share/unitree_hg/hook/cmake_prefix_path.dsv'
+[5.694s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_hg/share/unitree_hg/hook/cmake_prefix_path.sh'
+[5.694s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_hg/lib'
+[5.694s] Level 1:colcon.colcon_core.shell:create_environment_hook('unitree_hg', 'ld_library_path_lib')
+[5.695s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_hg/share/unitree_hg/hook/ld_library_path_lib.ps1'
+[5.695s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/alemany/robot_ws/install/unitree_hg/share/unitree_hg/hook/ld_library_path_lib.dsv'
+[5.695s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_hg/share/unitree_hg/hook/ld_library_path_lib.sh'
+[5.696s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_hg/bin'
+[5.696s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_hg/lib/pkgconfig/unitree_hg.pc'
+[5.697s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_hg/lib/python3.12/site-packages'
+[5.697s] Level 1:colcon.colcon_core.shell:create_environment_hook('unitree_hg', 'pythonpath')
+[5.697s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_hg/share/unitree_hg/hook/pythonpath.ps1'
+[5.698s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/alemany/robot_ws/install/unitree_hg/share/unitree_hg/hook/pythonpath.dsv'
+[5.699s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_hg/share/unitree_hg/hook/pythonpath.sh'
+[5.700s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_hg/bin'
+[5.701s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/unitree_hg/share/unitree_hg/package.ps1'
+[5.702s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/alemany/robot_ws/install/unitree_hg/share/unitree_hg/package.dsv'
+[5.702s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/unitree_hg/share/unitree_hg/package.sh'
+[5.703s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/unitree_hg/share/unitree_hg/package.bash'
+[5.703s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/unitree_hg/share/unitree_hg/package.zsh'
+[5.703s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/alemany/robot_ws/install/unitree_hg/share/colcon-core/packages/unitree_hg)
+[7.391s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/alemany/robot_ws/build/unitree_go' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/alemany/robot_ws/install/g1pilot:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake --build /home/alemany/robot_ws/build/unitree_go -- -j28 -l28
+[7.392s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/alemany/robot_ws/build/unitree_go': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/alemany/robot_ws/install/g1pilot:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake --install /home/alemany/robot_ws/build/unitree_go
+[7.488s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(unitree_go)
+[7.488s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_go' for CMake module files
+[7.489s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/alemany/robot_ws/build/unitree_go' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/alemany/robot_ws/install/g1pilot:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake --install /home/alemany/robot_ws/build/unitree_go
+[7.489s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_go' for CMake config files
+[7.489s] Level 1:colcon.colcon_core.shell:create_environment_hook('unitree_go', 'cmake_prefix_path')
+[7.489s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_go/share/unitree_go/hook/cmake_prefix_path.ps1'
+[7.490s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/alemany/robot_ws/install/unitree_go/share/unitree_go/hook/cmake_prefix_path.dsv'
+[7.490s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_go/share/unitree_go/hook/cmake_prefix_path.sh'
+[7.490s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_go/lib'
+[7.490s] Level 1:colcon.colcon_core.shell:create_environment_hook('unitree_go', 'ld_library_path_lib')
+[7.490s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_go/share/unitree_go/hook/ld_library_path_lib.ps1'
+[7.490s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/alemany/robot_ws/install/unitree_go/share/unitree_go/hook/ld_library_path_lib.dsv'
+[7.491s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_go/share/unitree_go/hook/ld_library_path_lib.sh'
+[7.491s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_go/bin'
+[7.491s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_go/lib/pkgconfig/unitree_go.pc'
+[7.491s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_go/lib/python3.12/site-packages'
+[7.491s] Level 1:colcon.colcon_core.shell:create_environment_hook('unitree_go', 'pythonpath')
+[7.491s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_go/share/unitree_go/hook/pythonpath.ps1'
+[7.491s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/alemany/robot_ws/install/unitree_go/share/unitree_go/hook/pythonpath.dsv'
+[7.492s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_go/share/unitree_go/hook/pythonpath.sh'
+[7.492s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_go/bin'
+[7.492s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/unitree_go/share/unitree_go/package.ps1'
+[7.492s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/alemany/robot_ws/install/unitree_go/share/unitree_go/package.dsv'
+[7.493s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/unitree_go/share/unitree_go/package.sh'
+[7.493s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/unitree_go/share/unitree_go/package.bash'
+[7.493s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/unitree_go/share/unitree_go/package.zsh'
+[7.493s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/alemany/robot_ws/install/unitree_go/share/colcon-core/packages/unitree_go)
+[7.493s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(unitree_go)
+[7.493s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_go' for CMake module files
+[7.494s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_go' for CMake config files
+[7.494s] Level 1:colcon.colcon_core.shell:create_environment_hook('unitree_go', 'cmake_prefix_path')
+[7.494s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_go/share/unitree_go/hook/cmake_prefix_path.ps1'
+[7.494s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/alemany/robot_ws/install/unitree_go/share/unitree_go/hook/cmake_prefix_path.dsv'
+[7.495s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_go/share/unitree_go/hook/cmake_prefix_path.sh'
+[7.495s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_go/lib'
+[7.495s] Level 1:colcon.colcon_core.shell:create_environment_hook('unitree_go', 'ld_library_path_lib')
+[7.495s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_go/share/unitree_go/hook/ld_library_path_lib.ps1'
+[7.495s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/alemany/robot_ws/install/unitree_go/share/unitree_go/hook/ld_library_path_lib.dsv'
+[7.495s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_go/share/unitree_go/hook/ld_library_path_lib.sh'
+[7.496s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_go/bin'
+[7.496s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_go/lib/pkgconfig/unitree_go.pc'
+[7.496s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_go/lib/python3.12/site-packages'
+[7.496s] Level 1:colcon.colcon_core.shell:create_environment_hook('unitree_go', 'pythonpath')
+[7.496s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_go/share/unitree_go/hook/pythonpath.ps1'
+[7.496s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/alemany/robot_ws/install/unitree_go/share/unitree_go/hook/pythonpath.dsv'
+[7.496s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_go/share/unitree_go/hook/pythonpath.sh'
+[7.497s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_go/bin'
+[7.497s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/unitree_go/share/unitree_go/package.ps1'
+[7.497s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/alemany/robot_ws/install/unitree_go/share/unitree_go/package.dsv'
+[7.497s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/unitree_go/share/unitree_go/package.sh'
+[7.498s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/unitree_go/share/unitree_go/package.bash'
+[7.498s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/unitree_go/share/unitree_go/package.zsh'
+[7.498s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/alemany/robot_ws/install/unitree_go/share/colcon-core/packages/unitree_go)
+[7.498s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/alemany/robot_ws/src/unitree_ros2/example/src' with build type 'ament_cmake'
+[7.498s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/alemany/robot_ws/src/unitree_ros2/example/src'
+[7.498s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[7.498s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[7.508s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/alemany/robot_ws/build/unitree_ros2_example': CMAKE_PREFIX_PATH=/home/alemany/robot_ws/install/unitree_hg:/home/alemany/robot_ws/install/unitree_go:/home/alemany/robot_ws/install/unitree_api:/home/alemany/robot_ws/install/unitree_ros2_example:/home/alemany/robot_ws/install/astroviz_interfaces:/opt/ros/jazzy/opt/gz_sim_vendor:/opt/ros/jazzy/opt/gz_sensors_vendor:/opt/ros/jazzy/opt/gz_physics_vendor:/opt/ros/jazzy/opt/sdformat_vendor:/opt/ros/jazzy/opt/gz_gui_vendor:/opt/ros/jazzy/opt/gz_transport_vendor:/opt/ros/jazzy/opt/gz_rendering_vendor:/opt/ros/jazzy/opt/gz_plugin_vendor:/opt/ros/jazzy/opt/gz_fuel_tools_vendor:/opt/ros/jazzy/opt/gz_msgs_vendor:/opt/ros/jazzy/opt/gz_common_vendor:/opt/ros/jazzy/opt/gz_math_vendor:/opt/ros/jazzy/opt/gz_utils_vendor:/opt/ros/jazzy/opt/gz_tools_vendor:/opt/ros/jazzy/opt/gz_ogre_next_vendor:/opt/ros/jazzy/opt/gz_dartsim_vendor:/opt/ros/jazzy/opt/gz_cmake_vendor:/home/alemany/robot_ws/install/g1pilot:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/alemany/robot_ws/install/unitree_hg/lib/python3.12/site-packages:/home/alemany/robot_ws/install/unitree_go/lib/python3.12/site-packages:/home/alemany/robot_ws/install/unitree_api/lib/python3.12/site-packages:/home/alemany/robot_ws/install/unitree_sdk2py/lib/python3.12/site-packages:/home/alemany/robot_ws/install/g1pilot/lib/python3.12/site-packages:/home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages:/opt/ros/jazzy/lib/python/site-packages:/opt/ros/jazzy/lib/python3.12/site-packages VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake /home/alemany/robot_ws/src/unitree_ros2/example/src -DCMAKE_INSTALL_PREFIX=/home/alemany/robot_ws/install/unitree_ros2_example
+[8.843s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/alemany/robot_ws/build/unitree_ros2_example' returned '0': CMAKE_PREFIX_PATH=/home/alemany/robot_ws/install/unitree_hg:/home/alemany/robot_ws/install/unitree_go:/home/alemany/robot_ws/install/unitree_api:/home/alemany/robot_ws/install/unitree_ros2_example:/home/alemany/robot_ws/install/astroviz_interfaces:/opt/ros/jazzy/opt/gz_sim_vendor:/opt/ros/jazzy/opt/gz_sensors_vendor:/opt/ros/jazzy/opt/gz_physics_vendor:/opt/ros/jazzy/opt/sdformat_vendor:/opt/ros/jazzy/opt/gz_gui_vendor:/opt/ros/jazzy/opt/gz_transport_vendor:/opt/ros/jazzy/opt/gz_rendering_vendor:/opt/ros/jazzy/opt/gz_plugin_vendor:/opt/ros/jazzy/opt/gz_fuel_tools_vendor:/opt/ros/jazzy/opt/gz_msgs_vendor:/opt/ros/jazzy/opt/gz_common_vendor:/opt/ros/jazzy/opt/gz_math_vendor:/opt/ros/jazzy/opt/gz_utils_vendor:/opt/ros/jazzy/opt/gz_tools_vendor:/opt/ros/jazzy/opt/gz_ogre_next_vendor:/opt/ros/jazzy/opt/gz_dartsim_vendor:/opt/ros/jazzy/opt/gz_cmake_vendor:/home/alemany/robot_ws/install/g1pilot:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/alemany/robot_ws/install/unitree_hg/lib/python3.12/site-packages:/home/alemany/robot_ws/install/unitree_go/lib/python3.12/site-packages:/home/alemany/robot_ws/install/unitree_api/lib/python3.12/site-packages:/home/alemany/robot_ws/install/unitree_sdk2py/lib/python3.12/site-packages:/home/alemany/robot_ws/install/g1pilot/lib/python3.12/site-packages:/home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages:/opt/ros/jazzy/lib/python/site-packages:/opt/ros/jazzy/lib/python3.12/site-packages VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake /home/alemany/robot_ws/src/unitree_ros2/example/src -DCMAKE_INSTALL_PREFIX=/home/alemany/robot_ws/install/unitree_ros2_example
+[8.844s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/alemany/robot_ws/build/unitree_ros2_example': CMAKE_PREFIX_PATH=/home/alemany/robot_ws/install/unitree_hg:/home/alemany/robot_ws/install/unitree_go:/home/alemany/robot_ws/install/unitree_api:/home/alemany/robot_ws/install/unitree_ros2_example:/home/alemany/robot_ws/install/astroviz_interfaces:/opt/ros/jazzy/opt/gz_sim_vendor:/opt/ros/jazzy/opt/gz_sensors_vendor:/opt/ros/jazzy/opt/gz_physics_vendor:/opt/ros/jazzy/opt/sdformat_vendor:/opt/ros/jazzy/opt/gz_gui_vendor:/opt/ros/jazzy/opt/gz_transport_vendor:/opt/ros/jazzy/opt/gz_rendering_vendor:/opt/ros/jazzy/opt/gz_plugin_vendor:/opt/ros/jazzy/opt/gz_fuel_tools_vendor:/opt/ros/jazzy/opt/gz_msgs_vendor:/opt/ros/jazzy/opt/gz_common_vendor:/opt/ros/jazzy/opt/gz_math_vendor:/opt/ros/jazzy/opt/gz_utils_vendor:/opt/ros/jazzy/opt/gz_tools_vendor:/opt/ros/jazzy/opt/gz_ogre_next_vendor:/opt/ros/jazzy/opt/gz_dartsim_vendor:/opt/ros/jazzy/opt/gz_cmake_vendor:/home/alemany/robot_ws/install/g1pilot:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/alemany/robot_ws/install/unitree_hg/lib/python3.12/site-packages:/home/alemany/robot_ws/install/unitree_go/lib/python3.12/site-packages:/home/alemany/robot_ws/install/unitree_api/lib/python3.12/site-packages:/home/alemany/robot_ws/install/unitree_sdk2py/lib/python3.12/site-packages:/home/alemany/robot_ws/install/g1pilot/lib/python3.12/site-packages:/home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages:/opt/ros/jazzy/lib/python/site-packages:/opt/ros/jazzy/lib/python3.12/site-packages VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake --build /home/alemany/robot_ws/build/unitree_ros2_example -- -j28 -l28
+[9.551s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/alemany/robot_ws/build/unitree_ros2_example' returned '0': CMAKE_PREFIX_PATH=/home/alemany/robot_ws/install/unitree_hg:/home/alemany/robot_ws/install/unitree_go:/home/alemany/robot_ws/install/unitree_api:/home/alemany/robot_ws/install/unitree_ros2_example:/home/alemany/robot_ws/install/astroviz_interfaces:/opt/ros/jazzy/opt/gz_sim_vendor:/opt/ros/jazzy/opt/gz_sensors_vendor:/opt/ros/jazzy/opt/gz_physics_vendor:/opt/ros/jazzy/opt/sdformat_vendor:/opt/ros/jazzy/opt/gz_gui_vendor:/opt/ros/jazzy/opt/gz_transport_vendor:/opt/ros/jazzy/opt/gz_rendering_vendor:/opt/ros/jazzy/opt/gz_plugin_vendor:/opt/ros/jazzy/opt/gz_fuel_tools_vendor:/opt/ros/jazzy/opt/gz_msgs_vendor:/opt/ros/jazzy/opt/gz_common_vendor:/opt/ros/jazzy/opt/gz_math_vendor:/opt/ros/jazzy/opt/gz_utils_vendor:/opt/ros/jazzy/opt/gz_tools_vendor:/opt/ros/jazzy/opt/gz_ogre_next_vendor:/opt/ros/jazzy/opt/gz_dartsim_vendor:/opt/ros/jazzy/opt/gz_cmake_vendor:/home/alemany/robot_ws/install/g1pilot:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/alemany/robot_ws/install/unitree_hg/lib/python3.12/site-packages:/home/alemany/robot_ws/install/unitree_go/lib/python3.12/site-packages:/home/alemany/robot_ws/install/unitree_api/lib/python3.12/site-packages:/home/alemany/robot_ws/install/unitree_sdk2py/lib/python3.12/site-packages:/home/alemany/robot_ws/install/g1pilot/lib/python3.12/site-packages:/home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages:/opt/ros/jazzy/lib/python/site-packages:/opt/ros/jazzy/lib/python3.12/site-packages VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake --build /home/alemany/robot_ws/build/unitree_ros2_example -- -j28 -l28
+[9.551s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/alemany/robot_ws/build/unitree_ros2_example': CMAKE_PREFIX_PATH=/home/alemany/robot_ws/install/unitree_hg:/home/alemany/robot_ws/install/unitree_go:/home/alemany/robot_ws/install/unitree_api:/home/alemany/robot_ws/install/unitree_ros2_example:/home/alemany/robot_ws/install/astroviz_interfaces:/opt/ros/jazzy/opt/gz_sim_vendor:/opt/ros/jazzy/opt/gz_sensors_vendor:/opt/ros/jazzy/opt/gz_physics_vendor:/opt/ros/jazzy/opt/sdformat_vendor:/opt/ros/jazzy/opt/gz_gui_vendor:/opt/ros/jazzy/opt/gz_transport_vendor:/opt/ros/jazzy/opt/gz_rendering_vendor:/opt/ros/jazzy/opt/gz_plugin_vendor:/opt/ros/jazzy/opt/gz_fuel_tools_vendor:/opt/ros/jazzy/opt/gz_msgs_vendor:/opt/ros/jazzy/opt/gz_common_vendor:/opt/ros/jazzy/opt/gz_math_vendor:/opt/ros/jazzy/opt/gz_utils_vendor:/opt/ros/jazzy/opt/gz_tools_vendor:/opt/ros/jazzy/opt/gz_ogre_next_vendor:/opt/ros/jazzy/opt/gz_dartsim_vendor:/opt/ros/jazzy/opt/gz_cmake_vendor:/home/alemany/robot_ws/install/g1pilot:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/alemany/robot_ws/install/unitree_hg/lib/python3.12/site-packages:/home/alemany/robot_ws/install/unitree_go/lib/python3.12/site-packages:/home/alemany/robot_ws/install/unitree_api/lib/python3.12/site-packages:/home/alemany/robot_ws/install/unitree_sdk2py/lib/python3.12/site-packages:/home/alemany/robot_ws/install/g1pilot/lib/python3.12/site-packages:/home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages:/opt/ros/jazzy/lib/python/site-packages:/opt/ros/jazzy/lib/python3.12/site-packages VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake --install /home/alemany/robot_ws/build/unitree_ros2_example
+[9.597s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(unitree_ros2_example)
+[9.597s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/alemany/robot_ws/build/unitree_ros2_example' returned '0': CMAKE_PREFIX_PATH=/home/alemany/robot_ws/install/unitree_hg:/home/alemany/robot_ws/install/unitree_go:/home/alemany/robot_ws/install/unitree_api:/home/alemany/robot_ws/install/unitree_ros2_example:/home/alemany/robot_ws/install/astroviz_interfaces:/opt/ros/jazzy/opt/gz_sim_vendor:/opt/ros/jazzy/opt/gz_sensors_vendor:/opt/ros/jazzy/opt/gz_physics_vendor:/opt/ros/jazzy/opt/sdformat_vendor:/opt/ros/jazzy/opt/gz_gui_vendor:/opt/ros/jazzy/opt/gz_transport_vendor:/opt/ros/jazzy/opt/gz_rendering_vendor:/opt/ros/jazzy/opt/gz_plugin_vendor:/opt/ros/jazzy/opt/gz_fuel_tools_vendor:/opt/ros/jazzy/opt/gz_msgs_vendor:/opt/ros/jazzy/opt/gz_common_vendor:/opt/ros/jazzy/opt/gz_math_vendor:/opt/ros/jazzy/opt/gz_utils_vendor:/opt/ros/jazzy/opt/gz_tools_vendor:/opt/ros/jazzy/opt/gz_ogre_next_vendor:/opt/ros/jazzy/opt/gz_dartsim_vendor:/opt/ros/jazzy/opt/gz_cmake_vendor:/home/alemany/robot_ws/install/g1pilot:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/alemany/robot_ws/install/unitree_hg/lib/python3.12/site-packages:/home/alemany/robot_ws/install/unitree_go/lib/python3.12/site-packages:/home/alemany/robot_ws/install/unitree_api/lib/python3.12/site-packages:/home/alemany/robot_ws/install/unitree_sdk2py/lib/python3.12/site-packages:/home/alemany/robot_ws/install/g1pilot/lib/python3.12/site-packages:/home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages:/opt/ros/jazzy/lib/python/site-packages:/opt/ros/jazzy/lib/python3.12/site-packages VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake --install /home/alemany/robot_ws/build/unitree_ros2_example
+[9.597s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_ros2_example' for CMake module files
+[9.597s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_ros2_example' for CMake config files
+[9.597s] Level 1:colcon.colcon_core.shell:create_environment_hook('unitree_ros2_example', 'cmake_prefix_path')
+[9.598s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_ros2_example/share/unitree_ros2_example/hook/cmake_prefix_path.ps1'
+[9.598s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/alemany/robot_ws/install/unitree_ros2_example/share/unitree_ros2_example/hook/cmake_prefix_path.dsv'
+[9.598s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_ros2_example/share/unitree_ros2_example/hook/cmake_prefix_path.sh'
+[9.598s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_ros2_example/bin'
+[9.598s] Level 1:colcon.colcon_core.shell:create_environment_hook('unitree_ros2_example', 'path')
+[9.598s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_ros2_example/share/unitree_ros2_example/hook/path.ps1'
+[9.599s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/alemany/robot_ws/install/unitree_ros2_example/share/unitree_ros2_example/hook/path.dsv'
+[9.599s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_ros2_example/share/unitree_ros2_example/hook/path.sh'
+[9.599s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_ros2_example/lib/pkgconfig/unitree_ros2_example.pc'
+[9.599s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_ros2_example/lib/python3.12/site-packages'
+[9.599s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_ros2_example/bin'
+[9.599s] Level 1:colcon.colcon_core.shell:create_environment_hook('unitree_ros2_example', 'pythonscriptspath')
+[9.599s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_ros2_example/share/unitree_ros2_example/hook/pythonscriptspath.ps1'
+[9.600s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/alemany/robot_ws/install/unitree_ros2_example/share/unitree_ros2_example/hook/pythonscriptspath.dsv'
+[9.600s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_ros2_example/share/unitree_ros2_example/hook/pythonscriptspath.sh'
+[9.600s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/unitree_ros2_example/share/unitree_ros2_example/package.ps1'
+[9.600s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/alemany/robot_ws/install/unitree_ros2_example/share/unitree_ros2_example/package.dsv'
+[9.601s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/unitree_ros2_example/share/unitree_ros2_example/package.sh'
+[9.601s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/unitree_ros2_example/share/unitree_ros2_example/package.bash'
+[9.601s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/unitree_ros2_example/share/unitree_ros2_example/package.zsh'
+[9.601s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/alemany/robot_ws/install/unitree_ros2_example/share/colcon-core/packages/unitree_ros2_example)
+[9.601s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(unitree_ros2_example)
+[9.602s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_ros2_example' for CMake module files
+[9.602s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_ros2_example' for CMake config files
+[9.602s] Level 1:colcon.colcon_core.shell:create_environment_hook('unitree_ros2_example', 'cmake_prefix_path')
+[9.602s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_ros2_example/share/unitree_ros2_example/hook/cmake_prefix_path.ps1'
+[9.602s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/alemany/robot_ws/install/unitree_ros2_example/share/unitree_ros2_example/hook/cmake_prefix_path.dsv'
+[9.602s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_ros2_example/share/unitree_ros2_example/hook/cmake_prefix_path.sh'
+[9.603s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_ros2_example/bin'
+[9.603s] Level 1:colcon.colcon_core.shell:create_environment_hook('unitree_ros2_example', 'path')
+[9.603s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_ros2_example/share/unitree_ros2_example/hook/path.ps1'
+[9.603s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/alemany/robot_ws/install/unitree_ros2_example/share/unitree_ros2_example/hook/path.dsv'
+[9.603s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_ros2_example/share/unitree_ros2_example/hook/path.sh'
+[9.603s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_ros2_example/lib/pkgconfig/unitree_ros2_example.pc'
+[9.603s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_ros2_example/lib/python3.12/site-packages'
+[9.604s] Level 1:colcon.colcon_core.environment:checking '/home/alemany/robot_ws/install/unitree_ros2_example/bin'
+[9.604s] Level 1:colcon.colcon_core.shell:create_environment_hook('unitree_ros2_example', 'pythonscriptspath')
+[9.604s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_ros2_example/share/unitree_ros2_example/hook/pythonscriptspath.ps1'
+[9.604s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/alemany/robot_ws/install/unitree_ros2_example/share/unitree_ros2_example/hook/pythonscriptspath.dsv'
+[9.604s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/alemany/robot_ws/install/unitree_ros2_example/share/unitree_ros2_example/hook/pythonscriptspath.sh'
+[9.605s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/unitree_ros2_example/share/unitree_ros2_example/package.ps1'
+[9.605s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/alemany/robot_ws/install/unitree_ros2_example/share/unitree_ros2_example/package.dsv'
+[9.605s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/unitree_ros2_example/share/unitree_ros2_example/package.sh'
+[9.605s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/unitree_ros2_example/share/unitree_ros2_example/package.bash'
+[9.606s] INFO:colcon.colcon_core.shell:Creating package script '/home/alemany/robot_ws/install/unitree_ros2_example/share/unitree_ros2_example/package.zsh'
+[9.606s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/alemany/robot_ws/install/unitree_ros2_example/share/colcon-core/packages/unitree_ros2_example)
+[9.606s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[9.606s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[9.606s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '0'
+[9.606s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[9.609s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[9.609s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[9.609s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[9.620s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[9.620s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/alemany/robot_ws/install/local_setup.ps1'
+[9.620s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/alemany/robot_ws/install/_local_setup_util_ps1.py'
+[9.621s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/alemany/robot_ws/install/setup.ps1'
+[9.622s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/alemany/robot_ws/install/local_setup.sh'
+[9.622s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/alemany/robot_ws/install/_local_setup_util_sh.py'
+[9.622s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/alemany/robot_ws/install/setup.sh'
+[9.623s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/alemany/robot_ws/install/local_setup.bash'
+[9.623s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/alemany/robot_ws/install/setup.bash'
+[9.624s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/alemany/robot_ws/install/local_setup.zsh'
+[9.624s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/alemany/robot_ws/install/setup.zsh'

@@ -1,7 +1,24 @@
+import os
+import sys
+
+# --- CONFIGURACIÓN CRÍTICA: Desactivar SharedMemory para evitar temblores y crashes ---
+os.environ["CYCLONEDDS_URI"] = """<CycloneDDS>
+    <Domain>
+        <SharedMemory>
+            <Enable>false</Enable>
+        </SharedMemory>
+    </Domain>
+</CycloneDDS>"""
+
 import time
 import math
 import numpy as np
 import onnxruntime as ort
+import subprocess
+import signal
+import socket
+import json
+import threading
 
 from unitree_sdk2py.core.channel import ChannelFactoryInitialize
 from unitree_sdk2py.core.channel import ChannelPublisher, ChannelSubscriber
@@ -9,9 +26,6 @@ from unitree_sdk2py.idl.default import unitree_hg_msg_dds__LowState_
 from unitree_sdk2py.idl.default import unitree_hg_msg_dds__LowCmd_
 from unitree_sdk2py.idl.unitree_hg.msg.dds_ import LowState_
 from unitree_sdk2py.idl.unitree_hg.msg.dds_ import LowCmd_
-import subprocess
-import os
-import signal
 
 class HolosomaLocomotion:
     def __init__(self, model_path="fastsac_g1_29dof.onnx"):
@@ -33,12 +47,20 @@ class HolosomaLocomotion:
         self.phase_dt = 2 * math.pi / (self.control_freq * self.gait_period)
         self.phase = np.array([0.0, math.pi], dtype=np.float32) 
 
-    def get_target_positions(self, state, cmd):
+    def get_target_positions(self, state, cmd, external_targets):
         cmd_mag = math.sqrt(cmd['vx']**2 + cmd['vy']**2 + cmd['yaw']**2)
         if cmd_mag < 0.01:
             self.phase = np.array([math.pi, math.pi], dtype=np.float32)
         else:
             self.phase = (self.phase + self.phase_dt) % (2 * math.pi)
+
+        fake_joint_pos = np.array(state['joint_pos'])
+        fake_joint_vel = np.array(state['joint_vel'])
+        
+        for i in range(29):
+            if i in external_targets:
+                fake_joint_pos[i] = self.default_angles[i] + (self.last_action[i] * 0.25)
+                fake_joint_vel[i] = 0.0
 
         obs = np.zeros(100, dtype=np.float32)
         obs[0:29] = self.last_action                                  
@@ -46,8 +68,8 @@ class HolosomaLocomotion:
         obs[32] = cmd['yaw']                                          
         obs[33:35] = [cmd['vx'], cmd['vy']]                           
         obs[35:37] = np.cos(self.phase)                               
-        obs[37:66] = (np.array(state['joint_pos']) - self.default_angles) 
-        obs[66:95] = np.array(state['joint_vel']) * 0.05              
+        obs[37:66] = (fake_joint_pos - self.default_angles) 
+        obs[66:95] = fake_joint_vel * 0.05              
         obs[95:98] = np.array(state['gravity'])                       
         obs[98:100] = np.sin(self.phase)                              
         
@@ -56,6 +78,8 @@ class HolosomaLocomotion:
         return self.default_angles + (action * 0.25)
 
 low_state = None
+external_arm_targets = {}
+comandos = {'vx': 0.0, 'vy': 0.0, 'yaw': 0.0} # Variables compartidas con WASD
 
 def state_callback(msg: LowState_):
     global low_state
@@ -63,65 +87,112 @@ def state_callback(msg: LowState_):
 
 def quaternion_to_gravity(q):
     w, x, y, z = q[0], q[1], q[2], q[3]
-
     gx = -2 * (x*z - w*y)
     gy = -2 * (y*z + w*x)
     gz = -(1 - 2 * (x*x + y*y))
     return [gx, gy, gz]
 
+# --- ESCUCHADOR PARA WASD (TCP Puerto 6000) ---
+def locomotion_listener():
+    global comandos
+    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    server.bind(('0.0.0.0', 6000))
+    server.listen(5)
+    while True:
+        conn, _ = server.accept()
+        try:
+            data = conn.recv(1024).decode('utf-8')
+            if not data: continue
+            if data == 'w': comandos['vx'] = 0.6
+            elif data == 's': comandos['vx'] = -0.4
+            elif data == 'a': comandos['vy'] = 0.3
+            elif data == 'd': comandos['vy'] = -0.3
+            elif data == 'q': comandos['yaw'] = 0.6
+            elif data == 'e': comandos['yaw'] = -0.6
+            elif data == 'stop' or data == 'ping':
+                if data == 'stop':
+                    comandos['vx'], comandos['vy'], comandos['yaw'] = 0.0, 0.0, 0.0
+            conn.sendall(b"OK")
+        except: pass
+        finally: conn.close()
+
+def external_arm_listener():
+    global external_arm_targets
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.bind(('127.0.0.1', 9876))
+    sock.settimeout(0.5)
+    while True:
+        try:
+            data, _ = sock.recvfrom(1024)
+            incoming_targets = json.loads(data.decode('utf-8'))
+            external_arm_targets = {int(k): float(v) for k, v in incoming_targets.items()}
+        except: continue
+
 if __name__ == "__main__":
     script_dir = os.path.dirname(os.path.abspath(__file__))
     sim_path = os.path.join(script_dir, "simulator")
     
-    print(f"[INFO] Lanzando el simulador desde: {sim_path}")
-    
-    sim_proc = subprocess.Popen(
-        ["python3", "unitree_mujoco.py"],
-        cwd=sim_path
-    )
+    print(f"[INFO] Lanzando el simulador...")
+    sim_proc = subprocess.Popen(["python3", "unitree_mujoco.py"], cwd=sim_path)
+    time.sleep(1.0)
 
-    time.sleep(0.1)
+    # Iniciar hilos de escucha
+    threading.Thread(target=locomotion_listener, daemon=True).start()
+    threading.Thread(target=external_arm_listener, daemon=True).start()
 
     ChannelFactoryInitialize(1, "lo") 
-    
     sub = ChannelSubscriber("rt/lowstate", LowState_)
     sub.Init(state_callback, 10)
     pub = ChannelPublisher("rt/lowcmd", LowCmd_)
     pub.Init()
 
     controller = HolosomaLocomotion(model_path="fastsac_g1_29dof.onnx")
-    cmd_msg = unitree_hg_msg_dds__LowCmd_()
-
+    
+    # Kp y Kd originales
     kp = [40.18, 99.10, 40.18, 99.10, 28.50, 28.50]*2 + [40.18, 28.50, 28.50] + [14.25, 14.25, 14.25, 14.25, 16.78, 16.78, 16.78]*2
     kd = [2.56, 6.31, 2.56, 6.31, 1.81, 1.81]*2 + [2.56, 1.81, 1.81] + [0.91, 0.91, 0.91, 0.91, 1.07, 1.07, 1.07]*2
 
-    print("[INFO] Esperando datos del simulador...")
+    print("[INFO] Esperando datos...")
     while low_state is None:
         time.sleep(0.1)
     
-    print("[INFO] ¡Conectado! Controlando al robot...")
-    comandos = {'vx': 0.0, 'vy': 0.0, 'yaw': 0.0}
+    print("[INFO] ¡Control activo! Usa WASD en el cliente.")
 
     try:
         while True:
             t_start = time.time()
+            
+            # --- SOLUCIÓN AL BALANCEO/CRASH: Crear el mensaje limpio en cada vuelta ---
+            cmd_msg = unitree_hg_msg_dds__LowCmd_()
+            
             estado = {
                 'gyro': low_state.imu_state.gyroscope,
                 'gravity': quaternion_to_gravity(low_state.imu_state.quaternion),
                 'joint_pos': [low_state.motor_state[i].q for i in range(29)],
                 'joint_vel': [low_state.motor_state[i].dq for i in range(29)]
             }
-            targets = controller.get_target_positions(estado, comandos)
+            
+            # Calculamos posiciones (IA + Brazos externos)
+            targets = controller.get_target_positions(estado, comandos, external_arm_targets)
             
             for i in range(29):
-                cmd_msg.motor_cmd[i].q = targets[i]
+                cmd_msg.motor_cmd[i].mode = 1 # Posición
                 cmd_msg.motor_cmd[i].dq = 0.0
                 cmd_msg.motor_cmd[i].kp = kp[i]
                 cmd_msg.motor_cmd[i].kd = kd[i]
                 cmd_msg.motor_cmd[i].tau = 0.0
+                
+                if i in external_arm_targets:
+                    cmd_msg.motor_cmd[i].q = external_arm_targets[i]
+                else:
+                    cmd_msg.motor_cmd[i].q = targets[i]
             
             pub.Write(cmd_msg)
+            
+            # Control de frecuencia estricto (50Hz)
             time.sleep(max(0.0, (1.0 / 50.0) - (time.time() - t_start)))
             
     except KeyboardInterrupt:
         print("\n[INFO] Detenido.")
+        sim_proc.terminate()

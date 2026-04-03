@@ -1,0 +1,263 @@
+[0.015s] Invoking command in '/home/alemany/robot_ws/build/astroviz_interfaces': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/alemany/robot_ws/install/g1pilot:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake /home/alemany/robot_ws/src/astroviz_interfaces -DCMAKE_INSTALL_PREFIX=/home/alemany/robot_ws/install/astroviz_interfaces
+[0.141s] -- The C compiler identification is GNU 13.3.0
+[0.141s] -- The CXX compiler identification is GNU 13.3.0
+[0.141s] -- Detecting C compiler ABI info
+[0.153s] -- Detecting C compiler ABI info - done
+[0.158s] -- Check for working C compiler: /usr/lib/ccache/cc - skipped
+[0.158s] -- Detecting C compile features
+[0.159s] -- Detecting C compile features - done
+[0.165s] -- Detecting CXX compiler ABI info
+[0.226s] -- Detecting CXX compiler ABI info - done
+[0.231s] -- Check for working CXX compiler: /usr/lib/ccache/c++ - skipped
+[0.231s] -- Detecting CXX compile features
+[0.231s] -- Detecting CXX compile features - done
+[0.234s] -- Found ament_cmake: 2.5.5 (/opt/ros/jazzy/share/ament_cmake/cmake)
+[0.357s] -- Found Python3: /home/alemany/venv-ardupilot/bin/python3 (found version "3.12.3") found components: Interpreter 
+[0.434s] -- Found std_msgs: 5.3.6 (/opt/ros/jazzy/share/std_msgs/cmake)
+[0.472s] -- Found rosidl_generator_c: 4.6.7 (/opt/ros/jazzy/share/rosidl_generator_c/cmake)
+[0.481s] -- Found rosidl_generator_cpp: 4.6.7 (/opt/ros/jazzy/share/rosidl_generator_cpp/cmake)
+[0.491s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.504s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.525s] -- Found rosidl_default_generators: 1.6.0 (/opt/ros/jazzy/share/rosidl_default_generators/cmake)
+[0.536s] -- Found rosidl_adapter: 4.6.7 (/opt/ros/jazzy/share/rosidl_adapter/cmake)
+[1.028s] -- Found ament_cmake_ros: 0.12.0 (/opt/ros/jazzy/share/ament_cmake_ros/cmake)
+[1.693s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[1.949s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[1.951s] -- Found python_cmake_module: 0.11.1 (/opt/ros/jazzy/share/python_cmake_module/cmake)
+[2.090s] -- Found PythonExtra: /home/alemany/venv-ardupilot/bin/python3  
+[2.696s] -- Found Python3: /home/alemany/venv-ardupilot/bin/python3 (found version "3.12.3") found components: Interpreter Development NumPy Development.Module Development.Embed 
+[2.741s] -- Configuring done (2.7s)
+[2.765s] -- Generating done (0.0s)
+[2.772s] -- Build files have been written to: /home/alemany/robot_ws/build/astroviz_interfaces
+[2.778s] Invoked command in '/home/alemany/robot_ws/build/astroviz_interfaces' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/alemany/robot_ws/install/g1pilot:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake /home/alemany/robot_ws/src/astroviz_interfaces -DCMAKE_INSTALL_PREFIX=/home/alemany/robot_ws/install/astroviz_interfaces
+[2.778s] Invoking command in '/home/alemany/robot_ws/build/astroviz_interfaces': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/alemany/robot_ws/install/g1pilot:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake --build /home/alemany/robot_ws/build/astroviz_interfaces -- -j28 -l28
+[2.819s] [  2%] [34m[1mGenerating type hashes for ROS interfaces[0m
+[2.841s] [  2%] Built target ament_cmake_python_copy_astroviz_interfaces
+[2.961s] [  2%] Built target astroviz_interfaces__rosidl_generator_type_description
+[2.969s] [  4%] [34m[1mGenerating C code for ROS interfaces[0m
+[2.978s] [  6%] [34m[1mGenerating C++ code for ROS interfaces[0m
+[3.002s] running egg_info
+[3.015s] creating astroviz_interfaces.egg-info
+[3.015s] writing astroviz_interfaces.egg-info/PKG-INFO
+[3.015s] writing dependency_links to astroviz_interfaces.egg-info/dependency_links.txt
+[3.015s] writing top-level names to astroviz_interfaces.egg-info/top_level.txt
+[3.016s] writing manifest file 'astroviz_interfaces.egg-info/SOURCES.txt'
+[3.053s] reading manifest file 'astroviz_interfaces.egg-info/SOURCES.txt'
+[3.053s] writing manifest file 'astroviz_interfaces.egg-info/SOURCES.txt'
+[3.073s] [  6%] Built target ament_cmake_python_build_astroviz_interfaces_egg
+[3.147s] [  9%] [32mBuilding C object CMakeFiles/astroviz_interfaces__rosidl_generator_c.dir/rosidl_generator_c/astroviz_interfaces/msg/detail/motor_state__description.c.o[0m
+[3.147s] [ 11%] [32mBuilding C object CMakeFiles/astroviz_interfaces__rosidl_generator_c.dir/rosidl_generator_c/astroviz_interfaces/msg/detail/motor_state_list__functions.c.o[0m
+[3.150s] [ 13%] [32mBuilding C object CMakeFiles/astroviz_interfaces__rosidl_generator_c.dir/rosidl_generator_c/astroviz_interfaces/msg/detail/motor_state__functions.c.o[0m
+[3.150s] [ 18%] [32mBuilding C object CMakeFiles/astroviz_interfaces__rosidl_generator_c.dir/rosidl_generator_c/astroviz_interfaces/msg/detail/motor_state__type_support.c.o[0m
+[3.150s] [ 18%] [32mBuilding C object CMakeFiles/astroviz_interfaces__rosidl_generator_c.dir/rosidl_generator_c/astroviz_interfaces/msg/detail/motor_state_list__description.c.o[0m
+[3.150s] [ 20%] [32mBuilding C object CMakeFiles/astroviz_interfaces__rosidl_generator_c.dir/rosidl_generator_c/astroviz_interfaces/msg/detail/motor_state_list__type_support.c.o[0m
+[3.190s] [ 22%] [32m[1mLinking C shared library libastroviz_interfaces__rosidl_generator_c.so[0m
+[3.222s] [ 22%] Built target astroviz_interfaces__rosidl_generator_c
+[3.223s] [ 22%] Built target astroviz_interfaces__cpp
+[3.230s] [ 27%] [34m[1mGenerating C++ introspection for ROS interfaces[0m
+[3.230s] [ 27%] [34m[1mGenerating C type support dispatch for ROS interfaces[0m
+[3.230s] [ 29%] [34m[1mGenerating C type support for eProsima Fast-RTPS[0m
+[3.231s] [ 31%] [34m[1mGenerating C++ type support dispatch for ROS interfaces[0m
+[3.231s] [ 34%] [34m[1mGenerating C introspection for ROS interfaces[0m
+[3.232s] [ 36%] [34m[1mGenerating C++ type support for eProsima Fast-RTPS[0m
+[3.382s] [ 38%] [32mBuilding CXX object CMakeFiles/astroviz_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/astroviz_interfaces/msg/motor_state__type_support.cpp.o[0m
+[3.382s] [ 40%] [32mBuilding CXX object CMakeFiles/astroviz_interfaces__rosidl_typesupport_c.dir/rosidl_typesupport_c/astroviz_interfaces/msg/motor_state_list__type_support.cpp.o[0m
+[3.386s] [ 43%] [32mBuilding CXX object CMakeFiles/astroviz_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/astroviz_interfaces/msg/detail/motor_state__type_support.cpp.o[0m
+[3.386s] [ 45%] [32mBuilding CXX object CMakeFiles/astroviz_interfaces__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/astroviz_interfaces/msg/detail/motor_state_list__type_support.cpp.o[0m
+[3.393s] [ 47%] [32m[1mLinking CXX shared library libastroviz_interfaces__rosidl_typesupport_c.so[0m
+[3.400s] [ 50%] [32m[1mLinking CXX shared library libastroviz_interfaces__rosidl_typesupport_introspection_cpp.so[0m
+[3.405s] [ 52%] [32mBuilding CXX object CMakeFiles/astroviz_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/astroviz_interfaces/msg/detail/motor_state__type_support_c.cpp.o[0m
+[3.407s] [ 54%] [32mBuilding CXX object CMakeFiles/astroviz_interfaces__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/astroviz_interfaces/msg/detail/motor_state_list__type_support_c.cpp.o[0m
+[3.415s] [ 56%] [32m[1mLinking CXX shared library libastroviz_interfaces__rosidl_typesupport_fastrtps_c.so[0m
+[3.421s] [ 59%] [32mBuilding CXX object CMakeFiles/astroviz_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/astroviz_interfaces/msg/motor_state__type_support.cpp.o[0m
+[3.422s] [ 61%] Built target astroviz_interfaces__rosidl_typesupport_c
+[3.423s] [ 61%] [32mBuilding CXX object CMakeFiles/astroviz_interfaces__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/astroviz_interfaces/msg/motor_state_list__type_support.cpp.o[0m
+[3.431s] [ 63%] [32m[1mLinking CXX shared library libastroviz_interfaces__rosidl_typesupport_cpp.so[0m
+[3.449s] [ 63%] Built target astroviz_interfaces__rosidl_typesupport_introspection_cpp
+[3.459s] [ 63%] Built target astroviz_interfaces__rosidl_typesupport_cpp
+[3.461s] [ 65%] [32mBuilding C object CMakeFiles/astroviz_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/astroviz_interfaces/msg/detail/motor_state__type_support.c.o[0m
+[3.461s] [ 68%] [32mBuilding C object CMakeFiles/astroviz_interfaces__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/astroviz_interfaces/msg/detail/motor_state_list__type_support.c.o[0m
+[3.469s] [ 68%] Built target astroviz_interfaces__rosidl_typesupport_fastrtps_c
+[3.469s] [ 70%] [32m[1mLinking C shared library libastroviz_interfaces__rosidl_typesupport_introspection_c.so[0m
+[3.496s] [ 72%] [32mBuilding CXX object CMakeFiles/astroviz_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/astroviz_interfaces/msg/detail/dds_fastrtps/motor_state__type_support.cpp.o[0m
+[3.496s] [ 72%] Built target astroviz_interfaces__rosidl_typesupport_introspection_c
+[3.496s] [ 75%] [32mBuilding CXX object CMakeFiles/astroviz_interfaces__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/astroviz_interfaces/msg/detail/dds_fastrtps/motor_state_list__type_support.cpp.o[0m
+[3.509s] [ 77%] [32m[1mLinking CXX shared library libastroviz_interfaces__rosidl_typesupport_fastrtps_cpp.so[0m
+[3.558s] [ 77%] Built target astroviz_interfaces__rosidl_typesupport_fastrtps_cpp
+[3.573s] [ 77%] Built target astroviz_interfaces
+[3.591s] [ 79%] [34m[1mGenerating Python code for ROS interfaces[0m
+[3.811s] [ 79%] Built target astroviz_interfaces__py
+[3.825s] [ 81%] [32mBuilding C object CMakeFiles/astroviz_interfaces__rosidl_generator_py.dir/rosidl_generator_py/astroviz_interfaces/msg/_motor_state_s.c.o[0m
+[3.825s] [ 84%] [32mBuilding C object CMakeFiles/astroviz_interfaces__rosidl_generator_py.dir/rosidl_generator_py/astroviz_interfaces/msg/_motor_state_list_s.c.o[0m
+[3.837s] [ 86%] [32m[1mLinking C shared library libastroviz_interfaces__rosidl_generator_py.so[0m
+[3.876s] [ 86%] Built target astroviz_interfaces__rosidl_generator_py
+[3.893s] [ 88%] [32mBuilding C object CMakeFiles/astroviz_interfaces_s__rosidl_typesupport_fastrtps_c.dir/rosidl_generator_py/astroviz_interfaces/_astroviz_interfaces_s.ep.rosidl_typesupport_fastrtps_c.c.o[0m
+[3.895s] [ 90%] [32mBuilding C object CMakeFiles/astroviz_interfaces_s__rosidl_typesupport_c.dir/rosidl_generator_py/astroviz_interfaces/_astroviz_interfaces_s.ep.rosidl_typesupport_c.c.o[0m
+[3.896s] [ 93%] [32mBuilding C object CMakeFiles/astroviz_interfaces_s__rosidl_typesupport_introspection_c.dir/rosidl_generator_py/astroviz_interfaces/_astroviz_interfaces_s.ep.rosidl_typesupport_introspection_c.c.o[0m
+[3.905s] [ 95%] [32m[1mLinking C shared module rosidl_generator_py/astroviz_interfaces/astroviz_interfaces_s__rosidl_typesupport_c.so[0m
+[3.905s] [ 97%] [32m[1mLinking C shared module rosidl_generator_py/astroviz_interfaces/astroviz_interfaces_s__rosidl_typesupport_fastrtps_c.so[0m
+[3.908s] [100%] [32m[1mLinking C shared module rosidl_generator_py/astroviz_interfaces/astroviz_interfaces_s__rosidl_typesupport_introspection_c.so[0m
+[3.927s] [100%] Built target astroviz_interfaces_s__rosidl_typesupport_c
+[3.934s] [100%] Built target astroviz_interfaces_s__rosidl_typesupport_fastrtps_c
+[3.937s] [100%] Built target astroviz_interfaces_s__rosidl_typesupport_introspection_c
+[3.948s] Invoked command in '/home/alemany/robot_ws/build/astroviz_interfaces' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/alemany/robot_ws/install/g1pilot:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake --build /home/alemany/robot_ws/build/astroviz_interfaces -- -j28 -l28
+[3.955s] Invoking command in '/home/alemany/robot_ws/build/astroviz_interfaces': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/alemany/robot_ws/install/g1pilot:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake --install /home/alemany/robot_ws/build/astroviz_interfaces
+[3.963s] -- Install configuration: ""
+[3.963s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/ament_index/resource_index/rosidl_interfaces/astroviz_interfaces
+[3.963s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/msg/MotorState.json
+[3.963s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/msg/MotorStateList.json
+[3.963s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces
+[3.963s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg
+[3.963s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/motor_state_list.h
+[3.964s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/motor_state.h
+[3.964s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/rosidl_generator_c__visibility_control.h
+[3.964s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail
+[3.964s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail/motor_state_list__functions.c
+[3.964s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail/motor_state__type_support.h
+[3.964s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail/motor_state_list__struct.h
+[3.964s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail/motor_state__functions.c
+[3.964s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail/motor_state_list__functions.h
+[3.964s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail/motor_state_list__type_support.h
+[3.964s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail/motor_state__functions.h
+[3.964s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail/motor_state__struct.h
+[3.964s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail/motor_state_list__type_support.c
+[3.965s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail/motor_state_list__description.c
+[3.965s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail/motor_state__type_support.c
+[3.965s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail/motor_state__description.c
+[3.965s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/environment/library_path.sh
+[3.965s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/environment/library_path.dsv
+[3.965s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/lib/libastroviz_interfaces__rosidl_generator_c.so
+[3.965s] -- Set non-toolchain portion of runtime path of "/home/alemany/robot_ws/install/astroviz_interfaces/lib/libastroviz_interfaces__rosidl_generator_c.so" to ""
+[3.965s] -- Up-to-date: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces
+[3.966s] -- Up-to-date: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg
+[3.966s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+[3.966s] -- Up-to-date: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail
+[3.966s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail/motor_state_list__rosidl_typesupport_fastrtps_c.h
+[3.966s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail/motor_state__rosidl_typesupport_fastrtps_c.h
+[3.966s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/lib/libastroviz_interfaces__rosidl_typesupport_fastrtps_c.so
+[3.966s] -- Set non-toolchain portion of runtime path of "/home/alemany/robot_ws/install/astroviz_interfaces/lib/libastroviz_interfaces__rosidl_typesupport_fastrtps_c.so" to ""
+[3.966s] -- Up-to-date: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces
+[3.966s] -- Up-to-date: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg
+[3.966s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/motor_state_list.hpp
+[3.966s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/motor_state.hpp
+[3.967s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/rosidl_generator_cpp__visibility_control.hpp
+[3.967s] -- Up-to-date: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail
+[3.967s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail/motor_state__traits.hpp
+[3.967s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail/motor_state__builder.hpp
+[3.967s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail/motor_state_list__type_support.hpp
+[3.967s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail/motor_state_list__traits.hpp
+[3.967s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail/motor_state__type_support.hpp
+[3.967s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail/motor_state__struct.hpp
+[3.967s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail/motor_state_list__struct.hpp
+[3.967s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail/motor_state_list__builder.hpp
+[3.967s] -- Up-to-date: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces
+[3.967s] -- Up-to-date: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg
+[3.967s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+[3.968s] -- Up-to-date: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail
+[3.968s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail/motor_state_list__rosidl_typesupport_fastrtps_cpp.hpp
+[3.968s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail/motor_state__rosidl_typesupport_fastrtps_cpp.hpp
+[3.968s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail/dds_fastrtps
+[3.968s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/lib/libastroviz_interfaces__rosidl_typesupport_fastrtps_cpp.so
+[3.968s] -- Set non-toolchain portion of runtime path of "/home/alemany/robot_ws/install/astroviz_interfaces/lib/libastroviz_interfaces__rosidl_typesupport_fastrtps_cpp.so" to ""
+[3.968s] -- Up-to-date: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces
+[3.968s] -- Up-to-date: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg
+[3.969s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/rosidl_typesupport_introspection_c__visibility_control.h
+[3.969s] -- Up-to-date: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail
+[3.969s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail/motor_state__rosidl_typesupport_introspection_c.h
+[3.969s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail/motor_state_list__rosidl_typesupport_introspection_c.h
+[3.969s] -- Up-to-date: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail/motor_state_list__type_support.c
+[3.969s] -- Up-to-date: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail/motor_state__type_support.c
+[3.969s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/lib/libastroviz_interfaces__rosidl_typesupport_introspection_c.so
+[3.969s] -- Set non-toolchain portion of runtime path of "/home/alemany/robot_ws/install/astroviz_interfaces/lib/libastroviz_interfaces__rosidl_typesupport_introspection_c.so" to ""
+[3.969s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/lib/libastroviz_interfaces__rosidl_typesupport_c.so
+[3.969s] -- Set non-toolchain portion of runtime path of "/home/alemany/robot_ws/install/astroviz_interfaces/lib/libastroviz_interfaces__rosidl_typesupport_c.so" to ""
+[3.969s] -- Up-to-date: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces
+[3.969s] -- Up-to-date: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg
+[3.969s] -- Up-to-date: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail
+[3.970s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail/motor_state__type_support.cpp
+[3.970s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail/motor_state_list__type_support.cpp
+[3.970s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail/motor_state_list__rosidl_typesupport_introspection_cpp.hpp
+[3.970s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/include/astroviz_interfaces/astroviz_interfaces/msg/detail/motor_state__rosidl_typesupport_introspection_cpp.hpp
+[3.970s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/lib/libastroviz_interfaces__rosidl_typesupport_introspection_cpp.so
+[3.970s] -- Set non-toolchain portion of runtime path of "/home/alemany/robot_ws/install/astroviz_interfaces/lib/libastroviz_interfaces__rosidl_typesupport_introspection_cpp.so" to ""
+[3.970s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/lib/libastroviz_interfaces__rosidl_typesupport_cpp.so
+[3.970s] -- Set non-toolchain portion of runtime path of "/home/alemany/robot_ws/install/astroviz_interfaces/lib/libastroviz_interfaces__rosidl_typesupport_cpp.so" to ""
+[3.970s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/environment/pythonpath.sh
+[3.970s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/environment/pythonpath.dsv
+[3.970s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages/astroviz_interfaces-0.0.0-py3.12.egg-info
+[3.970s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages/astroviz_interfaces-0.0.0-py3.12.egg-info/PKG-INFO
+[3.971s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages/astroviz_interfaces-0.0.0-py3.12.egg-info/dependency_links.txt
+[3.971s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages/astroviz_interfaces-0.0.0-py3.12.egg-info/SOURCES.txt
+[3.971s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages/astroviz_interfaces-0.0.0-py3.12.egg-info/top_level.txt
+[3.971s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages/astroviz_interfaces
+[3.971s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages/astroviz_interfaces/_astroviz_interfaces_s.ep.rosidl_typesupport_introspection_c.c
+[3.971s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages/astroviz_interfaces/msg
+[3.971s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages/astroviz_interfaces/msg/_motor_state_s.c
+[3.971s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages/astroviz_interfaces/msg/_motor_state.py
+[3.971s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages/astroviz_interfaces/msg/_motor_state_list_s.c
+[3.971s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages/astroviz_interfaces/msg/_motor_state_list.py
+[3.971s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages/astroviz_interfaces/msg/__init__.py
+[3.972s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages/astroviz_interfaces/astroviz_interfaces_s__rosidl_typesupport_introspection_c.so
+[3.972s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages/astroviz_interfaces/_astroviz_interfaces_s.ep.rosidl_typesupport_c.c
+[3.972s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages/astroviz_interfaces/_astroviz_interfaces_s.ep.rosidl_typesupport_fastrtps_c.c
+[3.972s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages/astroviz_interfaces/astroviz_interfaces_s__rosidl_typesupport_fastrtps_c.so
+[3.972s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages/astroviz_interfaces/astroviz_interfaces_s__rosidl_typesupport_c.so
+[3.972s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages/astroviz_interfaces/__init__.py
+[4.016s] Listing '/home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages/astroviz_interfaces'...
+[4.016s] Compiling '/home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages/astroviz_interfaces/__init__.py'...
+[4.016s] Listing '/home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages/astroviz_interfaces/msg'...
+[4.016s] Compiling '/home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages/astroviz_interfaces/msg/__init__.py'...
+[4.017s] Compiling '/home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages/astroviz_interfaces/msg/_motor_state.py'...
+[4.017s] Compiling '/home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages/astroviz_interfaces/msg/_motor_state_list.py'...
+[4.023s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages/astroviz_interfaces/astroviz_interfaces_s__rosidl_typesupport_fastrtps_c.so
+[4.023s] -- Set non-toolchain portion of runtime path of "/home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages/astroviz_interfaces/astroviz_interfaces_s__rosidl_typesupport_fastrtps_c.so" to ""
+[4.023s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages/astroviz_interfaces/astroviz_interfaces_s__rosidl_typesupport_introspection_c.so
+[4.024s] -- Set non-toolchain portion of runtime path of "/home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages/astroviz_interfaces/astroviz_interfaces_s__rosidl_typesupport_introspection_c.so" to ""
+[4.024s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages/astroviz_interfaces/astroviz_interfaces_s__rosidl_typesupport_c.so
+[4.024s] -- Set non-toolchain portion of runtime path of "/home/alemany/robot_ws/install/astroviz_interfaces/lib/python3.12/site-packages/astroviz_interfaces/astroviz_interfaces_s__rosidl_typesupport_c.so" to ""
+[4.024s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/lib/libastroviz_interfaces__rosidl_generator_py.so
+[4.024s] -- Set non-toolchain portion of runtime path of "/home/alemany/robot_ws/install/astroviz_interfaces/lib/libastroviz_interfaces__rosidl_generator_py.so" to ""
+[4.024s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/msg/MotorState.idl
+[4.024s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/msg/MotorStateList.idl
+[4.024s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/msg/MotorState.msg
+[4.025s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/msg/MotorStateList.msg
+[4.025s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/ament_index/resource_index/package_run_dependencies/astroviz_interfaces
+[4.025s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/ament_index/resource_index/parent_prefix_path/astroviz_interfaces
+[4.025s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/environment/ament_prefix_path.sh
+[4.025s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/environment/ament_prefix_path.dsv
+[4.025s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/environment/path.sh
+[4.025s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/environment/path.dsv
+[4.025s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/local_setup.bash
+[4.025s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/local_setup.sh
+[4.026s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/local_setup.zsh
+[4.026s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/local_setup.dsv
+[4.026s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/package.dsv
+[4.026s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/ament_index/resource_index/packages/astroviz_interfaces
+[4.026s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/cmake/export_astroviz_interfaces__rosidl_generator_cExport.cmake
+[4.026s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/cmake/export_astroviz_interfaces__rosidl_generator_cExport-noconfig.cmake
+[4.026s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/cmake/export_astroviz_interfaces__rosidl_typesupport_fastrtps_cExport.cmake
+[4.026s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/cmake/export_astroviz_interfaces__rosidl_typesupport_fastrtps_cExport-noconfig.cmake
+[4.027s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/cmake/export_astroviz_interfaces__rosidl_generator_cppExport.cmake
+[4.027s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/cmake/export_astroviz_interfaces__rosidl_typesupport_fastrtps_cppExport.cmake
+[4.027s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/cmake/export_astroviz_interfaces__rosidl_typesupport_fastrtps_cppExport-noconfig.cmake
+[4.027s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/cmake/astroviz_interfaces__rosidl_typesupport_introspection_cExport.cmake
+[4.027s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/cmake/astroviz_interfaces__rosidl_typesupport_introspection_cExport-noconfig.cmake
+[4.027s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/cmake/astroviz_interfaces__rosidl_typesupport_cExport.cmake
+[4.027s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/cmake/astroviz_interfaces__rosidl_typesupport_cExport-noconfig.cmake
+[4.027s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/cmake/astroviz_interfaces__rosidl_typesupport_introspection_cppExport.cmake
+[4.027s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/cmake/astroviz_interfaces__rosidl_typesupport_introspection_cppExport-noconfig.cmake
+[4.028s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/cmake/astroviz_interfaces__rosidl_typesupport_cppExport.cmake
+[4.028s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/cmake/astroviz_interfaces__rosidl_typesupport_cppExport-noconfig.cmake
+[4.028s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/cmake/export_astroviz_interfaces__rosidl_generator_pyExport.cmake
+[4.028s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/cmake/export_astroviz_interfaces__rosidl_generator_pyExport-noconfig.cmake
+[4.028s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/cmake/rosidl_cmake-extras.cmake
+[4.028s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/cmake/ament_cmake_export_dependencies-extras.cmake
+[4.028s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/cmake/ament_cmake_export_include_directories-extras.cmake
+[4.028s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/cmake/ament_cmake_export_libraries-extras.cmake
+[4.029s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/cmake/ament_cmake_export_targets-extras.cmake
+[4.029s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+[4.029s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+[4.029s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/cmake/astroviz_interfacesConfig.cmake
+[4.029s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/cmake/astroviz_interfacesConfig-version.cmake
+[4.029s] -- Installing: /home/alemany/robot_ws/install/astroviz_interfaces/share/astroviz_interfaces/package.xml
+[4.031s] Invoked command in '/home/alemany/robot_ws/build/astroviz_interfaces' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/alemany/robot_ws/install/g1pilot:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com VIRTUAL_ENV_PROMPT=(venv-ardupilot) /usr/bin/cmake --install /home/alemany/robot_ws/build/astroviz_interfaces

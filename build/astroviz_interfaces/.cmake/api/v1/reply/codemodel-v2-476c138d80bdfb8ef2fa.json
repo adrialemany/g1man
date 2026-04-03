@@ -1,0 +1,242 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-b24609b9054451a31e14.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.20"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18
+					]
+				},
+				{
+					"build" : "astroviz_interfaces__py",
+					"jsonFile" : "directory-astroviz_interfaces__py-13a5e0435a909d580346.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.20"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "/home/alemany/robot_ws/build/astroviz_interfaces/astroviz_interfaces__py",
+					"targetIndexes" : 
+					[
+						4
+					]
+				}
+			],
+			"name" : "",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1
+					],
+					"name" : "astroviz_interfaces",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12,
+						13,
+						14,
+						15,
+						16,
+						17,
+						18
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "ament_cmake_python_build_astroviz_interfaces_egg::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ament_cmake_python_build_astroviz_interfaces_egg-b9750e0d0122c19bb236.json",
+					"name" : "ament_cmake_python_build_astroviz_interfaces_egg",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "ament_cmake_python_copy_astroviz_interfaces::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-ament_cmake_python_copy_astroviz_interfaces-c19d8d02a010a48fcdcb.json",
+					"name" : "ament_cmake_python_copy_astroviz_interfaces",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "astroviz_interfaces::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-astroviz_interfaces-6e1e4c43e85a27848cf5.json",
+					"name" : "astroviz_interfaces",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "astroviz_interfaces__cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-astroviz_interfaces__cpp-7a215366723aec2b95a7.json",
+					"name" : "astroviz_interfaces__cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "astroviz_interfaces__py::@4d804ec94769ccadec6d",
+					"jsonFile" : "target-astroviz_interfaces__py-d2cca59632c6dea1872c.json",
+					"name" : "astroviz_interfaces__py",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "astroviz_interfaces__rosidl_generator_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-astroviz_interfaces__rosidl_generator_c-d61bc6b606d0b093679b.json",
+					"name" : "astroviz_interfaces__rosidl_generator_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "astroviz_interfaces__rosidl_generator_py::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-astroviz_interfaces__rosidl_generator_py-a9b8b4d15dd4bba75f42.json",
+					"name" : "astroviz_interfaces__rosidl_generator_py",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "astroviz_interfaces__rosidl_generator_type_description::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-astroviz_interfaces__rosidl_generator_type_description-54749fc71377097548d6.json",
+					"name" : "astroviz_interfaces__rosidl_generator_type_description",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "astroviz_interfaces__rosidl_typesupport_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-astroviz_interfaces__rosidl_typesupport_c-54e6bf03fc7eb914d283.json",
+					"name" : "astroviz_interfaces__rosidl_typesupport_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "astroviz_interfaces__rosidl_typesupport_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-astroviz_interfaces__rosidl_typesupport_cpp-8695d719080786864014.json",
+					"name" : "astroviz_interfaces__rosidl_typesupport_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "astroviz_interfaces__rosidl_typesupport_fastrtps_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-astroviz_interfaces__rosidl_typesupport_fastrtps_c-ab0f48c54bcd73343ab4.json",
+					"name" : "astroviz_interfaces__rosidl_typesupport_fastrtps_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "astroviz_interfaces__rosidl_typesupport_fastrtps_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-astroviz_interfaces__rosidl_typesupport_fastrtps_cpp-0fe63b821894745603b3.json",
+					"name" : "astroviz_interfaces__rosidl_typesupport_fastrtps_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "astroviz_interfaces__rosidl_typesupport_introspection_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-astroviz_interfaces__rosidl_typesupport_introspection_c-d7f55391e626bd4e0409.json",
+					"name" : "astroviz_interfaces__rosidl_typesupport_introspection_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "astroviz_interfaces__rosidl_typesupport_introspection_cpp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-astroviz_interfaces__rosidl_typesupport_introspection_cpp-14f0da338286c1e5c851.json",
+					"name" : "astroviz_interfaces__rosidl_typesupport_introspection_cpp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "astroviz_interfaces_s__rosidl_typesupport_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-astroviz_interfaces_s__rosidl_typesupport_c-43e2d45a5bddccb91b6b.json",
+					"name" : "astroviz_interfaces_s__rosidl_typesupport_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "astroviz_interfaces_s__rosidl_typesupport_fastrtps_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-astroviz_interfaces_s__rosidl_typesupport_fastrtps_c-a2f0351f7d381635d258.json",
+					"name" : "astroviz_interfaces_s__rosidl_typesupport_fastrtps_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "astroviz_interfaces_s__rosidl_typesupport_introspection_c::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-astroviz_interfaces_s__rosidl_typesupport_introspection_c-4050926f163040f1ff2f.json",
+					"name" : "astroviz_interfaces_s__rosidl_typesupport_introspection_c",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "astroviz_interfaces_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-astroviz_interfaces_uninstall-a64292b5a0f69f7513c5.json",
+					"name" : "astroviz_interfaces_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-400ce278ab0cc245409b.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/alemany/robot_ws/build/astroviz_interfaces",
+		"source" : "/home/alemany/robot_ws/src/astroviz_interfaces"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 6
+	}
+}

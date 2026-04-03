@@ -1,0 +1,13 @@
+[console_scripts]
+create_map = g1pilot.navigation.create_map:main
+dijkstra_planner = g1pilot.navigation.dijkstra_planner:main
+dx3_controller = g1pilot.manipulation.dx3_hand:main
+interactive_marker = g1pilot.manipulation.interactive_marker:main
+joy_mux = g1pilot.teleoperation.joy_mux:main
+joystick = g1pilot.teleoperation.joystick:main
+loco_client = g1pilot.navigation.loco_client:main
+mola_fixed = g1pilot.navigation.fix_mola_odometry:main
+nav2point = g1pilot.navigation.nav2point:main
+opensot_solver = g1pilot.manipulation.opensot_solver:main
+robot_state = g1pilot.state.robot_state:main
+ui_interface = g1pilot.teleoperation.ui_interface:main

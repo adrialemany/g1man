@@ -1,3 +1,4 @@
+import os
 import rclpy
 from rclpy.node import Node
 from unitree_hg.msg import LowCmd, LowState
@@ -30,7 +31,7 @@ class G1PerfectIK(Node):
         self.hand_xyz_actual = np.zeros(3) # Para mostrar por pantalla
         
         # --- 1. CARGAR MODELO ---
-        urdf_path = "/home/unitree/robot_ws/src/g1pilot/description_files/urdf/g1_29dof.urdf"
+        urdf_path = os.path.expanduser("~/robot_ws/src/g1pilot/description_files/urdf/g1_29dof.urdf")
         try:
             self.full_model = pin.buildModelFromUrdf(urdf_path)
             

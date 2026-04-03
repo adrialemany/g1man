@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "astroviz_interfaces__py",
+		"source" : "/home/alemany/robot_ws/build/astroviz_interfaces/astroviz_interfaces__py"
+	}
+}

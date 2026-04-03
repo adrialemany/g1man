@@ -1,0 +1,13 @@
+// generated from rosidl_adapter/resource/msg.idl.em
+// with input from astroviz_interfaces/msg/MotorStateList.msg
+// generated code does not contain a copyright notice
+
+#include "astroviz_interfaces/msg/MotorState.idl"
+
+module astroviz_interfaces {
+  module msg {
+    struct MotorStateList {
+      sequence<astroviz_interfaces::msg::MotorState> motor_list;
+    };
+  };
+};

@@ -48,7 +48,7 @@ class G1PerfectIK(Node):
             20: (-1.56, 1.56), # left_wrist_pitch
             21: (-1.56, 1.56)  # left_wrist_yaw
         }
-        urdf_path = "/home/unitree/robot_ws/src/g1pilot/description_files/urdf/g1_29dof.urdf"
+        urdf_path = os.path.expanduser("~/robot_ws/src/g1pilot/description_files/urdf/g1_29dof.urdf")
         try:
             self.full_model = pin.buildModelFromUrdf(urdf_path)
             joints_to_lock_names = [
