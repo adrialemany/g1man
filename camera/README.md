@@ -12,6 +12,7 @@ The client is designed to interface with a custom server running on the robot. T
 4. This Python client connects to the robot's IP address, subscribes to the ZMQ streams, and renders the video in a low-latency Tkinter GUI.
 5. The server also captures real-time audio from the USB webcam microphone (Logitech C270) and streams it via Port 6003.
 6. The client features a TTS (Text-To-Speech) panel, allowing users to send text strings that the robot will play through its internal speakers.
+7. If using mujoco, use its own client. There's no "mujoco server" since it's not needed. See how to run the simulation in the mujoco subdirectory.
 
 ## Prerequisites
 To run the client, you need Python 3 and the following dependencies:
@@ -47,6 +48,7 @@ sudo apt-get install libportaudio2
 python g1_client.py
 ```
 4. Use the dropdown menu at the top of the interface to switch seamlessly between the main RealSense camera and the secondary USB camera (probably you will only use the USB one, but it is good to have as many options as possible!)
+5. If you're using the mujoco client, you'll only need the teleoperation WASD part (for now). For using movement go to the manipulation subdirectory.
 
 ## Robot Locomotion and Control
 The graphical interface includes panels for arm actuation and lower-body locomotion (Zero Torque, Damping, Squatting, and Standing). Because the Unitree G1 requires specific state machine transitions to operate safely without falling, these controls must be used strictly following the designated operational flow. For example, if the robot is set using the Rack, it won't be able to perform prefabricated moves. It would be required to start from Squat, get up, and then perform. However, if we don't want to use the prefabricated moves (for example we want to use any move I could code) it is required to enter into Rack mode. 
