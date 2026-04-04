@@ -1,5 +1,6 @@
 <mujoco model="g1_29dof">
   <compiler angle="radian" meshdir="meshes" />
+  <option noslip_iterations="10" noslip_tolerance="1e-5"/>
 
   <default>
     <default class="torso_motor">

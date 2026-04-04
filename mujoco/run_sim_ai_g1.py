@@ -15,7 +15,6 @@ import math
 import numpy as np
 import onnxruntime as ort
 import subprocess
-import signal
 import socket
 import json
 import threading
@@ -26,6 +25,7 @@ from unitree_sdk2py.idl.default import unitree_hg_msg_dds__LowState_
 from unitree_sdk2py.idl.default import unitree_hg_msg_dds__LowCmd_
 from unitree_sdk2py.idl.unitree_hg.msg.dds_ import LowState_
 from unitree_sdk2py.idl.unitree_hg.msg.dds_ import LowCmd_
+
 
 class HolosomaLocomotion:
     def __init__(self, model_path="fastsac_g1_29dof.onnx"):
@@ -79,7 +79,7 @@ class HolosomaLocomotion:
 
 low_state = None
 external_arm_targets = {}
-comandos = {'vx': 0.0, 'vy': 0.0, 'yaw': 0.0} # Variables compartidas con WASD
+comandos = {'vx': 0.0, 'vy': 0.0, 'yaw': 0.0}
 
 def state_callback(msg: LowState_):
     global low_state
@@ -92,7 +92,6 @@ def quaternion_to_gravity(q):
     gz = -(1 - 2 * (x*x + y*y))
     return [gx, gy, gz]
 
-# --- ESCUCHADOR PARA WASD (TCP Puerto 6000) ---
 def locomotion_listener():
     global comandos
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -137,7 +136,6 @@ if __name__ == "__main__":
     sim_proc = subprocess.Popen(["python3", "unitree_mujoco.py"], cwd=sim_path)
     time.sleep(1.0)
 
-    # Iniciar hilos de escucha
     threading.Thread(target=locomotion_listener, daemon=True).start()
     threading.Thread(target=external_arm_listener, daemon=True).start()
 
@@ -149,7 +147,6 @@ if __name__ == "__main__":
 
     controller = HolosomaLocomotion(model_path="fastsac_g1_29dof.onnx")
     
-    # Kp y Kd originales
     kp = [40.18, 99.10, 40.18, 99.10, 28.50, 28.50]*2 + [40.18, 28.50, 28.50] + [14.25, 14.25, 14.25, 14.25, 16.78, 16.78, 16.78]*2
     kd = [2.56, 6.31, 2.56, 6.31, 1.81, 1.81]*2 + [2.56, 1.81, 1.81] + [0.91, 0.91, 0.91, 0.91, 1.07, 1.07, 1.07]*2
 
@@ -162,9 +159,7 @@ if __name__ == "__main__":
     try:
         while True:
             t_start = time.time()
-            
-            # --- SOLUCIÓN AL BALANCEO/CRASH: Crear el mensaje limpio en cada vuelta ---
-            cmd_msg = unitree_hg_msg_dds__LowCmd_()
+            cmd_msg = unitree_hg_msg_dds__LowCmd_() 
             
             estado = {
                 'gyro': low_state.imu_state.gyroscope,
@@ -172,12 +167,35 @@ if __name__ == "__main__":
                 'joint_pos': [low_state.motor_state[i].q for i in range(29)],
                 'joint_vel': [low_state.motor_state[i].dq for i in range(29)]
             }
+
+            # --- DETECCIÓN DE CAÍDA Y TELETRANSPORTE ---
+            if estado['gravity'][2] > -0.5:
+                print("🚨 ¡Caída detectada! Reseteando posición...")
+                
+                # 1. Enviar comando UDP al simulador para que lo teletransporte de pie
+                try:
+                    sock_reset = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+                    sock_reset.sendto(b"reset", ("127.0.0.1", 6005))
+                    sock_reset.close()
+                except: pass
+                
+                # 2. Detener movimientos activos
+                comandos['vx'] = 0.0
+                comandos['vy'] = 0.0
+                comandos['yaw'] = 0.0
+                
+                # 3. Esperamos 0.1s para que la física en MuJoCo se calme y caiga recto
+                time.sleep(0.1)
+                
+                # 4. Actualizamos el estado interno para que la IA no se vuelva loca
+                controller.phase = np.array([0.0, math.pi], dtype=np.float32)
+                continue # Saltamos esta vuelta del bucle
             
-            # Calculamos posiciones (IA + Brazos externos)
+            # --- CONTROL DE LA IA PURA ---
             targets = controller.get_target_positions(estado, comandos, external_arm_targets)
             
             for i in range(29):
-                cmd_msg.motor_cmd[i].mode = 1 # Posición
+                cmd_msg.motor_cmd[i].mode = 1
                 cmd_msg.motor_cmd[i].dq = 0.0
                 cmd_msg.motor_cmd[i].kp = kp[i]
                 cmd_msg.motor_cmd[i].kd = kd[i]
@@ -189,8 +207,6 @@ if __name__ == "__main__":
                     cmd_msg.motor_cmd[i].q = targets[i]
             
             pub.Write(cmd_msg)
-            
-            # Control de frecuencia estricto (50Hz)
             time.sleep(max(0.0, (1.0 / 50.0) - (time.time() - t_start)))
             
     except KeyboardInterrupt:

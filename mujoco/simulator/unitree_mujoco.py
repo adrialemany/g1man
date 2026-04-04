@@ -36,6 +36,41 @@ dim_motor_sensor_ = 3 * num_motor_
 
 time.sleep(0.2)
 
+def ResetServerThread():
+    import socket
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    sock.bind(('127.0.0.1', 6005))
+    sock.settimeout(0.5)
+    print("[INFO] Servidor de Teletransporte activo en puerto 6005")
+    
+    while viewer.is_running():
+        try:
+            data, _ = sock.recvfrom(1024)
+            if data == b"reset":
+                print("\n[INFO] 💥 ¡Simulador recibe orden! Teletransportando a G1...")
+                with locker:
+                    # 1. Elevamos a la altura de la cadera (Mantenemos X e Y)
+                    mj_data.qpos[2] = 0.793
+                    
+                    # 2. Reseteamos la orientación (Quaternion: W, X, Y, Z) para ponerlo vertical
+                    mj_data.qpos[3:7] = [1.0, 0.0, 0.0, 0.0]
+                    
+                    # 3. Ponemos TODOS los motores en su punto 0 (Totalmente rectos)
+                    mj_data.qpos[7:] = 0.0
+                    
+                    # 4. Eliminamos toda inercia de caída
+                    mj_data.qvel[:] = 0.0
+                    
+                    # 5. OBLIGATORIO: Avisar a MuJoCo de que hemos hackeado las físicas
+                    mujoco.mj_forward(mj_model, mj_data) 
+                    
+        except socket.timeout:
+            pass
+        except Exception as e:
+            # Ahora, si falla algo al moverlo, ¡nos lo dirá la terminal!
+            print(f"[ERROR] Fallo en el teletransporte de MuJoCo: {e}")
+
 
 def SimulationThread():
     global mj_data, mj_model
@@ -103,7 +138,11 @@ if __name__ == "__main__":
     sim_thread = Thread(target=SimulationThread)
     vision_thread = Thread(target=VisionServerThread)
     vision_thread.daemon = True
+    
+    reset_thread = Thread(target=ResetServerThread)
+    reset_thread.daemon = True
 
     viewer_thread.start()
     sim_thread.start()
     vision_thread.start()
+    reset_thread.start()
