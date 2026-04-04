@@ -6,10 +6,9 @@
       <joint damping="0.05" armature="0.01" frictionloss="0.2"/>
     </default>
     <default class="leg_motor">
-      <joint damping="0.05" armature="0.01" frictionloss="0.2"/>
-    </default>
+      <joint damping="1.0" armature="0.05" frictionloss="0.2"/> </default>
     <default class="ankle_motor">
-      <joint damping="0.05" armature="0.01" frictionloss="0.2"/>
+      <joint damping="1.0" armature="0.02" frictionloss="0.2"/>
     </default>
     <default class="arm_motor">
       <joint damping="0.05" armature="0.01" frictionloss="0.2"/>
@@ -113,19 +112,15 @@
                   rgba="0.7 0.7 0.7 1" mesh="left_ankle_pitch_link" />
                 <geom type="mesh" rgba="0.7 0.7 0.7 1" mesh="left_ankle_pitch_link" />
                 <body name="left_ankle_roll_link" pos="0 0 -0.017558">
-                  <inertial pos="0.026505 0 -0.016425"
-                    quat="-0.000481092 0.728482 -0.000618967 0.685065" mass="0.608"
-                    diaginertia="0.00167218 0.0016161 0.000217621" />
-                  <joint name="left_ankle_roll_joint" pos="0 0 0" axis="1 0 0"
-                    range="-0.2618 0.2618" actuatorfrcrange="-50 50" class="ankle_motor"/>
-                  <geom type="mesh" contype="0" conaffinity="0" group="1" density="0"
-                    rgba="0.2 0.2 0.2 1" mesh="left_ankle_roll_link" />
-                  
-                  <geom type="box" size="0.01 0.01 0.005" pos="0.11 0.025 -0.03" friction="2 0.05 0.01" condim="3" solimp="0.9 0.99 0.001" solref="0.005 1" />
-                  <geom type="box" size="0.01 0.01 0.005" pos="0.11 -0.025 -0.03" friction="2 0.05 0.01" condim="3" solimp="0.9 0.99 0.001" solref="0.005 1" />
-                  <geom type="box" size="0.01 0.01 0.005" pos="-0.04 0.025 -0.03" friction="2 0.05 0.01" condim="3" solimp="0.9 0.99 0.001" solref="0.005 1" />
-                  <geom type="box" size="0.01 0.01 0.005" pos="-0.04 -0.025 -0.03" friction="2 0.05 0.01" condim="3" solimp="0.9 0.99 0.001" solref="0.005 1" />
-                </body>
+  <inertial pos="0.026505 0 -0.016425" quat="-0.000481092 0.728482 -0.000618967 0.685065" mass="0.608" diaginertia="0.00167218 0.0016161 0.000217621" />
+  <joint name="left_ankle_roll_joint" pos="0 0 0" axis="1 0 0" range="-0.2618 0.2618" actuatorfrcrange="-50 50" class="ankle_motor"/>
+  <geom type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0.2 0.2 0.2 1" mesh="left_ankle_roll_link" />
+  
+  <geom type="box" size="0.01 0.01 0.005" pos="0.11 0.025 -0.03" friction="1.2 0.05 0.01" condim="3" solimp="0.9 0.95 0.001" solref="0.02 1" />
+  <geom type="box" size="0.01 0.01 0.005" pos="0.11 -0.025 -0.03" friction="1.2 0.05 0.01" condim="3" solimp="0.9 0.95 0.001" solref="0.02 1" />
+  <geom type="box" size="0.01 0.01 0.005" pos="-0.04 0.025 -0.03" friction="1.2 0.05 0.01" condim="3" solimp="0.9 0.95 0.001" solref="0.02 1" />
+  <geom type="box" size="0.01 0.01 0.005" pos="-0.04 -0.025 -0.03" friction="1.2 0.05 0.01" condim="3" solimp="0.9 0.95 0.001" solref="0.02 1" />
+</body>
               </body>
             </body>
           </body>
@@ -174,19 +169,15 @@
                   rgba="0.7 0.7 0.7 1" mesh="right_ankle_pitch_link" />
                 <geom type="mesh" rgba="0.7 0.7 0.7 1" mesh="right_ankle_pitch_link" />
                 <body name="right_ankle_roll_link" pos="0 0 -0.017558">
-                  <inertial pos="0.026505 0 -0.016425"
-                    quat="0.000481092 0.728482 0.000618967 0.685065" mass="0.608"
-                    diaginertia="0.00167218 0.0016161 0.000217621" />
-                  <joint name="right_ankle_roll_joint" pos="0 0 0" axis="1 0 0"
-                    range="-0.2618 0.2618" actuatorfrcrange="-50 50" class="ankle_motor" />
-                  <geom type="mesh" contype="0" conaffinity="0" group="1" density="0"
-                    rgba="0.2 0.2 0.2 1" mesh="right_ankle_roll_link" />
-                  
-                  <geom type="box" size="0.01 0.01 0.005" pos="0.11 0.025 -0.03" friction="2 0.05 0.01" condim="3" solimp="0.9 0.99 0.001" solref="0.005 1" />
-                  <geom type="box" size="0.01 0.01 0.005" pos="0.11 -0.025 -0.03" friction="2 0.05 0.01" condim="3" solimp="0.9 0.99 0.001" solref="0.005 1" />
-                  <geom type="box" size="0.01 0.01 0.005" pos="-0.04 0.025 -0.03" friction="2 0.05 0.01" condim="3" solimp="0.9 0.99 0.001" solref="0.005 1" />
-                  <geom type="box" size="0.01 0.01 0.005" pos="-0.04 -0.025 -0.03" friction="2 0.05 0.01" condim="3" solimp="0.9 0.99 0.001" solref="0.005 1" />
-                </body>
+  <inertial pos="0.026505 0 -0.016425" quat="0.000481092 0.728482 0.000618967 0.685065" mass="0.608" diaginertia="0.00167218 0.0016161 0.000217621" />
+  <joint name="right_ankle_roll_joint" pos="0 0 0" axis="1 0 0" range="-0.2618 0.2618" actuatorfrcrange="-50 50" class="ankle_motor" />
+  <geom type="mesh" contype="0" conaffinity="0" group="1" density="0" rgba="0.2 0.2 0.2 1" mesh="right_ankle_roll_link" />
+  
+  <geom type="box" size="0.01 0.01 0.005" pos="0.11 0.025 -0.03" friction="1.2 0.05 0.01" condim="3" solimp="0.9 0.95 0.001" solref="0.02 1" />
+  <geom type="box" size="0.01 0.01 0.005" pos="0.11 -0.025 -0.03" friction="1.2 0.05 0.01" condim="3" solimp="0.9 0.95 0.001" solref="0.02 1" />
+  <geom type="box" size="0.01 0.01 0.005" pos="-0.04 0.025 -0.03" friction="1.2 0.05 0.01" condim="3" solimp="0.9 0.95 0.001" solref="0.02 1" />
+  <geom type="box" size="0.01 0.01 0.005" pos="-0.04 -0.025 -0.03" friction="1.2 0.05 0.01" condim="3" solimp="0.9 0.95 0.001" solref="0.02 1" />
+</body>
               </body>
             </body>
           </body>
