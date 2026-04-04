@@ -17,6 +17,10 @@ class G1PerfectIK:
         self.dt = 0.02
         
         self.g1_arm_left = [15, 16, 17, 18, 19, 20, 21]
+        
+        # --- AÑADIMOS EL BRAZO DERECHO PARA EL MODO ESPEJO ---
+        self.g1_arm_right = [22, 23, 24, 25, 26, 27, 28] 
+        
         self.g1_waist = [12, 13, 14]
         self.current_jpos = [0.0] * 29 
         
@@ -189,7 +193,7 @@ class G1PerfectIK:
                 if self.trajectory_points:
                     self.current_target_xyz = self.trajectory_points.pop(0)
                     self.active_ik = True
-                    print(f"🚀 Generando trayectoria con Recálculo (Espacio Nulo) activado.")
+                    print(f"🚀 Generando trayectoria con Recálculo (Espacio Nulo) activado. Modo Espejo ON.")
             except ValueError:
                 print("[ERROR] Solo números válidos.")
             except EOFError:
@@ -270,8 +274,27 @@ class G1PerfectIK:
             self.q_math = q_math_future
 
             comandos_brazos = {}
+            # 1. Asignar brazo izquierdo
             for q_idx, g1_idx in self.pin_to_g1_q.items():
                 comandos_brazos[g1_idx] = float(self.q_math[q_idx])
+            
+            # --- 2. LÓGICA DE MODO ESPEJO (BRAZO DERECHO) ---
+            # Las articulaciones de los brazos del G1 tienen los siguientes índices en la lista:
+            # [0]=Pitch, [1]=Roll, [2]=Yaw, [3]=Elbow, [4]=WristRoll, [5]=WristPitch, [6]=WristYaw
+            
+            for i in range(7):
+                left_motor_id = self.g1_arm_left[i]
+                right_motor_id = self.g1_arm_right[i]
+                left_angle = comandos_brazos[left_motor_id]
+                
+                # Invertir el signo en Roll (Apertura lateral) y Yaw (Rotación sobre sí mismo)
+                # Los índices 1 (Shoulder Roll), 2 (Shoulder Yaw), 4 (Wrist Roll) y 6 (Wrist Yaw) suelen invertirse
+                if i in [1, 2, 4, 6]:
+                    comandos_brazos[right_motor_id] = -left_angle
+                else:
+                    # Pitch (arriba/abajo) y Elbow (codo) mantienen el mismo signo
+                    comandos_brazos[right_motor_id] = left_angle
+            # ------------------------------------------------
             
             try:
                 self.udp_sock.sendto(json.dumps(comandos_brazos).encode('utf-8'), self.target_address)
