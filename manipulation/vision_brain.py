@@ -59,11 +59,8 @@ class IntegratedIK:
         self.final_target_xyz = None
         self.hand_xyz_actual = np.zeros(3)
         
-        # --- CONTROL DE ORIENTACIÓN (Modo Pinza Paralela) ---
         self.use_6d = False
         self.target_rot = None 
-        
-        # --- BLOQUEO DE CODOS Y MUÑECAS ---
         self.lock_elbows_wrists = False
         
         self.joint_safety_limits = {
@@ -137,9 +134,14 @@ class IntegratedIK:
         return [start + (i / num_steps) * (end - start) for i in range(1, num_steps + 1)]
 
     def set_target(self, raw_target_xyz):
-        self.sync_math_with_reality()
+        if not self.active_ik:
+            self.sync_math_with_reality()
+            start_pos = self.hand_xyz_actual
+        else:
+            start_pos = self.current_target_xyz if self.current_target_xyz is not None else self.hand_xyz_actual
+            
         self.final_target_xyz = raw_target_xyz
-        self.trajectory_points = self.generate_trajectory(self.hand_xyz_actual, raw_target_xyz)
+        self.trajectory_points = self.generate_trajectory(start_pos, raw_target_xyz)
         if self.trajectory_points:
             self.current_target_xyz = self.trajectory_points.pop(0)
             self.active_ik = True
@@ -173,14 +175,10 @@ class IntegratedIK:
             
             dq = np.zeros(self.model.nv)
             
-            # ---------------------------------------------------------
-            # MAGIA 6D: Bloquear rotación para mantener manos paralelas
-            # ---------------------------------------------------------
             if self.use_6d and self.target_rot is not None:
                 J = pin.computeFrameJacobian(self.model, self.data, self.q_math, self.hand_frame_id, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED)
                 J_arm = J[:, self.arm_v_indices] 
                 
-                # Aplicamos el bloqueo de codos y muñecas si está activo
                 if self.lock_elbows_wrists:
                     J_arm[:, 3:] = 0.0
                 
@@ -201,16 +199,12 @@ class IntegratedIK:
                 dq_arm = pseudo_inv @ err_6d * 3.0
                 for i, v_idx in enumerate(self.arm_v_indices): dq[v_idx] = dq_arm[i]
 
-            # ---------------------------------------------------------
-            # MODO ESTÁNDAR 3D: Movimiento libre y natural
-            # ---------------------------------------------------------
             else:
                 if err_norm > 0.03: err_xyz = (err_xyz / err_norm) * 0.03
                 if np.linalg.norm(err_xyz) > 0.005:
                     J = pin.computeFrameJacobian(self.model, self.data, self.q_math, self.hand_frame_id, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED)
                     J_arm = J[:3, self.arm_v_indices] 
                     
-                    # Aplicamos el bloqueo de codos y muñecas si está activo
                     if self.lock_elbows_wrists:
                         J_arm[:, 3:] = 0.0
                         
@@ -240,10 +234,11 @@ class IntegratedIK:
             time.sleep(max(0.0, self.dt - (time.time() - t_start)))
 
 if __name__ == "__main__":
-    print("🧠 Cerebro Maestro (Físicas 6D Paralelas + Anticrash + OverHead) iniciado.")
+    print("🧠 Cerebro Maestro (FSM Completo + Anticrash + Levante + Retroceso) iniciado.")
     
     robot_ik = IntegratedIK()
     estado_robot = "BUSCANDO"
+    estado_siguiente = ""
     ultimo_comando_walk = 0
     tiempo_llegada = 0
     memoria_caja = {} 
@@ -292,6 +287,9 @@ if __name__ == "__main__":
         if estado_robot == "FINALIZADO":
             pass 
 
+        # --- MÁQUINA DE ESTADOS FINITOS ---
+        
+        # 1. ACERCAMIENTO
         elif not box_detected and estado_robot in ["BUSCANDO", "ACERCANDO"]:
             if estado_robot != "BUSCANDO":
                 print("👁️ Perdí la caja de vista. Buscando...")
@@ -301,8 +299,8 @@ if __name__ == "__main__":
                 ultimo_comando_walk = now
                 
         elif box_detected and estado_robot in ["BUSCANDO", "ACERCANDO"]:
-            # CORRECCIÓN 1: Acercarse a 25 cm en lugar de 38 cm para que los brazos lleguen al centro
-            if box_z > 0.25: 
+            # Reducido el acercamiento a 30cm para evitar choques con la mesa
+            if box_z > 0.35: 
                 estado_robot = "ACERCANDO"
                 if now - ultimo_comando_walk > 0.1:
                     if box_x_lat > 0.05: send_walk_cmd('e')
@@ -312,78 +310,120 @@ if __name__ == "__main__":
             else:
                 print(f"\n🛑 ¡Distancia alcanzada ({box_z:.2f}m)! FRENANDO.")
                 send_walk_cmd('stop')
-                estado_robot = "ESTABILIZANDO"
+                estado_robot = "PAUSA"
+                estado_siguiente = "CALCULAR_Y_PREPARAR"
                 tiempo_llegada = now
 
-        elif estado_robot == "ESTABILIZANDO":
-            if now - tiempo_llegada > 1.5:
-                print("📸 Razonamiento espacial en proceso...")
-                
-                alto_caja_real = (h_pixeles * box_z) / FOCAL_LENGTH
-                centro_caja_base = transform_camera_to_base(box_z, box_x_lat, box_y_vert)
-                
-                mesa_y_vert_cam = ((y_base_pixel - frame.shape[0]/2) * box_z) / FOCAL_LENGTH
-                z_mesa = transform_camera_to_base(box_z, box_x_lat, mesa_y_vert_cam)[2]
-                
-                memoria_caja = {
-                    'centro': centro_caja_base,
-                    'z_mesa': z_mesa,
-                    'alto': alto_caja_real
-                }
-                
-                estado_robot = "FASE1_LEVANTAR"
+        # 2. PAUSA UNIVERSAL (1 SEGUNDO)
+        elif estado_robot == "PAUSA":
+            if now - tiempo_llegada > 1.0:
+                estado_robot = estado_siguiente
                 tiempo_llegada = now
-                
-                robot_ik.use_6d = False
-                robot_ik.lock_elbows_wrists = False
-                
-                # Avanzamos la posición X desde el principio para prepararnos alineados al centro de la caja
-                target = np.array([memoria_caja['centro'][0]- 0.1, memoria_caja['centro'][1] + (ANCHO_CAJA_REAL) + 0.15, memoria_caja['z_mesa'] + 0.15])
-                robot_ik.set_target(target)
 
-        elif estado_robot == "FASE1_LEVANTAR":
+        # 3. RAZONAMIENTO Y PREPARACIÓN DE BRAZOS
+        elif estado_robot == "CALCULAR_Y_PREPARAR":
+            print("📸 Razonamiento espacial en proceso...")
+            alto_caja_real = (h_pixeles * box_z) / FOCAL_LENGTH
+            centro_caja_base = transform_camera_to_base(box_z, box_x_lat, box_y_vert)
+            mesa_y_vert_cam = ((y_base_pixel - frame.shape[0]/2) * box_z) / FOCAL_LENGTH
+            z_mesa = transform_camera_to_base(box_z, box_x_lat, mesa_y_vert_cam)[2]
+            
+            memoria_caja = {
+                'centro': centro_caja_base,
+                'z_mesa': z_mesa,
+                'alto': alto_caja_real
+            }
+            
+            robot_ik.use_6d = False
+            robot_ik.lock_elbows_wrists = False
+            
+            target = np.array([memoria_caja['centro'][0]- 0.1, memoria_caja['centro'][1] + (ANCHO_CAJA_REAL) + 0.15, memoria_caja['z_mesa'] + 0.15])
+            robot_ik.set_target(target)
+            
+            estado_robot = "MOVIENDO_PREPARAR"
+            tiempo_llegada = now
+
+        elif estado_robot == "MOVIENDO_PREPARAR":
             error_dist = robot_ik.get_distance_to_target()
             if error_dist < 0.04 or (now - tiempo_llegada > 4.0):
-                print("✅ Brazos preparados. Bloqueando muñecas en PARALELO para aproximación...")
-                
-                robot_ik.target_rot = robot_ik.data.oMf[robot_ik.hand_frame_id].rotation.copy()
-                robot_ik.use_6d = True
-                robot_ik.lock_elbows_wrists = False
-                
-                estado_robot = "FASE2_ALINEAR"
+                print("✅ Brazos preparados.")
+                estado_robot = "PAUSA"
+                estado_siguiente = "INICIAR_ALINEAR"
                 tiempo_llegada = now
-                
-                target = np.array([memoria_caja['centro'][0] + (ANCHO_CAJA_REAL/2), memoria_caja['centro'][1] + (ANCHO_CAJA_REAL/2) + 0.08, memoria_caja['z_mesa'] + 0.15])
-                robot_ik.set_target(target)
 
-        elif estado_robot == "FASE2_ALINEAR":
+        # 4. ALINEACIÓN (Modo Pinza Paralela 6D)
+        elif estado_robot == "INICIAR_ALINEAR":
+            robot_ik.target_rot = robot_ik.data.oMf[robot_ik.hand_frame_id].rotation.copy()
+            robot_ik.use_6d = True 
+            robot_ik.lock_elbows_wrists = False
+            
+            target = np.array([memoria_caja['centro'][0] + (ANCHO_CAJA_REAL/2), memoria_caja['centro'][1] + (ANCHO_CAJA_REAL/2) + 0.08, memoria_caja['z_mesa'] + 0.15])
+            robot_ik.set_target(target)
+            
+            estado_robot = "MOVIENDO_ALINEAR"
+            tiempo_llegada = now
+
+        elif estado_robot == "MOVIENDO_ALINEAR":
             error_dist = robot_ik.get_distance_to_target()
             if error_dist < 0.04 or (now - tiempo_llegada > 4.0):
-                print("✅ Brazos alineados. Cerrando pinza en paralelo...")
-                estado_robot = "FASE3_AGARRAR"
+                print("✅ Brazos alineados. Iniciando cierre...")
+                estado_robot = "PAUSA"
+                estado_siguiente = "MOVIENDO_AGARRAR"
                 tiempo_llegada = now
-                
-                target = np.array([memoria_caja['centro'][0] + (ANCHO_CAJA_REAL/2), memoria_caja['centro'][1] + (ANCHO_CAJA_REAL/2), memoria_caja['z_mesa'] + 0.15])
-                robot_ik.set_target(target)
 
-        elif estado_robot == "FASE3_AGARRAR":
-            error_dist = robot_ik.get_distance_to_target()
-            if error_dist < 0.02 or (now - tiempo_llegada > 4.0):
-                print("✅ Agarre asegurado. Levantando caja rígidamente por encima de la cabeza...")
-                estado_robot = "FASE4_SUBIR"
+        # 5. AGARRE INTELIGENTE (Propiocepción + Contacto)
+        elif estado_robot == "MOVIENDO_AGARRAR":
+            mano_y_actual = robot_ik.hand_xyz_actual[1]
+            centro_caja_y = memoria_caja['centro'][1]
+            
+            borde_deseado_y = centro_caja_y + (ANCHO_CAJA_REAL / 2)
+            distancia_al_borde = mano_y_actual - borde_deseado_y
+            
+            if distancia_al_borde < 0.02 or (now - tiempo_llegada > 3.0): 
+                print("✅ Agarre físico/virtual asegurado.")
+                estado_robot = "PAUSA"
+                estado_siguiente = "INICIAR_LEVANTE"
                 tiempo_llegada = now
-                
-                robot_ik.use_6d = False
-                robot_ik.lock_elbows_wrists = True
-                
-                # CORRECCIÓN 2: Ajuste en X (0.15) para que al subir con codos bloqueados, la caja no se estrelle contra su propia cara/pecho
-                target = np.array([0.15, memoria_caja['centro'][1] + (ANCHO_CAJA_REAL/2), memoria_caja['z_mesa'] + 0.15 + 0.80])
-                robot_ik.set_target(target)
+            else:
+                if not robot_ik.trajectory_points:
+                    paso_seguro = min(0.01, distancia_al_borde) 
+                    target = np.array([
+                        memoria_caja['centro'][0] + (ANCHO_CAJA_REAL/2), 
+                        mano_y_actual - paso_seguro, 
+                        memoria_caja['z_mesa'] + 0.15
+                    ])
+                    robot_ik.set_target(target)
 
-        elif estado_robot == "FASE4_SUBIR":
+        # 6. LEVANTAMIENTO EN Z
+        elif estado_robot == "INICIAR_LEVANTE":
+            print("⬆️ Levantando la caja 10cm...")
+            
+            # Cogemos la posición matemática exacta actual y subimos 10cm en Z puro
+            target = robot_ik.hand_xyz_actual.copy()
+            target[2] += 0.10
+            robot_ik.set_target(target)
+            
+            estado_robot = "MOVIENDO_LEVANTE"
+            tiempo_llegada = now
+
+        elif estado_robot == "MOVIENDO_LEVANTE":
             error_dist = robot_ik.get_distance_to_target()
             if error_dist < 0.04 or (now - tiempo_llegada > 4.0):
-                print("🎉 ¡Éxito! Caja puesta encima de la cabeza con brazos tiesos.")
+                print("✅ Caja levantada.")
+                estado_robot = "PAUSA"
+                estado_siguiente = "RETROCEDER"
+                tiempo_llegada = now
+                ultimo_comando_walk = 0
+
+        # 7. RETROCESO Y FINALIZACIÓN
+        elif estado_robot == "RETROCEDER":
+            if now - tiempo_llegada < 4.0:
+                if now - ultimo_comando_walk > 0.1:
+                    send_walk_cmd('s')
+                    ultimo_comando_walk = now
+            else:
+                print("🎉 ¡MISIÓN CUMPLIDA! Caja extraída y asegurada.")
+                send_walk_cmd('stop')
                 estado_robot = "FINALIZADO"
 
         cv2.imshow("Cerebro Maestro G1", frame)
