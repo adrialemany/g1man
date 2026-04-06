@@ -7,11 +7,14 @@ y publica:
 
   Topics:
     /lidar/points   (sensor_msgs/msg/PointCloud2)  — nube de puntos 3D
-    /tf             — transforms dinámicos (via tf2_ros.TransformBroadcaster)
+    /odom           (nav_msgs/msg/Odometry)         — odometría del robot
+    /tf             — transforms dinámicos
+    /tf_static      — world → odom (identidad)
 
   TF publicados:
-    world  →  base_link   (pose del pelvis del robot en world frame)
-    world  →  lidar_link  (pose del site lidar en world frame)
+    world  →  odom       (identidad estática)
+    odom   →  base_link  (pose del pelvis)
+    base_link → lidar_link (pose relativa del LiDAR)
 
 Protocolo ZMQ (puerto 5556, SUB):
   [magic: uint32][n_pts: uint32]
@@ -45,9 +48,10 @@ from rclpy.node import Node
 from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy
 
 from sensor_msgs.msg import PointCloud2, PointField
+from nav_msgs.msg import Odometry
 from std_msgs.msg import Header
 from geometry_msgs.msg import TransformStamped
-from tf2_ros import TransformBroadcaster
+from tf2_ros import TransformBroadcaster, StaticTransformBroadcaster
 
 
 # ---------------------------------------------------------------------------
@@ -58,10 +62,12 @@ ZMQ_PORT   = 5556
 ZMQ_MAGIC  = 0xDEAD1337
 
 WORLD_FRAME = "world"
+ODOM_FRAME  = "odom"
 BASE_FRAME  = "base_link"
 LIDAR_FRAME = "lidar_link"
 
 LIDAR_TOPIC = "/lidar/points"
+ODOM_TOPIC  = "/odom"
 
 # QoS: sensor data — best-effort, keep last 5
 SENSOR_QOS = QoSProfile(
@@ -83,8 +89,25 @@ class MujocoLidarBridge(Node):
         self.pc_pub = self.create_publisher(
             PointCloud2, LIDAR_TOPIC, SENSOR_QOS)
 
+        # --- Publisher Odometry ---
+        self.odom_pub = self.create_publisher(
+            Odometry, ODOM_TOPIC, SENSOR_QOS)
+
         # --- TF broadcaster ---
         self.tf_br = TransformBroadcaster(self)
+
+        # --- Static TF: world → odom (identidad, ground truth) ---
+        self.static_tf_br = StaticTransformBroadcaster(self)
+        static_tf = TransformStamped()
+        static_tf.header.stamp = self.get_clock().now().to_msg()
+        static_tf.header.frame_id = WORLD_FRAME
+        static_tf.child_frame_id = ODOM_FRAME
+        static_tf.transform.rotation.w = 1.0
+        self.static_tf_br.sendTransform(static_tf)
+
+        # --- Para calcular velocidades ---
+        self._prev_pelvis = None
+        self._prev_time = None
 
         # --- ZMQ subscriber ---
         self._zmq_ctx  = zmq.Context()
@@ -99,8 +122,8 @@ class MujocoLidarBridge(Node):
         self.get_logger().info(
             f"MujocoLidarBridge arrancado.\n"
             f"  ZMQ: tcp://{ZMQ_HOST}:{ZMQ_PORT}\n"
-            f"  Topic: {LIDAR_TOPIC}\n"
-            f"  TF: {WORLD_FRAME} → {BASE_FRAME} → {LIDAR_FRAME}"
+            f"  Topics: {LIDAR_TOPIC}, {ODOM_TOPIC}\n"
+            f"  TF: {WORLD_FRAME} → {ODOM_FRAME} → {BASE_FRAME} → {LIDAR_FRAME}"
         )
 
     # -----------------------------------------------------------------------
@@ -160,15 +183,50 @@ class MujocoLidarBridge(Node):
 
         # --- Stamp ROS 2 ---
         ros_stamp = self.get_clock().now().to_msg()
+        now_sec = ros_stamp.sec + ros_stamp.nanosec * 1e-9
 
-        # --- Publicar TF: world → base_link ---
+        # --- Calcular velocidades (diferencia finita) ---
+        lin_vel = np.zeros(3)
+        ang_vel = np.zeros(3)
+        if self._prev_pelvis is not None and self._prev_time is not None:
+            dt = now_sec - self._prev_time
+            if dt > 1e-6:
+                lin_vel = (pelvis[:3] - self._prev_pelvis[:3]) / dt
+                q_prev_inv = self._quat_inv(self._prev_pelvis[3:7])
+                q_delta = self._quat_mul(q_prev_inv, pelvis[3:7])
+                ang_vel = 2.0 * q_delta[1:4] / dt
+
+        self._prev_pelvis = pelvis.copy()
+        self._prev_time = now_sec
+
+        # --- Publicar TF: odom → base_link ---
         self.tf_br.sendTransform(
-            self._make_tf(ros_stamp, WORLD_FRAME, BASE_FRAME, pelvis))
+            self._make_tf(ros_stamp, ODOM_FRAME, BASE_FRAME, pelvis))
 
         # --- Publicar TF: base_link → lidar_link (transform relativo) ---
         rel_pose = self._relative_pose(pelvis, lidar)
         self.tf_br.sendTransform(
             self._make_tf(ros_stamp, BASE_FRAME, LIDAR_FRAME, rel_pose))
+
+        # --- Publicar Odometry ---
+        odom_msg = Odometry()
+        odom_msg.header.stamp = ros_stamp
+        odom_msg.header.frame_id = ODOM_FRAME
+        odom_msg.child_frame_id = BASE_FRAME
+        odom_msg.pose.pose.position.x = float(pelvis[0])
+        odom_msg.pose.pose.position.y = float(pelvis[1])
+        odom_msg.pose.pose.position.z = float(pelvis[2])
+        odom_msg.pose.pose.orientation.w = float(pelvis[3])
+        odom_msg.pose.pose.orientation.x = float(pelvis[4])
+        odom_msg.pose.pose.orientation.y = float(pelvis[5])
+        odom_msg.pose.pose.orientation.z = float(pelvis[6])
+        odom_msg.twist.twist.linear.x = float(lin_vel[0])
+        odom_msg.twist.twist.linear.y = float(lin_vel[1])
+        odom_msg.twist.twist.linear.z = float(lin_vel[2])
+        odom_msg.twist.twist.angular.x = float(ang_vel[0])
+        odom_msg.twist.twist.angular.y = float(ang_vel[1])
+        odom_msg.twist.twist.angular.z = float(ang_vel[2])
+        self.odom_pub.publish(odom_msg)
 
         # --- Publicar PointCloud2 ---
         if n_pts > 0:
