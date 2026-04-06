@@ -7,6 +7,7 @@ y publica:
 
   Topics:
     /lidar/points   (sensor_msgs/msg/PointCloud2)  — nube de puntos 3D
+    /scan           (sensor_msgs/msg/LaserScan)    — scan 2D (para SLAM)
     /odom           (nav_msgs/msg/Odometry)         — odometría del robot
     /tf             — transforms dinámicos
     /tf_static      — world → odom (identidad)
@@ -47,11 +48,13 @@ import rclpy
 from rclpy.node import Node
 from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy
 
-from sensor_msgs.msg import PointCloud2, PointField
+from sensor_msgs.msg import PointCloud2, PointField, LaserScan
 from nav_msgs.msg import Odometry
 from std_msgs.msg import Header
 from geometry_msgs.msg import TransformStamped
 from tf2_ros import TransformBroadcaster, StaticTransformBroadcaster
+
+import math
 
 
 # ---------------------------------------------------------------------------
@@ -67,7 +70,13 @@ BASE_FRAME  = "base_link"
 LIDAR_FRAME = "lidar_link"
 
 LIDAR_TOPIC = "/lidar/points"
+SCAN_TOPIC  = "/scan"
 ODOM_TOPIC  = "/odom"
+
+# Parámetros del LiDAR (deben coincidir con unitree_mujoco.py)
+LIDAR_N_AZIMUTH = 360
+LIDAR_MAX_RANGE = 12.0
+LIDAR_MIN_RANGE = 0.15
 
 # QoS: sensor data — best-effort, keep last 5
 SENSOR_QOS = QoSProfile(
@@ -88,6 +97,10 @@ class MujocoLidarBridge(Node):
         # --- Publisher PointCloud2 ---
         self.pc_pub = self.create_publisher(
             PointCloud2, LIDAR_TOPIC, SENSOR_QOS)
+
+        # --- Publisher LaserScan (para SLAM) ---
+        self.scan_pub = self.create_publisher(
+            LaserScan, SCAN_TOPIC, SENSOR_QOS)
 
         # --- Publisher Odometry ---
         self.odom_pub = self.create_publisher(
@@ -122,7 +135,7 @@ class MujocoLidarBridge(Node):
         self.get_logger().info(
             f"MujocoLidarBridge arrancado.\n"
             f"  ZMQ: tcp://{ZMQ_HOST}:{ZMQ_PORT}\n"
-            f"  Topics: {LIDAR_TOPIC}, {ODOM_TOPIC}\n"
+            f"  Topics: {LIDAR_TOPIC}, {SCAN_TOPIC}, {ODOM_TOPIC}\n"
             f"  TF: {WORLD_FRAME} → {ODOM_FRAME} → {BASE_FRAME} → {LIDAR_FRAME}"
         )
 
@@ -233,6 +246,10 @@ class MujocoLidarBridge(Node):
             self.pc_pub.publish(
                 self._build_pointcloud2(ros_stamp, pts))
 
+        # --- Publicar LaserScan (conversión de puntos 2D a rangos) ---
+        self.scan_pub.publish(
+            self._build_laserscan(ros_stamp, pts))
+
     # -----------------------------------------------------------------------
     @staticmethod
     def _make_tf(stamp, parent: str, child: str,
@@ -304,6 +321,51 @@ class MujocoLidarBridge(Node):
         p_rel = MujocoLidarBridge._quat_rotate(q_parent_inv, dp)
 
         return np.concatenate([p_rel, q_rel])
+
+    # -----------------------------------------------------------------------
+    @staticmethod
+    def _build_laserscan(stamp, pts: np.ndarray) -> LaserScan:
+        """
+        Convierte puntos XYZ (en frame lidar_link) a LaserScan.
+        Los puntos del LiDAR 2D están en el plano XY local.
+        """
+        msg = LaserScan()
+        msg.header = Header()
+        msg.header.stamp = stamp
+        msg.header.frame_id = LIDAR_FRAME
+
+        n = LIDAR_N_AZIMUTH
+        msg.angle_min = 0.0
+        msg.angle_max = 2.0 * math.pi * (n - 1) / n
+        msg.angle_increment = 2.0 * math.pi / n
+        msg.time_increment = 0.0
+        msg.scan_time = 0.1       # 10 Hz
+        msg.range_min = float(LIDAR_MIN_RANGE)
+        msg.range_max = float(LIDAR_MAX_RANGE)
+
+        # Inicializar todos los rangos a inf (sin detección)
+        ranges = [float('inf')] * n
+
+        if len(pts) > 0:
+            # Calcular ángulo y rango de cada punto
+            angles = np.arctan2(pts[:, 1], pts[:, 0])   # [-π, π]
+            angles = angles % (2.0 * math.pi)            # [0, 2π)
+            dists = np.sqrt(pts[:, 0]**2 + pts[:, 1]**2)
+
+            # Asignar cada punto a su bin angular
+            bins = np.round(angles / msg.angle_increment).astype(int) % n
+
+            for i in range(len(pts)):
+                b = bins[i]
+                d = float(dists[i])
+                if LIDAR_MIN_RANGE < d < LIDAR_MAX_RANGE:
+                    # Quedarse con el rango más cercano por bin
+                    if d < ranges[b]:
+                        ranges[b] = d
+
+        msg.ranges = ranges
+        msg.intensities = []
+        return msg
 
     # -----------------------------------------------------------------------
     @staticmethod
