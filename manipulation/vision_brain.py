@@ -23,9 +23,11 @@ from unitree_sdk2py.idl.unitree_hg.msg.dds_ import LowState_
 
 context = zmq.Context()
 video_socket = context.socket(zmq.SUB)
+video_socket.setsockopt(zmq.CONFLATE, 1) 
 video_socket.connect("tcp://127.0.0.1:5555")
 video_socket.setsockopt_string(zmq.SUBSCRIBE, '')
 
+ANCHO_CAJA_REAL = 0.20 
 FOCAL_LENGTH = 460.0 
 
 def send_walk_cmd(cmd):
@@ -56,6 +58,13 @@ class IntegratedIK:
         self.current_target_xyz = None
         self.final_target_xyz = None
         self.hand_xyz_actual = np.zeros(3)
+        
+        # --- CONTROL DE ORIENTACIÓN (Modo Pinza Paralela) ---
+        self.use_6d = False
+        self.target_rot = None 
+        
+        # --- BLOQUEO DE CODOS Y MUÑECAS ---
+        self.lock_elbows_wrists = False
         
         self.joint_safety_limits = {
             15: (-3.04, 2.62), 16: (-1.54, 2.20), 17: (-2.57, 2.57),
@@ -154,23 +163,60 @@ class IntegratedIK:
             pin.updateFramePlacements(self.model, self.data)
             self.hand_xyz_actual = self.data.oMf[self.hand_frame_id].translation
 
-            err = self.current_target_xyz - self.hand_xyz_actual
-            err_norm = np.linalg.norm(err)
+            err_xyz = self.current_target_xyz - self.hand_xyz_actual
+            err_norm = np.linalg.norm(err_xyz)
             
             if err_norm < 0.01 and self.trajectory_points:
                 self.current_target_xyz = self.trajectory_points.pop(0)
-                err = self.current_target_xyz - self.hand_xyz_actual
-                err_norm = np.linalg.norm(err)
+                err_xyz = self.current_target_xyz - self.hand_xyz_actual
+                err_norm = np.linalg.norm(err_xyz)
             
-            if err_norm > 0.03: err = (err / err_norm) * 0.03
             dq = np.zeros(self.model.nv)
             
-            if err_norm > 0.005:
+            # ---------------------------------------------------------
+            # MAGIA 6D: Bloquear rotación para mantener manos paralelas
+            # ---------------------------------------------------------
+            if self.use_6d and self.target_rot is not None:
                 J = pin.computeFrameJacobian(self.model, self.data, self.q_math, self.hand_frame_id, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED)
-                J_arm = J[:3, self.arm_v_indices] 
-                pseudo_inv = J_arm.T @ np.linalg.inv(J_arm @ J_arm.T + (0.05**2) * np.eye(3))
-                dq_arm = pseudo_inv @ err * 3.0
+                J_arm = J[:, self.arm_v_indices] 
+                
+                # Aplicamos el bloqueo de codos y muñecas si está activo
+                if self.lock_elbows_wrists:
+                    J_arm[:, 3:] = 0.0
+                
+                R_curr = self.data.oMf[self.hand_frame_id].rotation
+                R_err = self.target_rot @ R_curr.T
+                theta = np.arccos(np.clip((np.trace(R_err) - 1) / 2, -1.0, 1.0))
+                
+                w = np.zeros(3)
+                if theta > 1e-5:
+                    w = (theta / (2 * np.sin(theta))) * np.array([R_err[2, 1] - R_err[1, 2], R_err[0, 2] - R_err[2, 0], R_err[1, 0] - R_err[0, 1]])
+                
+                err_6d = np.concatenate([err_xyz, w])
+                norm_6d = np.linalg.norm(err_6d)
+                
+                if norm_6d > 0.04: err_6d = (err_6d / norm_6d) * 0.04
+                
+                pseudo_inv = J_arm.T @ np.linalg.inv(J_arm @ J_arm.T + (0.05**2) * np.eye(6))
+                dq_arm = pseudo_inv @ err_6d * 3.0
                 for i, v_idx in enumerate(self.arm_v_indices): dq[v_idx] = dq_arm[i]
+
+            # ---------------------------------------------------------
+            # MODO ESTÁNDAR 3D: Movimiento libre y natural
+            # ---------------------------------------------------------
+            else:
+                if err_norm > 0.03: err_xyz = (err_xyz / err_norm) * 0.03
+                if np.linalg.norm(err_xyz) > 0.005:
+                    J = pin.computeFrameJacobian(self.model, self.data, self.q_math, self.hand_frame_id, pin.ReferenceFrame.LOCAL_WORLD_ALIGNED)
+                    J_arm = J[:3, self.arm_v_indices] 
+                    
+                    # Aplicamos el bloqueo de codos y muñecas si está activo
+                    if self.lock_elbows_wrists:
+                        J_arm[:, 3:] = 0.0
+                        
+                    pseudo_inv = J_arm.T @ np.linalg.inv(J_arm @ J_arm.T + (0.05**2) * np.eye(3))
+                    dq_arm = pseudo_inv @ err_xyz * 3.0
+                    for i, v_idx in enumerate(self.arm_v_indices): dq[v_idx] = dq_arm[i]
 
             self.q_math = pin.integrate(self.model, self.q_math, dq * self.dt)
 
@@ -182,9 +228,10 @@ class IntegratedIK:
                 left_motor_id = self.g1_arm_left[i]
                 right_motor_id = self.g1_arm_right[i]
                 left_angle = comandos_brazos[left_motor_id]
-                
-                if i in [1, 2, 4, 6]: comandos_brazos[right_motor_id] = -left_angle
-                else: comandos_brazos[right_motor_id] = left_angle
+                if i in [1, 2, 4, 6]:
+                    comandos_brazos[right_motor_id] = -left_angle
+                else:
+                    comandos_brazos[right_motor_id] = left_angle
             
             try:
                 self.udp_sock.sendto(json.dumps(comandos_brazos).encode('utf-8'), self.target_address)
@@ -192,9 +239,8 @@ class IntegratedIK:
 
             time.sleep(max(0.0, self.dt - (time.time() - t_start)))
 
-
 if __name__ == "__main__":
-    print("🧠 Cerebro Maestro (Fusión RGB-D de Alta Precisión) iniciado.")
+    print("🧠 Cerebro Maestro (Físicas 6D Paralelas + Anticrash + OverHead) iniciado.")
     
     robot_ik = IntegratedIK()
     estado_robot = "BUSCANDO"
@@ -205,17 +251,12 @@ if __name__ == "__main__":
     while True:
         t_loop_start = time.time()
         try:
-            parts = video_socket.recv_multipart(flags=zmq.NOBLOCK)
-            if len(parts) < 2: continue
-            
-            npimg = np.frombuffer(parts[0], dtype=np.uint8)
+            buffer = video_socket.recv(flags=zmq.NOBLOCK)
+            npimg = np.frombuffer(buffer, dtype=np.uint8)
             frame = cv2.imdecode(npimg, 1)
             
             if frame is None or frame.size == 0:
                 continue
-                
-            depth_map = np.frombuffer(parts[1], dtype=np.float32).reshape(480, 640)
-            
         except zmq.Again:
             time.sleep(0.01)
             continue
@@ -227,153 +268,125 @@ if __name__ == "__main__":
         contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         
         box_detected = False
-        box_z = 0.0
-        box_x_lat, box_y_vert = 0, 0
-        cx, cy = 0, 0
-        w_pix, h_pix = 0, 0
+        box_z, box_x_lat, box_y_vert = 0, 0, 0
         y_base_pixel = 0
 
         if contours:
             c_max = max(contours, key=cv2.contourArea)
             if cv2.contourArea(c_max) > 100: 
                 box_detected = True
-                x, y, w_pix, h_pix = cv2.boundingRect(c_max)
+                x, y, w, h = cv2.boundingRect(c_max)
+                cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
                 
-                cx = int(x + w_pix/2)
-                cy = int(y + h_pix/2)
-                y_base_pixel = min(479, y + h_pix)
+                box_z = (ANCHO_CAJA_REAL * FOCAL_LENGTH) / w
+                box_x_lat = (((x + w/2) - frame.shape[1]/2) * box_z) / FOCAL_LENGTH
+                box_y_vert = (((y + h/2) - frame.shape[0]/2) * box_z) / FOCAL_LENGTH
                 
-                # --- MAGIA DE FUSIÓN DE SENSORES (RGB + PROFUNDIDAD) ---
-                # 1. Creamos una máscara perfecta del contorno de la caja verde
-                caja_mask = np.zeros_like(mask)
-                cv2.drawContours(caja_mask, [c_max], -1, 255, thickness=cv2.FILLED)
+                h_pixeles = h
+                y_base_pixel = y + h
                 
-                # 2. Leemos las distancias del láser SOLO donde el píxel es verde
-                distancias_verdes = depth_map[caja_mask == 255]
-                
-                # 3. Filtramos los píxeles (descartamos si lee < 10cm porque sería el brazo del robot)
-                distancias_validas = distancias_verdes[(distancias_verdes > 0.15) & (distancias_verdes < 4.0)]
-                
-                if len(distancias_validas) > 0:
-                    # La Mediana nos da el centro sólido de la caja real
-                    box_z = float(np.median(distancias_validas))
-                else:
-                    # Fallback por seguridad
-                    box_z = float(depth_map[cy, cx])
-                # ---------------------------------------------------------
-                
-                box_x_lat = (((cx) - 320) * box_z) / FOCAL_LENGTH
-                box_y_vert = (((cy) - 240) * box_z) / FOCAL_LENGTH
-                
-                cv2.rectangle(frame, (x, y), (x+w_pix, y+h_pix), (0, 255, 0), 2)
-                cv2.circle(frame, (cx, cy), 5, (0, 0, 255), -1)
-                cv2.putText(frame, f"Z Exacto: {box_z:.3f}m", (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0,255,255), 2)
+                cv2.putText(frame, f"Dist: {box_z:.2f}m", (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255,255,255), 2)
 
         now = time.time()
         
-        # =========================================================================
-        # FASE 1: APROXIMACIÓN
-        # =========================================================================
         if estado_robot == "FINALIZADO":
             pass 
 
         elif not box_detected and estado_robot in ["BUSCANDO", "ACERCANDO"]:
             if estado_robot != "BUSCANDO":
-                print("👁️ Buscando caja...")
+                print("👁️ Perdí la caja de vista. Buscando...")
                 estado_robot = "BUSCANDO"
             if now - ultimo_comando_walk > 0.1:
                 send_walk_cmd('q')
                 ultimo_comando_walk = now
                 
         elif box_detected and estado_robot in ["BUSCANDO", "ACERCANDO"]:
-            # Usando la medida súper precisa filtrada de la máscara verde
-            if box_z > 0.38: 
+            # CORRECCIÓN 1: Acercarse a 25 cm en lugar de 38 cm para que los brazos lleguen al centro
+            if box_z > 0.25: 
                 estado_robot = "ACERCANDO"
                 if now - ultimo_comando_walk > 0.1:
-                    if box_x_lat > 0.04: send_walk_cmd('e')
-                    elif box_x_lat < -0.04: send_walk_cmd('q')
+                    if box_x_lat > 0.05: send_walk_cmd('e')
+                    elif box_x_lat < -0.05: send_walk_cmd('q')
                     else: send_walk_cmd('w')
                     ultimo_comando_walk = now
             else:
-                print(f"\n🛑 ¡Distancia de agarre real ({box_z:.2f}m) alcanzada! FRENANDO.")
+                print(f"\n🛑 ¡Distancia alcanzada ({box_z:.2f}m)! FRENANDO.")
                 send_walk_cmd('stop')
                 estado_robot = "ESTABILIZANDO"
                 tiempo_llegada = now
 
         elif estado_robot == "ESTABILIZANDO":
             if now - tiempo_llegada > 1.5:
-                if not box_detected:
-                    print("⚠️ Perdí la caja. Volviendo a buscar...")
-                    estado_robot = "BUSCANDO"
-                    continue
-                    
-                print("📸 Robot estable. Leyendo matriz RGB-D final...")
+                print("📸 Razonamiento espacial en proceso...")
                 
-                ancho_caja = (w_pix * box_z) / FOCAL_LENGTH
-                alto_caja = (h_pix * box_z) / FOCAL_LENGTH
-                
+                alto_caja_real = (h_pixeles * box_z) / FOCAL_LENGTH
                 centro_caja_base = transform_camera_to_base(box_z, box_x_lat, box_y_vert)
                 
-                # Z de la mesa leyendo los píxeles justo debajo del rectángulo verde
-                pixel_mesa_y = min(479, y_base_pixel + 5)
-                z_mesa_cam = depth_map[pixel_mesa_y, cx]
-                mesa_y_vert_cam = ((pixel_mesa_y - 240) * z_mesa_cam) / FOCAL_LENGTH
-                z_mesa = transform_camera_to_base(z_mesa_cam, box_x_lat, mesa_y_vert_cam)[2]
+                mesa_y_vert_cam = ((y_base_pixel - frame.shape[0]/2) * box_z) / FOCAL_LENGTH
+                z_mesa = transform_camera_to_base(box_z, box_x_lat, mesa_y_vert_cam)[2]
                 
                 memoria_caja = {
                     'centro': centro_caja_base,
                     'z_mesa': z_mesa,
-                    'ancho': ancho_caja
+                    'alto': alto_caja_real
                 }
-                
-                print(f"📐 Caja Real: {ancho_caja*100:.1f}cm ancho. Mesa en Z={z_mesa:.3f}m")
                 
                 estado_robot = "FASE1_LEVANTAR"
                 tiempo_llegada = now
                 
-                # Levantar brazo a X=0.10 y Z por encima de la mesa (+15cm de margen)
-                target = np.array([0.10, memoria_caja['centro'][1] + 0.15, memoria_caja['z_mesa'] + 0.15])
+                robot_ik.use_6d = False
+                robot_ik.lock_elbows_wrists = False
+                
+                # Avanzamos la posición X desde el principio para prepararnos alineados al centro de la caja
+                target = np.array([memoria_caja['centro'][0]- 0.1, memoria_caja['centro'][1] + (ANCHO_CAJA_REAL) + 0.15, memoria_caja['z_mesa'] + 0.15])
                 robot_ik.set_target(target)
 
-        # =========================================================================
-        # FASES DE AGARRE (LAZO CERRADO FÍSICO Y TAMAÑO DINÁMICO)
-        # =========================================================================
         elif estado_robot == "FASE1_LEVANTAR":
-            if robot_ik.get_distance_to_target() < 0.04 or (now - tiempo_llegada > 4.0):
-                print("✅ Brazos por encima de la mesa. Alineando con la cara lateral...")
+            error_dist = robot_ik.get_distance_to_target()
+            if error_dist < 0.04 or (now - tiempo_llegada > 4.0):
+                print("✅ Brazos preparados. Bloqueando muñecas en PARALELO para aproximación...")
+                
+                robot_ik.target_rot = robot_ik.data.oMf[robot_ik.hand_frame_id].rotation.copy()
+                robot_ik.use_6d = True
+                robot_ik.lock_elbows_wrists = False
+                
                 estado_robot = "FASE2_ALINEAR"
                 tiempo_llegada = now
                 
-                # Mover el brazo a la mitad de la cara lateral izquierda REAL
-                target = np.array([memoria_caja['centro'][0], memoria_caja['centro'][1] + (memoria_caja['ancho']/2) + 0.08, memoria_caja['centro'][2]])
+                target = np.array([memoria_caja['centro'][0] + (ANCHO_CAJA_REAL/2), memoria_caja['centro'][1] + (ANCHO_CAJA_REAL/2) + 0.08, memoria_caja['z_mesa'] + 0.15])
                 robot_ik.set_target(target)
 
         elif estado_robot == "FASE2_ALINEAR":
-            if robot_ik.get_distance_to_target() < 0.04 or (now - tiempo_llegada > 4.0):
-                print("✅ Manos en los laterales. Apretando la caja...")
+            error_dist = robot_ik.get_distance_to_target()
+            if error_dist < 0.04 or (now - tiempo_llegada > 4.0):
+                print("✅ Brazos alineados. Cerrando pinza en paralelo...")
                 estado_robot = "FASE3_AGARRAR"
                 tiempo_llegada = now
                 
-                # Pellizcar: restamos 1.5 cm al margen de la caja REAL para que los dedos hagan fuerza
-                target = np.array([memoria_caja['centro'][0], memoria_caja['centro'][1] + (memoria_caja['ancho']/2) - 0.015, memoria_caja['centro'][2]])
+                target = np.array([memoria_caja['centro'][0] + (ANCHO_CAJA_REAL/2), memoria_caja['centro'][1] + (ANCHO_CAJA_REAL/2), memoria_caja['z_mesa'] + 0.15])
                 robot_ik.set_target(target)
 
         elif estado_robot == "FASE3_AGARRAR":
-            if robot_ik.get_distance_to_target() < 0.03 or (now - tiempo_llegada > 4.0):
-                print("✅ Agarre asegurado. Levantando caja en vertical...")
+            error_dist = robot_ik.get_distance_to_target()
+            if error_dist < 0.02 or (now - tiempo_llegada > 4.0):
+                print("✅ Agarre asegurado. Levantando caja rígidamente por encima de la cabeza...")
                 estado_robot = "FASE4_SUBIR"
                 tiempo_llegada = now
                 
-                # Subir en Z puro manteniendo el agarre sobre el ancho REAL
-                target = np.array([memoria_caja['centro'][0], memoria_caja['centro'][1] + (memoria_caja['ancho']/2) - 0.015, memoria_caja['centro'][2] + 0.20])
+                robot_ik.use_6d = False
+                robot_ik.lock_elbows_wrists = True
+                
+                # CORRECCIÓN 2: Ajuste en X (0.15) para que al subir con codos bloqueados, la caja no se estrelle contra su propia cara/pecho
+                target = np.array([0.15, memoria_caja['centro'][1] + (ANCHO_CAJA_REAL/2), memoria_caja['z_mesa'] + 0.15 + 0.80])
                 robot_ik.set_target(target)
 
         elif estado_robot == "FASE4_SUBIR":
-            if robot_ik.get_distance_to_target() < 0.04 or (now - tiempo_llegada > 4.0):
-                print("🎉 ¡Éxito! Caja atrapada, razonada matemáticamente y levantada.")
+            error_dist = robot_ik.get_distance_to_target()
+            if error_dist < 0.04 or (now - tiempo_llegada > 4.0):
+                print("🎉 ¡Éxito! Caja puesta encima de la cabeza con brazos tiesos.")
                 estado_robot = "FINALIZADO"
 
-        cv2.imshow("Cerebro Maestro G1 - RGB-D", frame)
+        cv2.imshow("Cerebro Maestro G1", frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
             

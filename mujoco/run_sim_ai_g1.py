@@ -28,7 +28,7 @@ from unitree_sdk2py.idl.unitree_hg.msg.dds_ import LowCmd_
 
 
 class HolosomaLocomotion:
-    def __init__(self, model_path="fastsac_g1_29dof.onnx"):
+    def __init__(self, model_path):
         self.session = ort.InferenceSession(model_path)
         self.input_name = self.session.get_inputs()[0].name
         
@@ -129,8 +129,10 @@ def external_arm_listener():
         except: continue
 
 if __name__ == "__main__":
+    # --- RUTAS ABSOLUTAS ---
     script_dir = os.path.dirname(os.path.abspath(__file__))
     sim_path = os.path.join(script_dir, "simulator")
+    model_path = os.path.join(script_dir, "fastsac_g1_29dof.onnx") # <--- AÑADIDO ESTO
     
     print(f"[INFO] Lanzando el simulador...")
     sim_proc = subprocess.Popen(["python3", "unitree_mujoco.py"], cwd=sim_path)
@@ -145,7 +147,8 @@ if __name__ == "__main__":
     pub = ChannelPublisher("rt/lowcmd", LowCmd_)
     pub.Init()
 
-    controller = HolosomaLocomotion(model_path="fastsac_g1_29dof.onnx")
+    # --- USAMOS LA RUTA ABSOLUTA AQUÍ ---
+    controller = HolosomaLocomotion(model_path=model_path)
     
     kp = [40.18, 99.10, 40.18, 99.10, 28.50, 28.50]*2 + [40.18, 28.50, 28.50] + [14.25, 14.25, 14.25, 14.25, 16.78, 16.78, 16.78]*2
     kd = [2.56, 6.31, 2.56, 6.31, 1.81, 1.81]*2 + [2.56, 1.81, 1.81] + [0.91, 0.91, 0.91, 0.91, 1.07, 1.07, 1.07]*2
@@ -172,24 +175,20 @@ if __name__ == "__main__":
             if estado['gravity'][2] > -0.5:
                 print("🚨 ¡Caída detectada! Reseteando posición...")
                 
-                # 1. Enviar comando UDP al simulador para que lo teletransporte de pie
                 try:
                     sock_reset = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
                     sock_reset.sendto(b"reset", ("127.0.0.1", 6005))
                     sock_reset.close()
                 except: pass
                 
-                # 2. Detener movimientos activos
                 comandos['vx'] = 0.0
                 comandos['vy'] = 0.0
                 comandos['yaw'] = 0.0
                 
-                # 3. Esperamos 0.1s para que la física en MuJoCo se calme y caiga recto
                 time.sleep(0.1)
                 
-                # 4. Actualizamos el estado interno para que la IA no se vuelva loca
                 controller.phase = np.array([0.0, math.pi], dtype=np.float32)
-                continue # Saltamos esta vuelta del bucle
+                continue
             
             # --- CONTROL DE LA IA PURA ---
             targets = controller.get_target_positions(estado, comandos, external_arm_targets)

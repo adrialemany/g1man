@@ -113,26 +113,41 @@ def PhysicsViewerThread():
 
 def VisionServerThread():
     context = zmq.Context()
-    socket = context.socket(zmq.PUB)
-    socket.bind("tcp://*:5555")
     
-    renderer = mujoco.Renderer(mj_model, height=480, width=640)
+    # Puerto clásico para la imagen (Para tu GUI y el cerebro)
+    socket_rgb = context.socket(zmq.PUB)
+    socket_rgb.bind("tcp://*:5555")
     
-    print("[INFO] Servidor de visión activo en el puerto 5555")
+    # Nuevo puerto exclusivo para el Láser (Solo para el cerebro)
+    socket_depth = context.socket(zmq.PUB)
+    socket_depth.bind("tcp://*:5556")
+    
+    renderer_rgb = mujoco.Renderer(mj_model, height=480, width=640)
+    renderer_depth = mujoco.Renderer(mj_model, height=480, width=640)
+    renderer_depth.enable_depth_rendering()
+    
+    print("[INFO] Servidor RGB en 5555 | Servidor LÁSER en 5556")
     
     while viewer.is_running():
-        with locker:
-            renderer.update_scene(mj_data, camera="realsense")
-        
-        pixels = renderer.render()
-        bgr_frame = cv2.cvtColor(pixels, cv2.COLOR_RGB2BGR)
-        
-        _, buffer = cv2.imencode('.jpg', bgr_frame, [cv2.IMWRITE_JPEG_QUALITY, 80])
-        
-        socket.send(buffer)
+        try:
+            with locker:
+                renderer_rgb.update_scene(mj_data, camera="realsense")
+                renderer_depth.update_scene(mj_data, camera="realsense")
+            
+            pixels_rgb = renderer_rgb.render()
+            depth_map = renderer_depth.render()
+            
+            bgr_frame = cv2.cvtColor(pixels_rgb, cv2.COLOR_RGB2BGR)
+            _, rgb_buffer = cv2.imencode('.jpg', bgr_frame, [cv2.IMWRITE_JPEG_QUALITY, 80])
+            
+            # Enviamos cada cosa por su tubería independiente
+            socket_rgb.send(rgb_buffer.tobytes())
+            socket_depth.send(depth_map.tobytes())
+            
+        except Exception as e:
+            pass
         
         time.sleep(1.0 / 30.0)
-
 if __name__ == "__main__":
     viewer_thread = Thread(target=PhysicsViewerThread)
     sim_thread = Thread(target=SimulationThread)
