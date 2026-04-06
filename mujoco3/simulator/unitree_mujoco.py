@@ -20,21 +20,6 @@ locker = threading.Lock()
 mj_model = mujoco.MjModel.from_xml_path(config.ROBOT_SCENE)
 mj_data = mujoco.MjData(mj_model)
 
-# === DEBUG: verificar qué archivo cargó MuJoCo y dónde está el lidar ===
-import os as _os
-_abs_scene = _os.path.abspath(config.ROBOT_SCENE)
-print(f"\n{'='*60}")
-print(f"[DEBUG] CWD:          {_os.getcwd()}")
-print(f"[DEBUG] ROBOT_SCENE:  {config.ROBOT_SCENE}")
-print(f"[DEBUG] Ruta absoluta: {_abs_scene}")
-print(f"[DEBUG] ¿Existe?:     {_os.path.exists(_abs_scene)}")
-_lid_id = mujoco.mj_name2id(mj_model, mujoco.mjtObj.mjOBJ_SITE, "lidar_site")
-if _lid_id >= 0:
-    _lid_pos = mj_model.site_pos[_lid_id]
-    print(f"[DEBUG] lidar_site pos en modelo cargado: {_lid_pos}")
-else:
-    print(f"[DEBUG] lidar_site NO ENCONTRADO en el modelo")
-print(f"{'='*60}\n")
 ZMQ_LIDAR_MAGIC = 0xDEAD1337
 RGB_WIDTH = 640
 RGB_HEIGHT = 480
