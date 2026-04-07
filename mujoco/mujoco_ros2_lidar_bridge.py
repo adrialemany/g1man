@@ -78,9 +78,9 @@ LIDAR_N_AZIMUTH = 360
 LIDAR_MAX_RANGE = 12.0
 LIDAR_MIN_RANGE = 0.15
 
-# QoS: sensor data — best-effort, keep last 5
+# QoS: RELIABLE para compatibilidad con Nav2 (que suscribe RELIABLE por defecto)
 SENSOR_QOS = QoSProfile(
-    reliability=ReliabilityPolicy.BEST_EFFORT,
+    reliability=ReliabilityPolicy.RELIABLE,
     history=HistoryPolicy.KEEP_LAST,
     depth=5,
 )
@@ -109,14 +109,10 @@ class MujocoLidarBridge(Node):
         # --- TF broadcaster ---
         self.tf_br = TransformBroadcaster(self)
 
-        # --- Static TF: world → odom (identidad, ground truth) ---
-        self.static_tf_br = StaticTransformBroadcaster(self)
-        static_tf = TransformStamped()
-        static_tf.header.stamp = self.get_clock().now().to_msg()
-        static_tf.header.frame_id = WORLD_FRAME
-        static_tf.child_frame_id = ODOM_FRAME
-        static_tf.transform.rotation.w = 1.0
-        self.static_tf_br.sendTransform(static_tf)
+        # NOTA: NO publicamos 'world' como frame raíz.
+        # Cuando Nav2 está activo, AMCL publica 'map → odom'.
+        # Sin Nav2, 'odom' es el frame raíz (RViz Fixed Frame = odom).
+        # Esto evita árboles TF desconectados.
 
         # --- Para calcular velocidades ---
         self._prev_pelvis = None
@@ -136,7 +132,8 @@ class MujocoLidarBridge(Node):
             f"MujocoLidarBridge arrancado.\n"
             f"  ZMQ: tcp://{ZMQ_HOST}:{ZMQ_PORT}\n"
             f"  Topics: {LIDAR_TOPIC}, {SCAN_TOPIC}, {ODOM_TOPIC}\n"
-            f"  TF: {WORLD_FRAME} → {ODOM_FRAME} → {BASE_FRAME} → {LIDAR_FRAME}"
+            f"  TF: {ODOM_FRAME} → {BASE_FRAME} → {LIDAR_FRAME}\n"
+            f"  (con Nav2: AMCL añadirá map → {ODOM_FRAME})"
         )
 
     # -----------------------------------------------------------------------

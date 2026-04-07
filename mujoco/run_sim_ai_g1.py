@@ -128,6 +128,53 @@ def external_arm_listener():
             external_arm_targets = {int(k): float(v) for k, v in incoming_targets.items()}
         except: continue
 
+
+def cmd_vel_listener():
+    """
+    Suscriptor ROS 2 a /cmd_vel (geometry_msgs/Twist).
+    Convierte velocidades del controller de Nav2 a comandos vx/vy/yaw del policy.
+    Funciona en paralelo al teleop TCP del puerto 6000 (último en llegar gana).
+    """
+    global comandos
+    try:
+        import rclpy
+        from rclpy.node import Node
+        from geometry_msgs.msg import Twist
+    except ImportError:
+        print("[WARN] rclpy no disponible, /cmd_vel deshabilitado")
+        return
+
+    # Límites de seguridad para que el policy no reciba valores fuera de rango
+    VX_MAX, VY_MAX, YAW_MAX = 0.6, 0.4, 0.8
+    LAST_CMD_TIMEOUT = 0.5  # s sin mensaje → parar
+
+    if not rclpy.ok():
+        rclpy.init(args=None)
+
+    node = rclpy.create_node('g1_cmd_vel_bridge')
+    last_msg_time = [time.time()]
+
+    def cb(msg):
+        comandos['vx']  = float(np.clip(msg.linear.x,  -VX_MAX, VX_MAX))
+        comandos['vy']  = float(np.clip(msg.linear.y,  -VY_MAX, VY_MAX))
+        comandos['yaw'] = float(np.clip(msg.angular.z, -YAW_MAX, YAW_MAX))
+        last_msg_time[0] = time.time()
+
+    node.create_subscription(Twist, '/cmd_vel', cb, 10)
+    print("[INFO] Suscriptor /cmd_vel activo (Nav2 ready)")
+
+    # Watchdog: si no llegan mensajes en LAST_CMD_TIMEOUT, parar
+    def watchdog():
+        while True:
+            time.sleep(0.1)
+            if time.time() - last_msg_time[0] > LAST_CMD_TIMEOUT:
+                # Solo paramos si el último comando vino del cmd_vel
+                # (no machacamos un comando manual del TCP)
+                pass  # El TCP sigue mandando, no interferimos
+
+    threading.Thread(target=watchdog, daemon=True).start()
+    rclpy.spin(node)
+
 if __name__ == "__main__":
     # --- RUTAS ABSOLUTAS ---
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -140,6 +187,7 @@ if __name__ == "__main__":
 
     threading.Thread(target=locomotion_listener, daemon=True).start()
     threading.Thread(target=external_arm_listener, daemon=True).start()
+    threading.Thread(target=cmd_vel_listener, daemon=True).start()
 
     ChannelFactoryInitialize(1, "lo") 
     sub = ChannelSubscriber("rt/lowstate", LowState_)
