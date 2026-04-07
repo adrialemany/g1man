@@ -419,6 +419,7 @@ El objetivo es construir un mapa del laberinto que luego servirá para navegar.
 
 1. **Terminal 1** — simulación + policy:
    ```bash
+   source /opt/ros/humble/setup.bash
    cd g1man/mujoco && python3 run_sim_ai_g1.py
    ```
 
