@@ -1,45 +1,83 @@
-# Unitree G1 Humanoid - MuJoCo Simulation
+# Unitree G1 Humanoid - MuJoCo Simulation Environment
 
 ## Overview
-Here is provided a complete environment for simulating the Unitree G1 humanoid robot using MuJoCo and the Unitree SDK2. It integrates a Reinforcement Learning model for stable locomotion and a vision server for real-time camera feedback.
+This directory provides a complete, isolated simulation environment for the Unitree G1 humanoid robot. It bridges the **MuJoCo physics engine** with the **Unitree SDK2**, allowing you to test locomotion, manipulation, and computer vision pipelines safely before deploying them to the physical hardware.
 
-## File Structure
-- run_sim_ai_g1.py: The entry point script. It initializes the DDS communication on Domain 1, launches the physical simulation and the AI controller simultaneously using subprocess management and waits for arm controls and movement speed.
+The simulation includes a pre-trained Reinforcement Learning (RL) model (`fastsac_g1_29dof.onnx`) that actively stabilizes the robot and handles lower-body locomotion (walking, squatting, standing).
+
 ![Mujoco Simulation with fastsac](../assets/robot_mujoco.png)
-- fastsac_g1_29dof.onnx: The pre-trained neural network model for G1 locomotion (29 degrees of freedom).
-- vision.py: A ZMQ-based client designed to receive and display the torso-mounted RealSense camera stream.
-![Simulated Robot's vision](../assets/sim_vision.png)
-- g1_actions.py: Contains auxiliary definitions for robot poses and specific action mappings used by the controller (which are obsolete, now we should work with the scripts at manipulation subdirectory).
-- simulator/: Directory containing core simulation assets and the physics engine bridge.
-  - unitree_mujoco.py: The bridge script between the MuJoCo engine and Unitree SDK2 protocols. It includes the VisionServerThread for image streaming.
-  - config.py: Central configuration for robot selection, network interface (set to loopback), and domain IDs.
-  - scene.xml: The main MuJoCo scene defining the environment, lighting, and floor physics.
-  - g1_29dof.xml: The MJCF model for the G1 robot, defining actuators, sensors, and collision geometries.
-  - meshes/: Directory containing STL files for the robot's physical components.
 
-## Requirements
-The system requires the following dependencies: mujoco, onnxruntime, rclpy, pyzmq, opencv-python, and numpy. The unitree_sdk2py library must be correctly installed and linked in the python environment.
+## Prerequisites
 
-## Execution Steps
-1. Simulation and Control: Launch the master script by executing python3 run_sim_ai_g1.py.
-2. Vision Stream: To view the live feed from the robot's perspective, run python3 vision.py in a separate terminal.
-3. Teleoperation and Vision: run the client from ../camera/g1_client_mujoco.py to move with WASD+QE and see it in real time.
-4. Manipulation: use scripts from ../manipulation/*_mujoco.py to do the desired tasks.
+Before running the simulation, ensure you have installed the necessary Python packages:
 
-## Physics and Network Configuration
-- Network: The system is configured to use the local loopback interface (127.0.0.1) and DDS Domain 1 to ensure zero interference with physical robot hardware on the same network.
-- Stability: Proportional gains (Kp) for the hip roll actuators are increased to support torso weight effectively during the walking cycle.
+```bash
+# Core simulation, AI inference, and vision tools
+pip install mujoco onnxruntime pyzmq opencv-python numpy
+```
 
-## Manipulation Development
-For manipulation tasks, execute scripts from ../manipulation/*_mujoco.py. The run_sim_ai_g1.py script already accepts external commands for the arm movement.
+Note: You must also have the unitree_sdk2py library correctly installed and sourced in your Python environment.
 
-## Teleoperation
-Use the ../camera/g1_client_mujoco.py.
+## Important: Network & DDS Configuration
+To prevent the simulated robot's data from interfering with the physical robot on the same network, this simulation is strictly configured to use the local loopback interface (127.0.0.1) and DDS Domain 1.
 
-## Navigation Development
-Using the same instructions that the g1_client_mujoco.py uses, and adding a generic LIDAR, should let you develop useful navigation tasks.
+- Do not change this to Domain 0 unless you are entirely disconnected from the physical robot's network.
 
-## Demonstrative video
-![Flying robots before GTA VI](../assets/spin.gif)
+- The proportional gains (Kp) for the hip roll actuators have been specifically tuned in this environment to properly support the torso's weight in MuJoCo.
 
-This gif is intended to be seen as a joke, as it is configured right now, this should not happen.
+## Step-by-Step Execution Guide
+To get the full simulated experience, you will need to open multiple terminals.
+
+1. **Launch the Core Simulation**
+This script initializes the MuJoCo physics, starts the Unitree SDK2 bridge, and loads the ONNX RL policy to keep the robot balanced.
+
+```bash
+python3 run_sim_ai_g1.py
+```
+
+Leave this running in the background. The robot should spawn and stand up.
+
+2. **View the Robot's Camera (Optional)**
+The simulation bridge includes a VisionServerThread that broadcasts the robot's chest-mounted RealSense camera perspective via ZeroMQ. To view it, open a new terminal and run:
+
+```bash
+python3 vision.py
+```
+
+3. **Teleoperation (Walking)**
+To move the robot around the virtual environment using your keyboard (WASD + QE), use the generic camera client located in the camera workspace. Open a new terminal:
+
+```bash
+cd ../camera
+python3 g1_client_mujoco.py
+```
+
+4. Arm Manipulation & Emotions
+The RL policy controls the legs and waist, but the arms are left free for your commands. You can run the Inverse Kinematics scripts to interact with the simulated environment:
+
+```bash
+cd ../manipulation
+# Run the interactive IK solver for MuJoCo
+python3 inverse_kinematics_mujoco.py
+```
+```bash
+# OR run the procedural emotion animations
+python3 emotions_g1_mujoco.py
+```
+
+## Directory Structure
+- run_sim_ai_g1.py: Master launcher for physics and the AI locomotion policy.
+
+- fastsac_g1_29dof.onnx: Pre-trained neural network weights for 29-DOF G1 locomotion.
+
+- vision.py: ZMQ subscriber client to display the simulated RealSense feed.
+
+- simulator/: Contains the core bridge components.
+
+	- unitree_mujoco.py: The main bridge translating MuJoCo physics into Unitree SDK2 structures.
+
+	- config.py: Hardcoded configuration for 127.0.0.1 and Domain 1.
+
+	- scene.xml / g1_29dof.xml: The MuJoCo XML files defining the environment, lighting, collision geometries, and robot joints.
+
+	- meshes/: Visual and collision STL files for the robot.
