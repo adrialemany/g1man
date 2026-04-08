@@ -1,161 +1,94 @@
 # Unitree G1 Remote Camera Client
 
-This repository contains a graphical client (g1_client.py) for connecting to and monitoring the camera streams of a Unitree G1 humanoid robot over a local network. 
+This directory contains a client-server architecture (`g1_client.py` and `g1_server.py`) for connecting to and monitoring the camera and audio streams of a Unitree G1 over a local network.
 
 ![g1 client](../assets/client.png)
 
 ## System Overview
-The client is designed to interface with a custom server running on the robot. The system architecture operates as follows:
-1. A server script (just been included in this repository as g1_server.py) runs inside a Docker container directly on the Unitree G1 robot. 
-2. The server captures video frames from both the internal RealSense camera SDK and a secondary USB camera attached to the robot.
-3. The server compresses these frames into JPEG format and broadcasts them over the local network using the ZeroMQ (ZMQ) Publish-Subscribe protocol.
-4. This Python client connects to the robot's IP address, subscribes to the ZMQ streams, and renders the video in a low-latency Tkinter GUI.
-5. The server also captures real-time audio from the USB webcam microphone (Logitech C270) and streams it via Port 6003.
-6. The client features a TTS (Text-To-Speech) panel, allowing users to send text strings that the robot will play through its internal speakers.
-7. If using mujoco, use its own client. There's no "mujoco server" since it's not needed. See how to run the simulation in the mujoco subdirectory.
+1. **Server (`g1_server.py`):** Runs on the Unitree G1 robot. Captures frames from the RealSense camera and a secondary USB webcam, compresses them, and broadcasts them via ZeroMQ (ZMQ).
+2. **Client (`g1_client.py`):** Runs on your local machine. Subscribes to the ZMQ streams and renders the video in a Tkinter GUI. Features a Text-To-Speech (TTS) panel for audio playback on the robot.
 
 ## Prerequisites
-To run the client, you need Python 3 and the following dependencies:
+
+Install the required dependencies on your **local machine**:
 
 ```bash
-# Python libraries
-pip install pyzmq opencv-python Pillow numpy sounddevice
-
-# System library (Required for audio processing)
 sudo apt-get install libportaudio2
+pip install pyzmq opencv-python Pillow numpy sounddevice
 ```
 
-## How to Use the Client
-1. Ensure the Unitree G1 is powered on and connected to the same local network as your computer.
-2. Ask me to initialize the Docker container on the robot and start the server script. Or if you want to do it yourself for testing, do:
-	- Double click on the robot battery (if it's not ON already)
-	- Once it talks (before it talks, it won't let you do anything), run
-	```bash
-	ssh -X unitree@192.168.1.126
-	```
-	- It will ask for a password, type '123'
-	- Once inside, we will open docker with
-	```bash
-	docker_humble
-	```
-	- Once we're in docker, run
-	```bash
-	python3 g1_server.py
-	```
-	- Now the robot is ready
-3. Run the client on your machine:
+## Step-by-Step Usage
+
+1. **Start the Server on the Robot**
+Ensure the Unitree G1 is powered on and connected to your local network.
+Note: If using an external USB camera, ensure it is plugged in before booting the robot.
+
+SSH into the robot (replace <ROBOT_IP> with the actual IP, e.g., 192.168.1.126):
+
 ```bash
-python g1_client.py
-```
-4. Use the dropdown menu at the top of the interface to switch seamlessly between the main RealSense camera and the secondary USB camera (probably you will only use the USB one, but it is good to have as many options as possible!)
-5. If you're using the mujoco client, you'll only need the teleoperation WASD part (for now). For using movement go to the manipulation subdirectory.
-
-## Robot Locomotion and Control
-The graphical interface includes panels for arm actuation and lower-body locomotion (Zero Torque, Damping, Squatting, and Standing). Because the Unitree G1 requires specific state machine transitions to operate safely without falling, these controls must be used strictly following the designated operational flow. For example, if the robot is set using the Rack, it won't be able to perform prefabricated moves. It would be required to start from Squat, get up, and then perform. However, if we don't want to use the prefabricated moves (for example we want to use any move I could code) it is required to enter into Rack mode. 
-
-If you need to move the robot or manipulate its arms, please ask me first before clicking any command buttons.
-
-## Developing Custom Camera Clients
-If you wish to process the video streams for computer vision tasks without using the provided GUI, you can easily write your own Python scripts. 
-
-The server broadcasts the video on two ports:
-* **Port 6001:** Main RealSense Camera stream.
-* **Port 6002:** Secondary USB Camera stream (`/dev/video6`).
-
-## Audio Streaming and Voice (TTS)
-The system supports bidirectional audio interaction:
-
-* **Live Monitoring (Robot -> Client):** The client receives a continuous 16kHz Mono audio stream from the robot's environment. This provides "ears" to the pilot during remote operation.
-* **Voice Synthesis (Client -> Robot):** Using the "Audio TTS" panel, you can type any phrase in English for the G1 to speak. 
-    * **Jumpscare Mode:** Typing the keyword `jumpscare` in the TTS box triggers a high-volume custom sound effect (use with caution!).
-
-### Technical Audio Specs
-* **Port 6003:** Audio Stream (ZMQ SUB).
-* **Format:** Raw PCM (float32), 16000 Hz, Mono.
-* **Source:** Hardware device `hw:0,0` (C270 USB Webcam).
-
-### IMPORTANT NOTE
-For the USB Camera to work, it is required to be unplugged before even booting up the robot. Once it is booted up, we can safely plug the USB Camera port to the robot
-**Audio Note:** The audio capture system relies on this USB camera's microphone. If the camera is not recognized as `hw:0,0`, the audio server will fail to start. You can check detected audio devices on the robot using `arecord -l`.
-The streams are sent as raw byte arrays of JPEG-encoded images. Below is a minimal working example of how to subscribe to a stream and display it using OpenCV:
-
-### Developing Custom Camera Clients
-
-```python
-import zmq
-import cv2
-import numpy as np
-
-# Configuration
-ROBOT_IP = "192.168.123.164"
-PORT = "6002" # Change to 6001 for the prebuilt camera
-
-# Initialize ZeroMQ Subscriber
-context = zmq.Context()
-socket = context.socket(zmq.SUB)
-socket.setsockopt(zmq.CONFLATE, 1) # Only keep the most recent frame to reduce latency
-socket.setsockopt_string(zmq.SUBSCRIBE, "")
-socket.connect(f"tcp://{ROBOT_IP}:{PORT}")
-
-print(f"Subscribed to video stream at tcp://{ROBOT_IP}:{PORT}")
-
-while True:
-    try:
-        # Receive the byte array (non-blocking)
-        frame_bytes = socket.recv(zmq.NOBLOCK)
-        
-        # Decode the JPEG buffer into an OpenCV image matrix
-        np_img = np.frombuffer(frame_bytes, dtype=np.uint8)
-        frame = cv2.imdecode(np_img, cv2.IMREAD_COLOR)
-
-        if frame is not None:
-            cv2.imshow("Unitree G1 Stream", frame)
-
-        # Press 'q' to exit
-        if cv2.waitKey(30) & 0xFF == ord('q'):
-            break
-
-    except zmq.Again:
-        # No new frame received yet, continue loop
-        pass
-    except Exception as e:
-        print(f"Stream error: {e}")
-        break
-
-# Cleanup
-socket.close()
-cv2.destroyAllWindows()
+ssh unitree@<ROBOT_IP>
 ```
 
-### Developing Custom Audio Clients
-You can subscribe to the audio feed independently. Below is a minimal subscriber:
+Once inside the robot, navigate to this directory and run the server:
 
-```python
-import zmq
-import numpy as np
-import sounddevice as sd
-
-# Configuration
-ROBOT_IP = "192.168.123.164"
-PORT = "6003"
-
-context = zmq.Context()
-socket = context.socket(zmq.SUB)
-socket.connect(f"tcp://{ROBOT_IP}:{PORT}")
-socket.setsockopt_string(zmq.SUBSCRIBE, "")
-
-# Open a real-time output stream on your local speakers
-with sd.OutputStream(samplerate=16000, channels=1, dtype='float32') as stream:
-    print("Listening to G1...")
-    while True:
-        raw_audio = socket.recv()
-        data = np.frombuffer(raw_audio, dtype='float32')
-        stream.write(data)
+```bash
+python3 g1_server.py
 ```
 
-Multiple clients can run this exact script simultaneously on the same network without causing latency or connection drops on the robot's server.
+2. **Start the Client Locally**
+On your local workstation, open a new terminal, navigate to the camera directory, and run:
 
----
+```bash
+# Ensure you edit g1_client.py to match the robot's IP before running
+python3 g1_client.py
+```
 
-If there's anything you need, just ask!
-**Audio Note:** The audio capture system relies on this USB camera's microphone. If the camera is not recognized as `hw:0,0`, the audio server will fail to start. You can check detected audio devices on the robot using `arecord -l`.
+Use the dropdown menu at the top of the interface to switch between the RealSense camera (Port 6001) and the USB Camera (Port 6002).
+
+## Locomotion and Safety Note
+The interface includes buttons for locomotion (Zero Torque, Damping, Squat, Stand). Always follow the correct state machine transitions. To use custom programmed arm movements, the robot must be placed in Rack mode. Ensure the area around the robot is clear before triggering any locomotion commands.
+
+## On Simulation
+To use the Mujoco Simulation instead of the physical robot, please read the [Mujoco instructions](../mujoco/README.md).
+
+## Emotion Recognition & Robot Reaction (AI Integration)
+
+This module integrates a multimodal Deep Learning model (Audio + Vision) to detect human emotions and trigger specific robot animations or inverse kinematics (IK) movements. This was developed in collaboration with the Korean research team.
+
+### Files Overview
+* **`model.py` & `inference.py`**: Contains the PyTorch architecture (`AVFusionModel`). It extracts audio features using Wav2Vec2 and visual features using a Swin Transformer + BiGRU, fusing them via Cross-Attention to predict among 6 emotion classes.
+* **`controller.py`**: The main execution script for the **physical robot**. It captures face crops via `insightface` and audio via ZMQ, runs inference every few seconds, and triggers `G1ArmActionClient` prefabricated actions based on the detected emotion.
+* **`emotions_g1_mujoco.py`**: The counterpart for the **MuJoCo simulation**. Instead of relying on internal robot macros, it uses Pinocchio-based Forward/Inverse Kinematics with Null-Space Projection to procedurally generate smooth arm animations corresponding to specific emotions (Happy, Sad, Angry, etc.).
+
+### Prerequisites for Emotion Inference
+To run the AI models and the IK solver, you need to install additional heavy dependencies on your local machine:
+
+```bash
+# Install Deep Learning and Vision dependencies
+pip install torch torchvision torchaudio timm transformers insightface onnxruntime
+
+# Install Pinocchio for Inverse Kinematics (Simulation script)
+conda install pinocchio -c conda-forge
+```
+
+Note: You must also have the pre-trained weights file (e.g., best_epoch17_val0.5943.pth) located in this directory for the inference to work.
+
+### Execution
+
+1. **On the Physical Robot**
+Ensure the g1_server.py is running on the robot (see the camera server steps above). Then, run the emotion controller locally:
+
+```bash
+python3 controller.py
+```
+
+The system will automatically look for faces, listen to the audio buffer, predict the emotion, and send the corresponding movement commands to the robot.
+
+2. **In the MuJoCo Simulation**
+If you're testing in simulation, first run the simulation (more on [Mujoco instructions](../mujoco/README.md)), and then run the interactive IK emotion script:
+
+```bash
+python3 emotions_g1_mujoco.py
+```
+
+Once the IK engine syncs with the simulation state, you can manually type an emotion (e.g., HAPPY, ANGRY, FRUSTRATED) in the terminal to see the procedural arm movements executed in real-time in the simulator.

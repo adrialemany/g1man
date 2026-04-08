@@ -234,7 +234,7 @@ class IntegratedIK:
             time.sleep(max(0.0, self.dt - (time.time() - t_start)))
 
 if __name__ == "__main__":
-    print("🧠 Cerebro Maestro (Corrección Eje Z - Agarre Perfecto) iniciado.")
+    print("Cerebro Maestro iniciado.")
     
     robot_ik = IntegratedIK()
     estado_robot = "BUSCANDO"
@@ -379,7 +379,7 @@ if __name__ == "__main__":
             borde_deseado_y = centro_caja_y + (ANCHO_CAJA_REAL / 2)
             distancia_al_borde = mano_y_actual - borde_deseado_y
             
-            if distancia_al_borde < 0.02 or (now - tiempo_llegada > 3.0): 
+            if distancia_al_borde < 0.01 or (now - tiempo_llegada > 6.0): 
                 print("✅ Agarre físico/virtual asegurado.")
                 estado_robot = "PAUSA"
                 estado_siguiente = "INICIAR_LEVANTE"
@@ -387,7 +387,7 @@ if __name__ == "__main__":
             else:
                 if not robot_ik.trajectory_points:
                     paso_seguro = min(0.01, distancia_al_borde) 
-                    # AGARRE INTELIGENTE: Corregido también el eje Z. Ahora se mantiene en memoria_caja['centro'][2]
+                    
                     target = np.array([
                         memoria_caja['centro'][0] + 0.05, 
                         mano_y_actual - paso_seguro, 
@@ -421,7 +421,7 @@ if __name__ == "__main__":
                     send_walk_cmd('s')
                     ultimo_comando_walk = now
             else:
-                print("🎉 ¡MISIÓN CUMPLIDA! Caja extraída con seguridad térmica y física.")
+                print("🎉 ¡MISIÓN CUMPLIDA!")
                 send_walk_cmd('stop')
                 estado_robot = "FINALIZADO"
 

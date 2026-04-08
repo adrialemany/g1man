@@ -1,29 +1,47 @@
-# G1 Unitree Robot Manipulation (and Navigation)
+# G1 Unitree Robot Manipulation and Navigation Workspace
 
-This repository contains a workspace for the robot, a docker for proper use and some scripts for using its sensors and motors. 
+This repository contains a ROS 2 workspace for the Unitree G1 humanoid robot. It provides tools, controllers, and scripts for upper-body manipulation, camera streaming, and simulation.
 
-## What you can find
-![G1, tell me more](assets/tell_me_more.jpg)
-- The main directory is the workspace for ROS2 itself.
-- Then we have some subdirectories, such as: 
-    - camera: its main purpose of accessing a easy-2-use client and server. It's purpose is to help the Korean students access the cameras and robot movement within certain inputs that can be sent from other clients (not only mine).
-    - manipulation: where the manipulation scripts are. Names are quite self-explanatory.
-    - fastlio2_exp: here we can find the scripts I used for generating a pointcloud of the building while also recording both cameras on ROS2 topics. Will soon add the terminal commands for recording video properly with audio to its readme.
-    - mujoco: already working simulation using Holosoma FastSAC Locomotion Policy for leg movement and some scripts I used for controlling the simulated robot and visualizing its camera.
-    - g1pilot_exp subdirectory serves as a way to explaining the process on how to use g1pilot via WiFi, not relying on being connected to a physical wire.
+![G1 Robot](assets/tell_me_more.jpg)
 
-## How I work on the robot
-Mainly, I execute my own scripts on Docker. The ~/.bashrc file has some alias:
+## Repository Structure
+
+- **`camera/`**: Client-server architecture for streaming the G1's internal RealSense and external USB cameras over the network using ZeroMQ.
+- **`manipulation/`**: Forward and Inverse Kinematics (FK/IK) controllers, workspace mapping, and computer vision integration for arm manipulation.
+- **`fastlio2_exp/`**: Scripts for generating a pointcloud of the environment using a LiDAR and recording ROS 2 topics (Requires Docker).
+- **`mujoco/`**: Simulation environment using the Holosoma FastSAC Locomotion Policy for the G1, including camera and teleoperation scripts.
+- **`g1_pilot_exp/`**: Guide and configuration for operating the robot wirelessly via Zenoh Bridge without an Ethernet tether.
+- **`src/`**: ROS 2 packages including `g1pilot`, `unitree_ros2`, and `livox_ros_driver2`.
+
+## Prerequisites
+
+Before using this workspace, ensure you have the following installed on your local machine:
+- **OS:** Ubuntu 22.04 (Recommended)
+- **ROS 2:** Humble Hawksbill
+- **Python:** 3.10+
+- **Unitree SDK2:** Properly installed and sourced in your environment.
+
+## Installation and Setup
+
+To run the scripts natively (without Docker), clone the repository and build the ROS 2 workspace:
+
 ```bash
-docker_humble
+# 1. Source your ROS 2 installation
+source /opt/ros/humble/setup.bash
+
+# 2. Navigate to the root of this workspace
+cd path/to/robot_ws
+
+# 3. Install dependencies (rosdep)
+rosdep update
+rosdep install --from-paths src --ignore-src -r -y
+
+# 4. Build the workspace
+colcon build
+
+# 5. Source the workspace
+source install/setup.bash
 ```
-It opens the docker container.
-If you want to open another terminal inside the container, use:
-```bash
-docker_open
-```
-If you update the container's dependences, use:
-```bash
-docker_commit
-```
-So you don't have to install the same dependencies again.
+
+Please refer to the individual README.md files inside each subdirectory for specific execution instructions.
+
