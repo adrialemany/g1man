@@ -83,11 +83,3 @@ python3 emotions_g1_mujoco.py
 	- scene.xml / g1_29dof.xml: The MuJoCo XML files defining the environment, lighting, collision geometries, and robot joints.
 
 	- meshes/: Visual and collision STL files for the robot.
-	
-## Video Demonstration
-
-![Flying robots before GTA VI](../assets/spin.gif)
-
-Sorry, the real video demonstration:
-
-![Grab box](../assets/demo.gif)
