@@ -61,5 +61,3 @@ ros2 launch g1pilot bringup_launcher.launch.py
 ---
 
 ![G1 pilot squat](../assets/g1pilot2.png)
-
-Still working on how to move the motors from the station. Working on it. Will try Motion 2 or this repo: https://github.com/sharan05032000/Unitree-G1-MoveIt2-Arm-Manipulation/tree/main
