@@ -68,10 +68,8 @@ To run the AI models and the IK solver, you need to install additional heavy dep
 pip install torch torchvision torchaudio timm transformers insightface onnxruntime
 
 # Install Pinocchio for Inverse Kinematics (Simulation script)
-conda install pinocchio -c conda-forge
+sudo apt install ros-humble-pinocchio
 ```
-
-Note: You must also have the pre-trained weights file (e.g., best_epoch17_val0.5943.pth) located in this directory for the inference to work.
 
 ### Execution
 
