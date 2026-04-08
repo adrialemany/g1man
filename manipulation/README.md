@@ -101,3 +101,11 @@ A computer vision window will pop up showing the detection bounding box and esti
 - left_arm_safe_zone.json: Generated JSON containing x_min, x_max, etc.
 
 - motor_mapping.py / read_coords.py: Diagnostic tools for joint identification and physical calibration.
+
+## Video Demonstration
+
+![Flying robots before GTA VI](../assets/spin.gif)
+
+Sorry, the real video demonstration:
+
+![Grab box](../assets/demo.gif)
