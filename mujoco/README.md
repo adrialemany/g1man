@@ -44,6 +44,8 @@ The simulation bridge includes a VisionServerThread that broadcasts the robot's 
 python3 vision.py
 ```
 
+![Vision](../assets/sim_vision.png)
+
 3. **Teleoperation (Walking)**
 To move the robot around the virtual environment using your keyboard (WASD + QE), use the generic camera client located in the camera workspace. Open a new terminal:
 
@@ -81,3 +83,11 @@ python3 emotions_g1_mujoco.py
 	- scene.xml / g1_29dof.xml: The MuJoCo XML files defining the environment, lighting, collision geometries, and robot joints.
 
 	- meshes/: Visual and collision STL files for the robot.
+	
+## Video Demonstration
+
+![Flying robots before GTA VI](../assets/spin.gif)
+
+Sorry, the real video demonstration:
+
+![Grab box](../assets/demo.gif)
