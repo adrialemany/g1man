@@ -206,7 +206,7 @@ Solo cambia qué arrancas en la terminal del navegador: `ros2 launch g1_nav2.lau
 - **Arranque del contenedor**: el script `run_easynav_docker.sh` levanta el contenedor con `--network=host` y configuración DDS correcta. ROS 2 dentro del contenedor ve perfectamente los topics publicados en el host (`/scan`, `/odom`, `/tf`).
 - **Lanzamiento de `system_main`**: el binario se ejecuta, lee el archivo de parámetros `easynav_params.yaml`, reconoce todos los plugins (`SimpleMapsManager`, `AMCLLocalizer`, `SimplePlanner`, `SerestController`, `LaserScan` sensor), y llega hasta la fase de **`Activating [easynav_system]`**.
 
-### El bug que nos para
+### El problema: 
 
 Justo después de activarse, el proceso muere con este error:
 
@@ -224,16 +224,16 @@ En el caso de EasyNav, **algún componente interno** del binario `system_main` e
 
 ### Por qué no es problema de configuración
 
-Hicimos cuatro pruebas para descartar que fuera un fallo en nuestro YAML:
+Hicie cuatro pruebas para descartar que fuera un fallo en el YAML:
 
 1. **`use_sim_time: false` en todos los bloques del YAML** → crashea igual.
 2. **`use_sim_time: false` forzado adicionalmente desde el launch file** → crashea igual.
 3. **Lanzando EasyNav sin nada del host corriendo** → crashea igual (ningún `/scan`, ningún `/odom`, ningún `/tf` desde el bridge).
 4. **Lanzando EasyNav con `sensors_node.sensors: []` vacío** → crashea igual.
 
-Las cuatro pruebas dan exactamente el mismo error en exactamente el mismo momento (entre `Activating` y la línea siguiente). Eso confirma que el bug **no está en nuestra configuración** ni en la mezcla de relojes con el bridge del host. Está en código C++ compilado de algún plugin del core de EasyNav, en la rama `jazzy` que clonamos.
+Las cuatro pruebas dan exactamente el mismo error en exactamente el mismo momento (entre `Activating` y la línea siguiente). Eso confirma que el bug **no está en la configuración** ni en la mezcla de relojes con el bridge del host. Está en código C++ compilado de algún plugin del core de EasyNav, en la rama `jazzy` que clonamos.
 
-### Por qué publicar `/clock` no resolvería el problema
+### Por qué publicar `/clock` no resolvería el problema.
 
 Una solución natural sería: hacer que el bridge `mujoco_ros2_lidar_bridge.py` publique también el topic `/clock` con el tiempo simulado de MuJoCo, y poner `use_sim_time: true` en el YAML de EasyNav. Así todos los nodos vivirían en el mismo tiempo (el del simulador) y no habría mezcla de relojes.
 
@@ -241,37 +241,9 @@ Pero esto **solo funcionaría si el bug viniera de mezclar el reloj del host con
 
 ### Lo que esto significa para el proyecto
 
-Toda la infraestructura de EasyNav queda lista en esta carpeta para el día en que el bug se arregle aguas arriba. Cuando eso pase, bastará con hacer `git pull` dentro del contenedor (o reconstruir la imagen Docker para que clone la versión nueva), y el sistema funcionará sin tocar ningún archivo de los que están aquí. Los params del G1, el launch file, el RViz config, el `cmd_vel_bridge.py` — todo está adaptado y listo.
+Toda la infraestructura de EasyNav queda lista en esta carpeta para el día en que el bug se arregle. Cuando eso pase, bastará con hacer `git pull` dentro del contenedor (o reconstruir la imagen Docker para que clone la versión nueva), y el sistema funcionará sin tocar ningún archivo de los que están aquí. Los params del G1, el launch file, el RViz config, el `cmd_vel_bridge.py` — todo está adaptado y listo.
 
 Mientras tanto, **el navegador operativo del proyecto sigue siendo Nav2**, que funciona perfectamente y cubre todos los requisitos de navegación autónoma del G1 en el laberinto.
 
-### Bug reportado
-
-Este crash se ha reportado al repositorio oficial de EasyNavigation como issue. Cuando el equipo de la URJC publique una corrección, solo habrá que reconstruir la imagen Docker (`./docker/build_easynav_docker.sh`) para tener la integración funcional.
-
 ---
 
-## Troubleshooting
-
-**"Cannot connect to Docker daemon"** — añade tu usuario al grupo docker: `sudo usermod -aG docker $USER` y reinicia sesión.
-
-**"El contenedor arranca pero no ve /scan ni /odom"** — problema de DDS. Verifica:
-```bash
-# En el host:
-ros2 topic list
-# En el contenedor (shell interactiva):
-./docker/run_easynav_docker.sh
-# y dentro:
-ros2 topic list
-```
-Si los topics del host no aparecen dentro del contenedor, comprueba que `ROS_DOMAIN_ID` y `RMW_IMPLEMENTATION` coinciden en ambos lados.
-
-**"EasyNav arranca pero el robot no se mueve"** — el `cmd_vel_bridge.py` del host no está corriendo, o no recibe los Twist. Comprueba con `ros2 topic echo /cmd_vel` en el host mientras envías un goal.
-
-**"La compilación del Dockerfile falla en colcon build"** — alguna rama `jazzy` de EasyNav ha introducido un cambio incompatible. Pega el error y lo ajustamos.
-
-**"El mapa no se carga"** — verifica que `g1man/mujoco/maps/` tiene al menos un `.yaml` y que el volumen está montado bien. Desde dentro del contenedor:
-```bash
-ls -la /g1_maps/
-```
-Debería listar tus mapas. Si está vacío, el volumen no se está montando.
