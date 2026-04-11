@@ -1,0 +1,25 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: g1pilot
+    relative_path: description_files/urdf/g1_29dof.urdf
+  srdf:
+    relative_path: config/g1_29dof_rev_1_0.srdf
+  package_settings:
+    author_name: Adrià Alemany Molina
+    author_email: a.alemanymolina@gmail.com
+    generated_timestamp: 1775900438
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity
+  modified_urdf:
+    xacros:
+      - control_xacro
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity

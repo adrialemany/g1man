@@ -1,5 +1,19 @@
 import os
 import sys
+import time
+import math
+import numpy as np
+import onnxruntime as ort
+import subprocess
+import socket
+import json
+import threading
+import atexit
+
+# --- CONFIGURACIÓN ROS 2 ---
+import rclpy
+from rclpy.node import Node
+from sensor_msgs.msg import JointState
 
 # --- CONFIGURACIÓN CRÍTICA: Desactivar SharedMemory para evitar temblores y crashes ---
 os.environ["CYCLONEDDS_URI"] = """<CycloneDDS>
@@ -10,15 +24,6 @@ os.environ["CYCLONEDDS_URI"] = """<CycloneDDS>
     </Domain>
 </CycloneDDS>"""
 
-import time
-import math
-import numpy as np
-import onnxruntime as ort
-import subprocess
-import socket
-import json
-import threading
-
 from unitree_sdk2py.core.channel import ChannelFactoryInitialize
 from unitree_sdk2py.core.channel import ChannelPublisher, ChannelSubscriber
 from unitree_sdk2py.idl.default import unitree_hg_msg_dds__LowState_
@@ -26,7 +31,32 @@ from unitree_sdk2py.idl.default import unitree_hg_msg_dds__LowCmd_
 from unitree_sdk2py.idl.unitree_hg.msg.dds_ import LowState_
 from unitree_sdk2py.idl.unitree_hg.msg.dds_ import LowCmd_
 
+# =======================================================================
+# CLASE PUENTE: ENVÍA LA REALIDAD DE MUJOCO A MOVEIT
+# =======================================================================
+class ROS2StateBridge(Node):
+    def __init__(self):
+        super().__init__('sim_state_bridge')
+        self.pub = self.create_publisher(JointState, '/joint_states', 10)
+        # Nombres exactos del URDF de Unitree G1
+        self.names = [
+            "left_hip_pitch_joint", "left_hip_roll_joint", "left_hip_yaw_joint", "left_knee_joint", "left_ankle_pitch_joint", "left_ankle_roll_joint",
+            "right_hip_pitch_joint", "right_hip_roll_joint", "right_hip_yaw_joint", "right_knee_joint", "right_ankle_pitch_joint", "right_ankle_roll_joint",
+            "waist_yaw_joint", "waist_roll_joint", "waist_pitch_joint",
+            "left_shoulder_pitch_joint", "left_shoulder_roll_joint", "left_shoulder_yaw_joint", "left_elbow_joint", "left_wrist_roll_joint", "left_wrist_pitch_joint", "left_wrist_yaw_joint",
+            "right_shoulder_pitch_joint", "right_shoulder_roll_joint", "right_shoulder_yaw_joint", "right_elbow_joint", "right_wrist_roll_joint", "right_wrist_pitch_joint", "right_wrist_yaw_joint"
+        ]
 
+    def publish_state(self, q_list):
+        msg = JointState()
+        msg.header.stamp = self.get_clock().now().to_msg()
+        msg.name = self.names
+        msg.position = [float(x) for x in q_list]
+        self.pub.publish(msg)
+
+# =======================================================================
+# CLASE LOCOMOCIÓN: INFERENCIA DEL MODELO ONNX
+# =======================================================================
 class HolosomaLocomotion:
     def __init__(self, model_path):
         self.session = ort.InferenceSession(model_path)
@@ -77,9 +107,21 @@ class HolosomaLocomotion:
         self.last_action = action
         return self.default_angles + (action * 0.25)
 
+# --- GLOBALES ---
 low_state = None
 external_arm_targets = {}
 comandos = {'vx': 0.0, 'vy': 0.0, 'yaw': 0.0}
+background_processes = []
+
+def cleanup_processes():
+    print("\n[INFO] Cerrando servicios en segundo plano...")
+    for p in background_processes:
+        try: p.terminate()
+        except: pass
+    try: rclpy.shutdown()
+    except: pass
+
+atexit.register(cleanup_processes)
 
 def state_callback(msg: LowState_):
     global low_state
@@ -109,9 +151,8 @@ def locomotion_listener():
             elif data == 'd': comandos['vy'] = -0.3
             elif data == 'q': comandos['yaw'] = 0.6
             elif data == 'e': comandos['yaw'] = -0.6
-            elif data == 'stop' or data == 'ping':
-                if data == 'stop':
-                    comandos['vx'], comandos['vy'], comandos['yaw'] = 0.0, 0.0, 0.0
+            elif data == 'stop':
+                 comandos['vx'], comandos['vy'], comandos['yaw'] = 0.0, 0.0, 0.0
             conn.sendall(b"OK")
         except: pass
         finally: conn.close()
@@ -128,69 +169,97 @@ def external_arm_listener():
             external_arm_targets = {int(k): float(v) for k, v in incoming_targets.items()}
         except: continue
 
+def launch_background_services(script_dir):
+    print("[INFO] Levantando ecosistema MoveIt y ROS 2...")
+    # Cargar Workspaces
+    setup_cmd = "source /opt/ros/humble/setup.bash && source ~/robot_ws/install/setup.bash && "
+    
+    # 1. Perception Bridge (Nube de puntos / Cámaras)
+    p_bridge = subprocess.Popen(setup_cmd + "python3 simulator/perception_bridge.py", shell=True, executable='/bin/bash', cwd=script_dir)
+    background_processes.append(p_bridge)
+    
+    # 2. Núcleo MoveIt (Headless)
+    p_moveit = subprocess.Popen(setup_cmd + "ros2 launch g1_moveit_config demo.launch.py use_rviz:=false", shell=True, executable='/bin/bash', cwd=script_dir)
+    background_processes.append(p_moveit)
+
+    print("[INFO] Servicios ROS 2 lanzados.")
+    time.sleep(0.1)
+
+# =======================================================================
+# EJECUCIÓN PRINCIPAL
+# =======================================================================
 if __name__ == "__main__":
-    # --- RUTAS ABSOLUTAS ---
     script_dir = os.path.dirname(os.path.abspath(__file__))
     sim_path = os.path.join(script_dir, "simulator")
-    model_path = os.path.join(script_dir, "fastsac_g1_29dof.onnx") # <--- AÑADIDO ESTO
+    model_path = os.path.join(script_dir, "fastsac_g1_29dof.onnx")
     
-    print(f"[INFO] Lanzando el simulador...")
+    # Iniciar ROS 2 para el puente de feedback
+    rclpy.init()
+    bridge_node = ROS2StateBridge()
+    threading.Thread(target=lambda: rclpy.spin(bridge_node), daemon=True).start()
+
+    print(f"[INFO] Lanzando el simulador MuJoCo...")
     sim_proc = subprocess.Popen(["python3", "unitree_mujoco.py"], cwd=sim_path)
+    background_processes.append(sim_proc)
     time.sleep(1.0)
 
+    # Lanzar servicios acoplados
+    launch_background_services(script_dir)
+
+    # Oyentes de sockets
     threading.Thread(target=locomotion_listener, daemon=True).start()
     threading.Thread(target=external_arm_listener, daemon=True).start()
 
+    # Inicializar DDS de Unitree
     ChannelFactoryInitialize(1, "lo") 
     sub = ChannelSubscriber("rt/lowstate", LowState_)
     sub.Init(state_callback, 10)
     pub = ChannelPublisher("rt/lowcmd", LowCmd_)
     pub.Init()
 
-    # --- USAMOS LA RUTA ABSOLUTA AQUÍ ---
     controller = HolosomaLocomotion(model_path=model_path)
     
+    # Ganancias PD
     kp = [40.18, 99.10, 40.18, 99.10, 28.50, 28.50]*2 + [40.18, 28.50, 28.50] + [14.25, 14.25, 14.25, 14.25, 16.78, 16.78, 16.78]*2
     kd = [2.56, 6.31, 2.56, 6.31, 1.81, 1.81]*2 + [2.56, 1.81, 1.81] + [0.91, 0.91, 0.91, 0.91, 1.07, 1.07, 1.07]*2
 
-    print("[INFO] Esperando datos...")
+    print("[INFO] Esperando conexión con la simulación...")
     while low_state is None:
         time.sleep(0.1)
     
-    print("[INFO] ¡Control activo! Usa WASD en el cliente.")
+    print("[INFO] ¡Control activo!")
 
     try:
         while True:
             t_start = time.time()
             cmd_msg = unitree_hg_msg_dds__LowCmd_() 
             
+            # Recolectar estado actual
+            q_actual = [low_state.motor_state[i].q for i in range(29)]
             estado = {
                 'gyro': low_state.imu_state.gyroscope,
                 'gravity': quaternion_to_gravity(low_state.imu_state.quaternion),
-                'joint_pos': [low_state.motor_state[i].q for i in range(29)],
+                'joint_pos': q_actual,
                 'joint_vel': [low_state.motor_state[i].dq for i in range(29)]
             }
 
-            # --- DETECCIÓN DE CAÍDA Y TELETRANSPORTE ---
+            # --- FEEDBACK PARA MOVEIT (CRÍTICO) ---
+            bridge_node.publish_state(q_actual)
+
+            # Detección de caída
             if estado['gravity'][2] > -0.5:
-                print("🚨 ¡Caída detectada! Reseteando posición...")
-                
+                print("🚨 Caída detectada. Reseteando...")
                 try:
                     sock_reset = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
                     sock_reset.sendto(b"reset", ("127.0.0.1", 6005))
                     sock_reset.close()
                 except: pass
-                
-                comandos['vx'] = 0.0
-                comandos['vy'] = 0.0
-                comandos['yaw'] = 0.0
-                
+                comandos['vx'] = 0.0; comandos['vy'] = 0.0; comandos['yaw'] = 0.0
                 time.sleep(0.1)
-                
                 controller.phase = np.array([0.0, math.pi], dtype=np.float32)
                 continue
             
-            # --- CONTROL DE LA IA PURA ---
+            # Cálculo de la IA + Mezcla con MoveIt
             targets = controller.get_target_positions(estado, comandos, external_arm_targets)
             
             for i in range(29):
@@ -200,14 +269,16 @@ if __name__ == "__main__":
                 cmd_msg.motor_cmd[i].kd = kd[i]
                 cmd_msg.motor_cmd[i].tau = 0.0
                 
+                # Prioridad absoluta a los comandos del brazo derecho de MoveIt
                 if i in external_arm_targets:
                     cmd_msg.motor_cmd[i].q = external_arm_targets[i]
                 else:
                     cmd_msg.motor_cmd[i].q = targets[i]
             
             pub.Write(cmd_msg)
+            
+            # Mantener 50Hz clavados
             time.sleep(max(0.0, (1.0 / 50.0) - (time.time() - t_start)))
             
     except KeyboardInterrupt:
-        print("\n[INFO] Detenido.")
-        sim_proc.terminate()
+        print("\n[INFO] Apagando...")
