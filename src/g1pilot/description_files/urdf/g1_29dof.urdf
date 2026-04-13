@@ -1261,4 +1261,97 @@
     <child link="lidar_link"/>
     <origin xyz="0.0 0.0 0.10" rpy="0 0 0"/>
   </joint>
+  <ros2_control name="FakeSystem" type="system">
+      <hardware>
+          <plugin>mock_components/GenericSystem</plugin>
+      </hardware>
+
+      <joint name="waist_yaw_joint">
+          <command_interface name="position"/>
+          <state_interface name="position"><param name="initial_value">0.0</param></state_interface>
+          <state_interface name="velocity"/>
+      </joint>
+      <joint name="waist_roll_joint">
+          <command_interface name="position"/>
+          <state_interface name="position"><param name="initial_value">0.0</param></state_interface>
+          <state_interface name="velocity"/>
+      </joint>
+      <joint name="waist_pitch_joint">
+          <command_interface name="position"/>
+          <state_interface name="position"><param name="initial_value">0.0</param></state_interface>
+          <state_interface name="velocity"/>
+      </joint>
+
+      <joint name="left_shoulder_pitch_joint">
+          <command_interface name="position"/>
+          <state_interface name="position"><param name="initial_value">0.0</param></state_interface>
+          <state_interface name="velocity"/>
+      </joint>
+      <joint name="left_shoulder_roll_joint">
+          <command_interface name="position"/>
+          <state_interface name="position"><param name="initial_value">0.0</param></state_interface>
+          <state_interface name="velocity"/>
+      </joint>
+      <joint name="left_shoulder_yaw_joint">
+          <command_interface name="position"/>
+          <state_interface name="position"><param name="initial_value">0.0</param></state_interface>
+          <state_interface name="velocity"/>
+      </joint>
+      <joint name="left_elbow_joint">
+          <command_interface name="position"/>
+          <state_interface name="position"><param name="initial_value">0.0</param></state_interface>
+          <state_interface name="velocity"/>
+      </joint>
+      <joint name="left_wrist_roll_joint">
+          <command_interface name="position"/>
+          <state_interface name="position"><param name="initial_value">0.0</param></state_interface>
+          <state_interface name="velocity"/>
+      </joint>
+      <joint name="left_wrist_pitch_joint">
+          <command_interface name="position"/>
+          <state_interface name="position"><param name="initial_value">0.0</param></state_interface>
+          <state_interface name="velocity"/>
+      </joint>
+      <joint name="left_wrist_yaw_joint">
+          <command_interface name="position"/>
+          <state_interface name="position"><param name="initial_value">0.0</param></state_interface>
+          <state_interface name="velocity"/>
+      </joint>
+
+      <joint name="right_shoulder_pitch_joint">
+          <command_interface name="position"/>
+          <state_interface name="position"><param name="initial_value">0.0</param></state_interface>
+          <state_interface name="velocity"/>
+      </joint>
+      <joint name="right_shoulder_roll_joint">
+          <command_interface name="position"/>
+          <state_interface name="position"><param name="initial_value">0.0</param></state_interface>
+          <state_interface name="velocity"/>
+      </joint>
+      <joint name="right_shoulder_yaw_joint">
+          <command_interface name="position"/>
+          <state_interface name="position"><param name="initial_value">0.0</param></state_interface>
+          <state_interface name="velocity"/>
+      </joint>
+      <joint name="right_elbow_joint">
+          <command_interface name="position"/>
+          <state_interface name="position"><param name="initial_value">0.0</param></state_interface>
+          <state_interface name="velocity"/>
+      </joint>
+      <joint name="right_wrist_roll_joint">
+          <command_interface name="position"/>
+          <state_interface name="position"><param name="initial_value">0.0</param></state_interface>
+          <state_interface name="velocity"/>
+      </joint>
+      <joint name="right_wrist_pitch_joint">
+          <command_interface name="position"/>
+          <state_interface name="position"><param name="initial_value">0.0</param></state_interface>
+          <state_interface name="velocity"/>
+      </joint>
+      <joint name="right_wrist_yaw_joint">
+          <command_interface name="position"/>
+          <state_interface name="position"><param name="initial_value">0.0</param></state_interface>
+          <state_interface name="velocity"/>
+      </joint>
+  </ros2_control>
 </robot>

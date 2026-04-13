@@ -228,6 +228,8 @@ if __name__ == "__main__":
         time.sleep(0.1)
     
     print("[INFO] ¡Control activo!")
+    
+    smoothed_arm_targets = {}
 
     try:
         while True:
@@ -269,11 +271,18 @@ if __name__ == "__main__":
                 cmd_msg.motor_cmd[i].kd = kd[i]
                 cmd_msg.motor_cmd[i].tau = 0.0
                 
-                # Prioridad absoluta a los comandos del brazo derecho de MoveIt
                 if i in external_arm_targets:
-                    cmd_msg.motor_cmd[i].q = external_arm_targets[i]
+                    if i not in smoothed_arm_targets:
+                        # Iniciar suavemente desde donde esté el brazo en este momento
+                        smoothed_arm_targets[i] = q_actual[i]
+                        
+                    # Mezcla: 85% de inercia anterior + 15% del nuevo target de MoveIt
+                    smoothed_arm_targets[i] = (0.85 * smoothed_arm_targets[i]) + (0.15 * external_arm_targets[i])
+                    cmd_msg.motor_cmd[i].q = smoothed_arm_targets[i]
                 else:
                     cmd_msg.motor_cmd[i].q = targets[i]
+                    if i in smoothed_arm_targets:
+                        del smoothed_arm_targets[i]
             
             pub.Write(cmd_msg)
             

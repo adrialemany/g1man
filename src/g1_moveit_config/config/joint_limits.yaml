@@ -1,41 +1,89 @@
-default_velocity_scaling_factor: 0.1
-default_acceleration_scaling_factor: 0.1
+default_velocity_scaling_factor: 0.10
+default_acceleration_scaling_factor: 0.10
 
-# Specific joint properties can be changed with the keys [max_position, min_position, max_velo>
-# Joint limits can be turned off with [has_velocity_limits, has_acceleration_limits]
 joint_limits:
+  left_elbow_joint:
+    has_velocity_limits: true
+    max_velocity: 37.00
+    has_acceleration_limits: false
+    max_acceleration: 0.00
+  left_shoulder_pitch_joint:
+    has_velocity_limits: true
+    max_velocity: 37.00
+    has_acceleration_limits: false
+    max_acceleration: 0.00
+  left_shoulder_roll_joint:
+    has_velocity_limits: true
+    max_velocity: 37.00
+    has_acceleration_limits: false
+    max_acceleration: 0.00
+  left_shoulder_yaw_joint:
+    has_velocity_limits: true
+    max_velocity: 37.00
+    has_acceleration_limits: false
+    max_acceleration: 0.00
+  left_wrist_pitch_joint:
+    has_velocity_limits: true
+    max_velocity: 22.00
+    has_acceleration_limits: false
+    max_acceleration: 0.00
+  left_wrist_roll_joint:
+    has_velocity_limits: true
+    max_velocity: 37.00
+    has_acceleration_limits: false
+    max_acceleration: 0.00
+  left_wrist_yaw_joint:
+    has_velocity_limits: true
+    max_velocity: 22.00
+    has_acceleration_limits: false
+    max_acceleration: 0.00
   right_elbow_joint:
     has_velocity_limits: true
-    max_velocity: 37.0
+    max_velocity: 37.00
     has_acceleration_limits: false
-    max_acceleration: 0.0
+    max_acceleration: 0.00
   right_shoulder_pitch_joint:
     has_velocity_limits: true
-    max_velocity: 37.0
+    max_velocity: 37.00
     has_acceleration_limits: false
-    max_acceleration: 0.0
+    max_acceleration: 0.00
   right_shoulder_roll_joint:
     has_velocity_limits: true
-    max_velocity: 37.0
+    max_velocity: 37.00
     has_acceleration_limits: false
-    max_acceleration: 0.0
+    max_acceleration: 0.00
   right_shoulder_yaw_joint:
     has_velocity_limits: true
-    max_velocity: 37.0
+    max_velocity: 37.00
     has_acceleration_limits: false
-    max_acceleration: 0.0
+    max_acceleration: 0.00
   right_wrist_pitch_joint:
     has_velocity_limits: true
-    max_velocity: 22.0
+    max_velocity: 22.00
     has_acceleration_limits: false
-    max_acceleration: 0.0
+    max_acceleration: 0.00
   right_wrist_roll_joint:
     has_velocity_limits: true
-    max_velocity: 37.0
+    max_velocity: 37.00
     has_acceleration_limits: false
-    max_acceleration: 0.0
+    max_acceleration: 0.00
   right_wrist_yaw_joint:
     has_velocity_limits: true
-    max_velocity: 22.0
+    max_velocity: 22.00
     has_acceleration_limits: false
-    max_acceleration: 0.0
+    max_acceleration: 0.00
+  waist_pitch_joint:
+    has_velocity_limits: true
+    max_velocity: 37.00
+    has_acceleration_limits: false
+    max_acceleration: 0.00
+  waist_roll_joint:
+    has_velocity_limits: true
+    max_velocity: 37.00
+    has_acceleration_limits: false
+    max_acceleration: 0.00
+  waist_yaw_joint:
+    has_velocity_limits: true
+    max_velocity: 32.00
+    has_acceleration_limits: false
+    max_acceleration: 0.00
