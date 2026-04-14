@@ -107,8 +107,8 @@ class G1PerfectIK:
 
         if time.time() - self.last_time > 0.1:
             return
-
-        k = self.last_key.lower()
+        
+        k = (self.last_key or "").lower()
         dp = 0.01
         dr = 0.03
 
