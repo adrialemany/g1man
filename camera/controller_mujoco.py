@@ -11,7 +11,7 @@ from insightface.app import FaceAnalysis
 from inference import EmotionInference
 
 # 🔥 CONFIGURACIÓN DE RED (IP de TU ordenador en la red local)
-SIMULATOR_IP = "192.168.1.100"  # <-- QUE TU COMPAÑERA CAMBIE ESTO A TU IP
+SIMULATOR_IP = "192.168.0.102"  # <-- QUE TU COMPAÑERA CAMBIE ESTO A TU IP
 SIMULATOR_PORT = 5005
 
 # Mapeo de la salida del modelo (0-5) a los textos que entiende tu simulador
