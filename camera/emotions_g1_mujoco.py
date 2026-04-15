@@ -100,6 +100,7 @@ class G1PerfectIK:
         self.udp_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.target_address = ('127.0.0.1', 9876)
         self.state_received = False
+        self.tick_count = 0
         ChannelFactoryInitialize(1, "lo") 
         self.sub = ChannelSubscriber("rt/lowstate", LowState_)
         self.sub.Init(self.state_callback, 10)
@@ -116,6 +117,11 @@ class G1PerfectIK:
         return zone
 
     def state_callback(self, msg: LowState_):
+        self.tick_count += 1
+        # Ignoramos los primeros 3 segundos de simulación para que la locomoción asiente los brazos
+        if self.tick_count < 150: 
+            return
+            
         for i in range(29):
             self.current_jpos[i] = msg.motor_state[i].q
             
@@ -123,9 +129,11 @@ class G1PerfectIK:
             self.state_received = True
             self.sync_math_with_reality()
             
+            # Ahora sí, esta foto del 'home' será la posición natural de reposo real
             self.home_xyz = self.hand_xyz_actual.copy()
             self.home_q_math = self.q_math.copy()
             
+            print("[INFO] Posición natural capturada. Emociones listas.")
             threading.Thread(target=self.control_loop, daemon=True).start()
             threading.Thread(target=self.input_loop, daemon=True).start()
             
@@ -183,6 +191,10 @@ class G1PerfectIK:
 
     def move_to_home(self, duration=0.6):
         self.final_target_xyz = self.home_xyz.copy()
+        
+        # CORRECCIÓN: Actualizamos también el current_target_xyz para que la IK 
+        # no intente volver a la posición de la emoción anterior al terminar.
+        self.current_target_xyz = self.home_xyz.copy() 
         
         num_steps = max(1, int(duration / self.dt))
         start_q = self.q_math.copy()
@@ -246,6 +258,7 @@ class G1PerfectIK:
             self.wait_until_reached()
             self.move_to([0.057, 0.032, 0.372], duration=0.4)
             self.wait_until_reached()
+            time.sleep(4.0) # Espera 4 segundos con las manos en el sitio
             self.move_to_home(duration=0.6)
             self.wait_until_reached()
             
@@ -254,6 +267,7 @@ class G1PerfectIK:
             self.wait_until_reached()
             self.move_to([0.057, 0.032, 0.372], wrist_rot=3.14, duration=0.8)
             self.wait_until_reached()
+            time.sleep(4.0) # Espera 4 segundos con las manos en el sitio
             self.move_to_home(duration=0.8)
             self.wait_until_reached()
             
@@ -261,28 +275,42 @@ class G1PerfectIK:
             send_walk_cmd('w')
             time.sleep(0.5)
             send_walk_cmd('stop')
-            self.move_to([0.2, 0.144, 0.24], duration=0.2)
-            self.wait_until_reached()
-            self.move_to([0.24, 0.12, 0.25], duration=0.2)
-            self.wait_until_reached()
-            self.move_to([0.2, 0.144, 0.24], duration=0.2)
-            self.wait_until_reached()
-            self.move_to([0.24, 0.12, 0.25], duration=0.2)
-            self.wait_until_reached()
+            
+            # Agitar los brazos 3 veces (movimiento amplio en el eje Z para forzar al codo)
+            for _ in range(3):
+                # Posición alta (manos arriba, codos flexionados)
+                self.move_to([0.2, 0.25, 0.5], duration=0.15)
+                self.wait_until_reached()
+                
+                # Posición baja (manos abajo, codos extendidos)
+                self.move_to([0.2, 0.25, 0.2], duration=0.15)
+                self.wait_until_reached()
+                
             self.move_to_home(duration=0.5)
             self.wait_until_reached()
+            send_walk_cmd('s')
+            time.sleep(0.5)
+            send_walk_cmd('stop')
 
     def input_loop(self):
         time.sleep(1.0)
         self.active_ik = True
         self.current_target_xyz = self.home_xyz.copy()
         
+        # Servidor UDP para escuchar a la compañera
+        server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        server_socket.bind(('0.0.0.0', 5005))
+        print("[INFO] 🎧 Escuchando emociones por red en el puerto 5005...")
+        
         while True:
-            cmd = input("\nEmoción (HAPPY, NEUTRAL, FRUSTRATED, SAD, ANGRY) o 'q' para salir: ").strip().upper()
-            if cmd == 'Q': 
-                os._exit(0)
-            elif cmd in ["HAPPY", "NEUTRAL", "FRUSTRATED", "SAD", "ANGRY"]:
-                self.play_emotion(cmd)
+            try:
+                data, addr = server_socket.recvfrom(1024)
+                cmd = data.decode('utf-8').strip().upper()
+                if cmd in ["HAPPY", "NEUTRAL", "FRUSTRATED", "SAD", "ANGRY"]:
+                    print(f"📥 Emoción recibida desde {addr}: {cmd}")
+                    self.play_emotion(cmd)
+            except Exception as e:
+                print(f"Error recibiendo comando: {e}")
 
     def control_loop(self):
         while True:
@@ -292,8 +320,12 @@ class G1PerfectIK:
                 continue
 
             if not self.active_ik:
+                try:
+                    self.udp_sock.sendto(json.dumps({}).encode('utf-8'), self.target_address)
+                except Exception:
+                    pass
                 time.sleep(self.dt)
-                continue
+                continues
                 
             if hasattr(self, 'wrist_trajectory') and self.wrist_trajectory:
                 self.current_wrist_offset = self.wrist_trajectory.pop(0)

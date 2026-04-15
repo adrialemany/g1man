@@ -171,18 +171,28 @@ def external_arm_listener():
 
 def launch_background_services(script_dir):
     print("[INFO] Levantando ecosistema MoveIt y ROS 2...")
+    
+    # 1. Definir rutas dinámicas independientes de dónde se ejecute el script
+    # script_dir siempre es: .../robot_ws/mujoco
+    ws_dir = os.path.dirname(script_dir)         # Sube un nivel a: .../robot_ws
+    camera_dir = os.path.join(ws_dir, "camera")  # Baja a la carpeta: .../robot_ws/camera
+
     # Cargar Workspaces
     setup_cmd = "source /opt/ros/humble/setup.bash && source ~/robot_ws/install/setup.bash && "
     
-    # 1. Perception Bridge (Nube de puntos / Cámaras)
+    # 2. Perception Bridge (Nube de puntos / Cámaras)
     p_bridge = subprocess.Popen(setup_cmd + "python3 simulator/perception_bridge.py", shell=True, executable='/bin/bash', cwd=script_dir)
     background_processes.append(p_bridge)
     
-    # 2. Núcleo MoveIt (Headless)
+    # 3. Núcleo MoveIt (Headless)
     p_moveit = subprocess.Popen(setup_cmd + "ros2 launch g1_moveit_config demo.launch.py use_rviz:=false", shell=True, executable='/bin/bash', cwd=script_dir)
     background_processes.append(p_moveit)
 
-    print("[INFO] Servicios ROS 2 lanzados.")
+    # 4. 🔥 Servidor de Emociones (Cinemática Inversa)
+    p_emotions = subprocess.Popen(["python3", "emotions_g1_mujoco.py"], cwd=camera_dir)
+    background_processes.append(p_emotions)
+
+    print("[INFO] Servicios ROS 2 y Servidor de Emociones lanzados.")
     time.sleep(0.1)
 
 # =======================================================================
