@@ -9,7 +9,7 @@ Máquina de estados:
   AJUSTE_FINAL         → Strafe milimétrico para alinear a < 2 cm de error.
   ESTABILIZANDO        → Espera a que las físicas se asienten.
   ANALIZANDO_ESCENA    → Pre-chequea centrado. Fusiona RGB + Depth para calcular caja y mesa.
-  EJECUTANDO_MANIOBRA  → BIMANUAL: ¡Ejecución nativa de MoveIt en lazo cerrado!
+  EJECUTANDO_MANIOBRA  → BIMANUAL: ¡Ejecución nativa de MoveIt en lazo cerrado en 3 pasos!
   FINALIZADO           → Misión completada.
 """
 
@@ -288,6 +288,32 @@ class MoveItBrain(Node):
         req.goal_constraints.append(c)
         return req
 
+    # ── NUEVA FUNCIÓN DE AYUDA: Envia comandos simultáneos a ambos brazos
+    # ── NUEVA FUNCIÓN DE AYUDA: Envia y ESPERA a que el brazo termine el movimiento
+    def _mover_brazo_secuencial(self, group_name: str, tx: float, ty: float, tz: float):
+        self.get_logger().info(f"🦾 Moviendo {group_name} a X:{tx:.2f} Y:{ty:.2f} Z:{tz:.2f} ...")
+        goal = MoveGroup.Goal()
+        # Reducimos un poco la tolerancia (0.05) para que el abrazo sea más preciso
+        goal.request = self._build_motion_request(group_name, tx, ty, tz, 0.05)
+        goal.planning_options.plan_only = False
+
+        # 1. Enviamos la petición y esperamos a que MoveIt la acepte
+        f_goal = self._action_client.send_goal_async(goal)
+        while rclpy.ok() and not f_goal.done():
+            time.sleep(0.05)
+
+        h_goal = f_goal.result()
+        if not h_goal.accepted:
+            self.get_logger().warn(f"⚠️ MoveIt rechazó la trayectoria para {group_name}.")
+            return
+
+        # 2. VITAL: Esperamos a que la trayectoria TERMINE de ejecutarse en el robot
+        f_res = h_goal.get_result_async()
+        while rclpy.ok() and not f_res.done():
+            time.sleep(0.05)
+        
+        self.get_logger().info(f"✅ {group_name} llegó a su posición.")
+
     def _ejecutar_maniobra(self):
         caja = cam_to_pelvis(self.mem_z, self.mem_x_lat, self.mem_y_vert)
         self.get_logger().info(f"🎯 Caja en pelvis: X={caja[0]:.3f}  Y={caja[1]:.3f}  Z={caja[2]:.3f}")
@@ -296,45 +322,39 @@ class MoveItBrain(Node):
         min_z = (self.mesa_z_pelvis + 0.04) if self.mesa_z_pelvis is not None else (caja[2] - self.caja_alto_m / 2.0 + 0.04)
         work_z = max(caja[2], min_z)
 
-        # ── CORRECCIÓN GEOMÉTRICA FÍSICA ──
-        # La muñeca está a ~10-12 cm por detrás de la punta de los dedos. 
-        # Restamos a la X para que la mano no atraviese la caja frontalmente, 
-        # y sumamos a la Y para que la muñeca quede fuera del volumen de la caja.
-        OFFSET_MUNECA_X = 0.09 # La muñeca se queda 9 cm más cerca del robot
-        OFFSET_MUNECA_Y = 0.06 # La muñeca se abre 6 cm más hacia los lados
-        
-        wp_x   = caja[0] - OFFSET_MUNECA_X
-        wp_z   = work_z + 0.02 # Elevamos ligeramente las manos
-        wp_y_r = caja[1] - half_w - OFFSET_MUNECA_Y
-        wp_y_l = caja[1] + half_w + OFFSET_MUNECA_Y
+        OFFSET_MUNECA_X = 0.08 # Ajustamos a 8 cm para que la mano no choque frontalmente
 
-        self.get_logger().info(f"🤜 Destino Derecho   → ({wp_x:.2f}, {wp_y_r:.2f}, {wp_z:.2f})")
-        self.get_logger().info(f"🤛 Destino Izquierdo → ({wp_x:.2f}, {wp_y_l:.2f}, {wp_z:.2f})")
-
-        # ── ENVIAMOS LA EJECUCIÓN NATIVA A MOVEIT ──
-        goal_r = MoveGroup.Goal()
-        goal_r.request = self._build_motion_request('right_arm', wp_x, wp_y_r, wp_z, 0.08)
-        goal_r.planning_options.plan_only = False # ¡FALSO! Esto hace que MoveIt LO EJECUTE de verdad
-
-        goal_l = MoveGroup.Goal()
-        goal_l.request = self._build_motion_request('left_arm', wp_x, wp_y_l, wp_z, 0.08)
-        goal_l.planning_options.plan_only = False
-
-        # Desactivamos el reposo para que las callbacks del puente tomen el control
+        # Desactivamos el reposo para que MoveIt tome el control total
         self._rest_active = False
         time.sleep(0.1)
 
-        self.get_logger().info("🚀 ¡Mandando orden de ejecución simultánea a MoveIt!")
+        # ── PASO 1: Levantar brazos a los laterales (Izquierdo primero, luego Derecho) ──
+        self.get_logger().info("🚀 Paso 1: Levantando brazos a los laterales...")
+        self._mover_brazo_secuencial('left_arm', 0.1, 0.3, 0.2)
+        self._mover_brazo_secuencial('right_arm', 0.1, -0.3, 0.2)
+
+        # ── PASO 2: Acercar brazos a la altura de la caja (margen 10 cm alejados) ──
+        self.get_logger().info("🚀 Paso 2: Acercando a la altura de la caja (con margen de 10cm)...")
+        wp_x = caja[0] - OFFSET_MUNECA_X
+        wp_z = work_z + 0.02 # Elevamos ligeramente las manos respecto al centro
         
-        # Enviamos las órdenes de forma asíncrona para que MoveIt mueva los dos brazos a la vez
-        future_r = self._action_client.send_goal_async(goal_r)
-        future_l = self._action_client.send_goal_async(goal_l)
+        wp2_y_l = caja[1] + half_w + 0.10
+        wp2_y_r = caja[1] - half_w - 0.10
+        
+        self._mover_brazo_secuencial('left_arm', wp_x, wp2_y_l, wp_z)
+        self._mover_brazo_secuencial('right_arm', wp_x, wp2_y_r, wp_z)
 
-        # Esperamos a que los dos terminen
-        while not (future_r.done() and future_l.done()):
-            time.sleep(0.1)
+        # ── PASO 3: Abrazar la caja poniendo las palmas alrededor ──
+        self.get_logger().info("🚀 Paso 3: Cerrando los brazos alrededor de la caja...")
+        OFFSET_MUNECA_Y = 0.02 # Apretamos a solo 2cm de los bordes calculados de la caja
+        
+        wp3_y_l = caja[1] + half_w + OFFSET_MUNECA_Y
+        wp3_y_r = caja[1] - half_w - OFFSET_MUNECA_Y
+        
+        self._mover_brazo_secuencial('left_arm', wp_x, wp3_y_l, wp_z)
+        self._mover_brazo_secuencial('right_arm', wp_x, wp3_y_r, wp_z)
 
-        self.get_logger().info("🎉 ¡MISIÓN COMPLETADA! Abrazando la caja.")
+        self.get_logger().info("🎉 ¡MISIÓN COMPLETADA! Brazos cerrados alrededor de la caja.")
         self.estado = "FINALIZADO"
 
     def vision_loop(self):

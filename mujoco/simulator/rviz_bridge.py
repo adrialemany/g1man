@@ -30,30 +30,27 @@ class RVizMujocoBridge(Node):
         self.sub_l = self.create_subscription(JointTrajectoryControllerState, '/left_arm_controller/controller_state', self.state_cb, 10)
         
         self.target_joints = {}
-        self.get_logger().info("🔗 Lazo Cerrado RViz -> MuJoCo Activo. ¡Mueve el robot en RViz!")
+        
+        # EL SEGURO: Empezamos dormidos para no machacar la postura de la IA
+        self.active = False 
+        
+        self.get_logger().info("🔗 Lazo Cerrado RViz -> MuJoCo conectado.")
+        self.get_logger().info("😴 Puente en espera... Los brazos los controla la IA hasta que des la orden en MoveIt.")
 
         threading.Thread(target=self.stream_to_mujoco, daemon=True).start()
 
     def state_cb(self, msg):
         if not msg.reference.positions: return
-        for i, name in enumerate(msg.joint_names):
-            m_id = JOINT_MAP.get(name)
-            if m_id:
-                self.target_joints[str(m_id)] = msg.reference.positions[i]
-
-    def stream_to_mujoco(self):
-        while rclpy.ok():
-            if self.target_joints:
-                self.udp_sock.sendto(json.dumps(self.target_joints).encode(), self.ia_addr)
-            time.sleep(0.02) # 50Hz streaming
-
-def main():
-    rclpy.init()
-    node = RVizMujocoBridge()
-    try: rclpy.spin(node)
-    except KeyboardInterrupt: pass
-    node.destroy_node()
-    rclpy.shutdown()
-
-if __name__ == '__main__':
-    main()
+        
+        # 1. Vigilar si MoveIt arranca un movimiento real
+        if not self.active:
+            if msg.reference.velocities:
+                # Si la velocidad de cualquier motor supera el 1%, despertamos el puente
+                if any(abs(v) > 0.01 for v in msg.reference.velocities):
+                    self.active = True
+                    self.get_logger().info("🚀 ¡Movimiento detectado! Tomando el control de los brazos.")
+        
+        # 2. Solo registrar la postura si el puente está activo
+        if self.active:
+            for i, name in enumerate(msg.joint_names):
+                m_id = JOINT_MAP.get(name)
