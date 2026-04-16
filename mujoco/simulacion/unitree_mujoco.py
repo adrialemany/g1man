@@ -303,12 +303,19 @@ def RGBServerThread():
 
     renderer_rgb = mujoco.Renderer(mj_model, height=RGB_HEIGHT, width=RGB_WIDTH)
 
+    # Opciones de escena para el renderer de cámara:
+    # activar todos los grupos geométricos (0-5) para que las paredes
+    # del grupo 3 sean visibles sin necesitar pulsar '3' en el viewer.
+    _scene_opt = mujoco.MjvOption()
+    _scene_opt.geomgroup[:] = 1   # activar grupos 0-5
+
     print("[INFO] Servidor RGB en puerto 5555")
 
     while viewer.is_running():
         try:
             with locker:
-                renderer_rgb.update_scene(mj_data, camera=CAMERA_NAME)
+                renderer_rgb.update_scene(mj_data, camera=CAMERA_NAME,
+                                          scene_option=_scene_opt)
                 pixels_rgb = renderer_rgb.render()
 
             bgr_frame = cv2.cvtColor(pixels_rgb, cv2.COLOR_RGB2BGR)

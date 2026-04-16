@@ -267,7 +267,7 @@ planner_server:
       plugin: "nav2_navfn_planner/NavfnPlanner"
       tolerance: 0.5
       use_astar: true
-      allow_unknown: true
+      allow_unknown: false   # REALISMO: no planificar por zonas no exploradas
 
 # =====================================================================
 # SMOOTHER

@@ -68,7 +68,7 @@ Visualization Manager:
       Enabled: true
       Name: Map
       Topic:
-        Depth: 1
+        Depth: 5
         Durability Policy: Volatile
         Filter size: 10
         History Policy: Keep Last
@@ -210,7 +210,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 14.90670394897461
+      Distance: 50.0
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -225,7 +225,7 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.399999976158142
+      Pitch: 1.5707963267948966
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
       Yaw: 3.140000104904175
