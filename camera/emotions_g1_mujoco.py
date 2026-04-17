@@ -254,18 +254,14 @@ class G1PerfectIK:
             self.wait_until_reached()
             
         elif emotion == "FRUSTRATED":
-            self.move_to([0.1, 0.2, 0.5], duration=0.4)
-            self.wait_until_reached()
-            self.move_to([0.057, 0.032, 0.372], duration=0.4)
+            self.move_to([0.1, 0.17, 0.4], duration=0.4) # 0.1, 0.17, 0.4
             self.wait_until_reached()
             time.sleep(4.0) # Espera 4 segundos con las manos en el sitio
             self.move_to_home(duration=0.6)
             self.wait_until_reached()
             
         elif emotion == "SAD":
-            self.move_to([0.1, 0.2, 0.5], duration=0.6)
-            self.wait_until_reached()
-            self.move_to([0.057, 0.032, 0.372], wrist_rot=3.14, duration=0.8)
+            self.move_to([0.15, 0.1, 0.4], duration=0.6)
             self.wait_until_reached()
             time.sleep(4.0) # Espera 4 segundos con las manos en el sitio
             self.move_to_home(duration=0.8)
