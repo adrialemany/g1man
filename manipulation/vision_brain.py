@@ -1068,20 +1068,25 @@ if __name__ == "__main__":
                 robot_ik.set_targets(tgt_l, tgt_r)
 
         # ─────────────────────────────────────────────────────────────────────
-        # Levantamiento en DOS FASES: 
-        # FASE 1: Tirar de la caja hacia el estómago. Esto obliga a la cinemática
-        # a doblar los codos de forma natural hacia atrás (evita la rotación invertida).
+        # Levantamiento en DOS FASES para evitar alas de pollo y fallos de cinemática.
+        # FASE 1: Tirar de la caja horizontalmente hacia el estómago.
+        # Esto obliga a la IK a doblar los codos de forma natural hacia atrás.
         # ─────────────────────────────────────────────────────────────────────
         elif estado_robot == "INICIAR_LEVANTE":
-            print("[ESTADO] Fase 1 de Levante: Retrayendo brazos para forzar codos hacia atrás.")
+            print("[ESTADO] Fase 1 de Levante: Retrayendo caja al pecho (X=0.20m).")
             tgt_l = robot_ik.hand_l_actual.copy()
             tgt_r = robot_ik.hand_r_actual.copy()
 
-            # X objetivo: Acercar la caja al pecho agresivamente (X = 0.20m)
+            # BLOQUEO CLAVE: Congelamos la rotación lateral del hombro. 
+            # Esto obliga a la IK a usar SOLO el codo y el cabeceo del hombro en 2D, 
+            # garantizando que el codo flexione hacia atrás y no hacia arriba (alas de pollo).
+            robot_ik.lock_shoulder_roll = True
+
+            # Fase 1: Tirar hacia el cuerpo (X = 0.20m) manteniendo la Y de agarre
             tgt_l[0] = 0.20
             tgt_r[0] = 0.20
             
-            # Z objetivo: Subir solo un poquito para despegarla de la mesa (+5 cm)
+            # Levantar un pelín para que la caja no roce ni se arrastre por la mesa (+5 cm)
             tgt_l[2] += 0.05
             tgt_r[2] += 0.05
 
@@ -1093,23 +1098,22 @@ if __name__ == "__main__":
         elif estado_robot == "MOVIENDO_LEVANTE_RETROCESO":
             error_dist = robot_ik.get_max_distance_to_target()
             if error_dist < 0.04 or (now - tiempo_estado > 4.0):
-                print("[ESTADO] Retracción completada. Codos asegurados. Pasando a Fase 2.")
+                print("[ESTADO] Retracción completada. Codos asegurados atrás. Pasando a Fase 2 (Subida vertical).")
                 estado_robot       = "INICIAR_LEVANTE_VERTICAL"
                 tiempo_estado      = now
 
         # ─────────────────────────────────────────────────────────────────────
-        # FASE 2: Subir la caja en vertical. Al tener ya los codos plegados atrás, 
-        # el IK simplemente rotará los hombros hacia arriba manteniendo la pose humana.
+        # FASE 2: Subir la caja en vertical. Al tener ya los codos plegados atrás
+        # y el roll bloqueado, los brazos subirán manteniendo la postura natural.
         # ─────────────────────────────────────────────────────────────────────
         elif estado_robot == "INICIAR_LEVANTE_VERTICAL":
-            print("[ESTADO] Fase 2 de Levante: Subiendo la caja en altura (Z = 0.50m).")
-            tgt_l = robot_ik.hand_l_actual.copy()
-            tgt_r = robot_ik.hand_r_actual.copy()
+            print("[ESTADO] Fase 2 de Levante: Subiendo la caja hasta el pecho (Z=0.50m).")
+            tgt_l = robot_ik.hand_l_actual.copy() - 0.1
+            tgt_r = robot_ik.hand_r_actual.copy() - 0.1
 
-            # X se mantiene en 0.20
-            # Z objetivo: La altura final solicitada (0.50m)
-            tgt_l[2] = 0.50
-            tgt_r[2] = 0.50
+            # Fase 2: Subir hasta Z=0.50m. Las manos ya están en X=0.20 y no cambiarán.
+            tgt_l[2] = 0.2
+            tgt_r[2] = 0.2
 
             robot_ik.set_targets(tgt_l, tgt_r)
             print("[ESTADO] Pasando a MOVIENDO_LEVANTE_VERTICAL.")
@@ -1118,8 +1122,8 @@ if __name__ == "__main__":
 
         elif estado_robot == "MOVIENDO_LEVANTE_VERTICAL":
             error_dist = robot_ik.get_max_distance_to_target()
-            if error_dist < 0.04 or (now - tiempo_estado > 4.0):
-                print("[ESTADO] Levantamiento vertical completado. Pasando a RETROCEDER.")
+            if error_dist < 0.04 or (now - tiempo_estado > 5.0):
+                print("[ESTADO] Levantamiento vertical completado con éxito. Pasando a RETROCEDER.")
                 estado_robot       = "RETROCEDER"
                 tiempo_estado      = now
                 ultimo_comando_walk = 0
