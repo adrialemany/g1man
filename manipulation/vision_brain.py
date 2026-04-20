@@ -1129,7 +1129,7 @@ if __name__ == "__main__":
                 ultimo_comando_walk = 0
 
         elif estado_robot == "RETROCEDER":
-            if now - tiempo_estado < 2.0:
+            if now - tiempo_estado < 4.0:
                 if now - ultimo_comando_walk > 0.1:
                     send_walk_cmd('s')
                     ultimo_comando_walk = now

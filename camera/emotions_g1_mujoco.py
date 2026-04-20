@@ -48,7 +48,7 @@ class G1PerfectIK:
         self.home_xyz = None
         self.home_q_math = None
         self.wrist_roll_offset = 0.0
-        self.current_wrist_offset = 0.0 # Mantiene viva la rotación de muñeca
+        self.current_wrist_offset = 0.0 
         
         self.safe_zone = self.load_safe_zone("left_arm_safe_zone.json")
         
@@ -101,6 +101,7 @@ class G1PerfectIK:
         self.target_address = ('127.0.0.1', 9876)
         self.state_received = False
         self.tick_count = 0
+        
         ChannelFactoryInitialize(1, "lo") 
         self.sub = ChannelSubscriber("rt/lowstate", LowState_)
         self.sub.Init(self.state_callback, 10)
@@ -109,7 +110,7 @@ class G1PerfectIK:
 
     def load_safe_zone(self, file_path):
         if not os.path.exists(file_path):
-            print(f"Aviso: No hay {file_path}. Usando límites genericos.")
+            print(f"Aviso: No hay {file_path}. Usando límites genéricos.")
             return {'x_min': -1.0, 'x_max': 1.0, 'y_min': -1.0, 'y_max': 1.0, 'z_min': -1.0, 'z_max': 1.0}
         with open(file_path, 'r') as f:
             zone = json.load(f)
@@ -118,7 +119,6 @@ class G1PerfectIK:
 
     def state_callback(self, msg: LowState_):
         self.tick_count += 1
-        # Ignoramos los primeros 3 segundos de simulación para que la locomoción asiente los brazos
         if self.tick_count < 150: 
             return
             
@@ -129,13 +129,15 @@ class G1PerfectIK:
             self.state_received = True
             self.sync_math_with_reality()
             
-            # Ahora sí, esta foto del 'home' será la posición natural de reposo real
             self.home_xyz = self.hand_xyz_actual.copy()
             self.home_q_math = self.q_math.copy()
             
+            self.active_ik = True
+            self.current_target_xyz = self.home_xyz.copy()
+            
             print("[INFO] Posición natural capturada. Emociones listas.")
             threading.Thread(target=self.control_loop, daemon=True).start()
-            threading.Thread(target=self.input_loop, daemon=True).start()
+            threading.Thread(target=self.udp_listener_loop, daemon=True).start()
             
     def sync_math_with_reality(self):
         for q_idx, g1_idx in self.pin_to_g1_q.items():
@@ -189,11 +191,28 @@ class G1PerfectIK:
         self.trajectory_q = [] 
         self.active_ik = True
 
-    def move_to_home(self, duration=0.6):
-        self.final_target_xyz = self.home_xyz.copy()
+    def move_to_pose(self, target_q_left, duration=2.0):
+        num_steps = max(1, int(duration / self.dt))
+        start_q = self.q_math.copy()
+        target_q_math = start_q.copy()
         
-        # CORRECCIÓN: Actualizamos también el current_target_xyz para que la IK 
-        # no intente volver a la posición de la emoción anterior al terminar.
+        for i, name in enumerate(self.arm_names):
+            j_id = self.model.getJointId(name)
+            q_idx = self.model.joints[j_id].idx_q
+            target_q_math[q_idx] = target_q_left[i]
+            
+        self.trajectory_q = [start_q + (i / num_steps) * (target_q_math - start_q) for i in range(1, num_steps + 1)]
+        
+        self.wrist_trajectory = np.linspace(self.current_wrist_offset, 0.0, num_steps).tolist()
+        self.wrist_roll_offset = 0.0
+        self.trajectory_points = [] 
+        
+        self.current_target_xyz = None 
+        self.final_target_xyz = self.home_xyz.copy() 
+        self.active_ik = True
+
+    def move_to_home(self, duration=1.0): 
+        self.final_target_xyz = self.home_xyz.copy()
         self.current_target_xyz = self.home_xyz.copy() 
         
         num_steps = max(1, int(duration / self.dt))
@@ -215,19 +234,16 @@ class G1PerfectIK:
                 
             if self.trajectory_q or self.trajectory_points:
                 time.sleep(0.02)
-                t0 = time.time() # Resetea el tiempo si aún quedan puntos de la "zanahoria"
+                t0 = time.time() 
                 continue
                 
-            # Si ya se vació la lista de la zanahoria, COMPROBAMOS QUE EL BRAZO HAYA LLEGADO
             if self.final_target_xyz is not None and self.home_xyz is not None and not np.allclose(self.final_target_xyz, self.home_xyz):
                 err = self.final_target_xyz - self.hand_xyz_actual
-                if np.linalg.norm(err) < 0.05: # Margen de 5cm para asegurar fluidez
+                if np.linalg.norm(err) < 0.05: 
                     break
-                if time.time() - t0 > 2.0: # Timeout para evitar que se cuelgue si un IK es imposible
-                    print("⚠️ Brazo atascado. Saltando a siguiente postura...")
+                if time.time() - t0 > 2.0: 
                     break
             else:
-                # Si era HOME y se vació la lista articular, damos por bueno.
                 break
                 
             time.sleep(0.02)
@@ -236,35 +252,41 @@ class G1PerfectIK:
         print(f"\n🎭 Reproduciendo emoción: {emotion}")
         
         if emotion == "HAPPY":
-            self.move_to([0, 0.45, 0.53], duration=0.3)
+            # Restaurado a XYZ con duraciones ajustadas a la fluidez
+            self.move_to([0, 0.45, 0.53], duration=0.4)
             self.wait_until_reached()
-            self.move_to([0, 0.26, 0.63], duration=0.3)
+            self.move_to([0, 0.26, 0.63], duration=0.4)
             self.wait_until_reached()
-            self.move_to([0, 0.45, 0.53], duration=0.3)
+            self.move_to([0, 0.45, 0.53], duration=0.4)
             self.wait_until_reached()
-            self.move_to([0, 0.26, 0.63], duration=0.3)
+            self.move_to([0, 0.26, 0.63], duration=0.4)
             self.wait_until_reached()
-            self.move_to_home(duration=0.5)
+            self.move_to_home(duration=1.0)
             self.wait_until_reached()
             
         elif emotion == "NEUTRAL":
-            self.move_to([0.28, 0.2, 0.15], wrist_rot=3.14, duration=0.6)
+            pose_izq = [0.6, 0.3, 0.9, -1.5, -1.8, -0.2, 1.0]
+            self.move_to_pose(pose_izq, duration=1.5)
             self.wait_until_reached()
-            self.move_to_home(duration=0.6)
+            
+            time.sleep(3.0)
+            self.move_to_home(duration=1.5)
             self.wait_until_reached()
             
         elif emotion == "FRUSTRATED":
-            self.move_to([0.1, 0.17, 0.4], duration=0.4) # 0.1, 0.17, 0.4
+            # Restaurado a XYZ
+            self.move_to([0.1, 0.17, 0.4], duration=0.8) 
             self.wait_until_reached()
-            time.sleep(4.0) # Espera 4 segundos con las manos en el sitio
-            self.move_to_home(duration=0.6)
+            time.sleep(4.0) 
+            self.move_to_home(duration=1.0)
             self.wait_until_reached()
             
         elif emotion == "SAD":
-            self.move_to([0.15, 0.1, 0.4], duration=0.6)
+            # Restaurado a XYZ
+            self.move_to([0.15, 0.06, 0.4], duration=0.8)
             self.wait_until_reached()
-            time.sleep(4.0) # Espera 4 segundos con las manos en el sitio
-            self.move_to_home(duration=0.8)
+            time.sleep(4.0) 
+            self.move_to_home(duration=1.0)
             self.wait_until_reached()
             
         elif emotion == "ANGRY":
@@ -272,32 +294,46 @@ class G1PerfectIK:
             time.sleep(0.5)
             send_walk_cmd('stop')
             
-            # Agitar los brazos 3 veces (movimiento amplio en el eje Z para forzar al codo)
-            for _ in range(3):
-                # Posición alta (manos arriba, codos flexionados)
-                self.move_to([0.2, 0.25, 0.5], duration=0.15)
-                self.wait_until_reached()
-                
-                # Posición baja (manos abajo, codos extendidos)
-                self.move_to([0.2, 0.25, 0.2], duration=0.15)
-                self.wait_until_reached()
-                
-            self.move_to_home(duration=0.5)
+            # 1. PRIMERO: Llegar progresivamente a la postura base de enfado (guardia alta)
+            # Hombros hacia adelante (-0.8), un poco abiertos (0.3), y codo medio doblado (0.5)
+            pose_guardia = [-0.8, 0.3, 0.0, -0.4, 0.0, 0.0, 0.0]
+            self.move_to_pose(pose_guardia, duration=0.8)
             self.wait_until_reached()
+            
+            # 2. Creamos las poses de "bombeo" basándonos EXACTAMENTE en esa guardia,
+            # alterando únicamente el valor del codo (índice 3 de la lista).
+            pose_codo_flexionado = list(pose_guardia)
+            pose_codo_flexionado[3] = -1.0  # Dobla el codo hacia arriba (el límite es 2.04)
+            
+            pose_codo_extendido = list(pose_guardia)
+            pose_codo_extendido[3] = -0.4   # Extiende el codo (vuelve a la guardia)
+
+            # 3. Ejecutamos el bucle "bombeando" solo el codo
+            for _ in range(3):
+                self.move_to_pose(pose_codo_flexionado, duration=0.5)
+                self.wait_until_reached()
+                
+                self.move_to_pose(pose_codo_extendido, duration=0.5)
+                self.wait_until_reached()
+                
+            # 4. Finalizamos volviendo a casa
+            self.move_to_home(duration=1.0)
+            self.wait_until_reached()
+            
             send_walk_cmd('s')
             time.sleep(0.5)
             send_walk_cmd('stop')
 
-    def input_loop(self):
-        time.sleep(1.0)
-        self.active_ik = True
-        self.current_target_xyz = self.home_xyz.copy()
-        
-        # Servidor UDP para escuchar a la compañera
+    def udp_listener_loop(self):
         server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        server_socket.bind(('0.0.0.0', 5005))
-        print("[INFO] 🎧 Escuchando emociones por red en el puerto 5005...")
-        
+        server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) 
+        try:
+            server_socket.bind(('0.0.0.0', 5005))
+            print("[INFO] 🎧 Escuchando emociones por red en el puerto 5005...")
+        except Exception as e:
+            print(f"[ERROR] No se pudo hacer bind en el puerto 5005: {e}")
+            return
+            
         while True:
             try:
                 data, addr = server_socket.recvfrom(1024)
@@ -321,19 +357,19 @@ class G1PerfectIK:
                 except Exception:
                     pass
                 time.sleep(self.dt)
-                continues
+                continue
                 
             if hasattr(self, 'wrist_trajectory') and self.wrist_trajectory:
                 self.current_wrist_offset = self.wrist_trajectory.pop(0)
 
-            # 1. Si vamos a HOME (espacio articular directo, ignora cinemática)
+            # MODO 1: POSE DIRECTA O HOME (Totalmente suave, sin fallos)
             if self.trajectory_q:
                 self.q_math = self.trajectory_q.pop(0)
                 pin.forwardKinematics(self.model, self.data, self.q_math)
                 pin.updateFramePlacements(self.model, self.data)
                 self.hand_xyz_actual = self.data.oMf[self.hand_frame_id].translation
                 
-            # 2. Si vamos a cualquier XYZ (MANTIENE LA IK VIVA AUNQUE LA ZANAHORIA HAYA LLEGADO)
+            # MODO 2: CARTESIAN IK (Para emociones basadas en XYZ)
             elif self.current_target_xyz is not None:
                 if self.trajectory_points:
                     self.current_target_xyz = self.trajectory_points.pop(0)
@@ -385,12 +421,24 @@ class G1PerfectIK:
                     for i, v_idx in enumerate(self.arm_v_indices):
                         dq[v_idx] = dq_arm[i]
 
+                # ── PROTECCIÓN FÍSICA ANTI-TIRONES VECTORIAL ──
+                # Mantiene la dirección de la ruta recta, escalando el vector completo 
+                # en lugar de "cortar" ejes individuales.
+                max_vel = 8.0 
+                max_dq = np.max(np.abs(dq))
+                if max_dq > max_vel:
+                    dq = dq * (max_vel / max_dq)
+
                 q_math_future = pin.integrate(self.model, self.q_math, dq * self.dt)
 
-                if self.check_joint_limits(q_math_future):
-                    self.q_math = q_math_future
-                else:
-                    self.trajectory_points = [] # Forzar aborto si el ik futuro choca
+                # ── LIMITADOR ARTICULAR SUAVE ──
+                # Si llega al límite, se desliza por el borde en lugar de abortar la memoria.
+                for q_idx, g1_idx in self.pin_to_g1_q.items():
+                    if g1_idx in self.joint_safety_limits:
+                        min_q, max_q = self.joint_safety_limits[g1_idx]
+                        q_math_future[q_idx] = max(min_q, min(max_q, q_math_future[q_idx]))
+                        
+                self.q_math = q_math_future
 
             comandos_brazos = {}
             for q_idx, g1_idx in self.pin_to_g1_q.items():
@@ -401,7 +449,7 @@ class G1PerfectIK:
                 right_motor_id = self.g1_arm_right[i]
                 left_angle = comandos_brazos[left_motor_id]
                 
-                if i == 4: # Muñeca persistente
+                if i == 4: 
                     left_angle += self.current_wrist_offset
                     min_q, max_q = self.joint_safety_limits[19]
                     left_angle = max(min_q, min(max_q, left_angle))
@@ -421,8 +469,22 @@ class G1PerfectIK:
 if __name__ == '__main__':
     node = G1PerfectIK()
     try:
+        while not node.state_received or node.home_xyz is None:
+            time.sleep(0.1)
+            
+        print("\n" + "="*50)
+        print("🤖 CONTROL DE EMOCIONES INICIADO 🤖")
+        print("="*50)
+        
         while True:
-            time.sleep(1)
+            cmd = input("\n> Ingresa emoción (HAPPY, NEUTRAL, FRUSTRATED, SAD, ANGRY) o 'q' para salir: ").strip().upper()
+            if cmd == 'Q':
+                break
+            elif cmd in ["HAPPY", "NEUTRAL", "FRUSTRATED", "SAD", "ANGRY"]:
+                node.play_emotion(cmd)
+            else:
+                print("[ERROR] Comando no reconocido. Inténtalo de nuevo.")
+                
     except KeyboardInterrupt:
         print("\nSaliendo...")
         os._exit(0)

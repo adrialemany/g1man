@@ -172,25 +172,22 @@ def external_arm_listener():
 def launch_background_services(script_dir):
     print("[INFO] Levantando ecosistema MoveIt y ROS 2...")
     
-    # 1. Definir rutas dinámicas independientes de dónde se ejecute el script
-    # script_dir siempre es: .../robot_ws/mujoco
-    ws_dir = os.path.dirname(script_dir)         # Sube un nivel a: .../robot_ws
-    camera_dir = os.path.join(ws_dir, "camera")  # Baja a la carpeta: .../robot_ws/camera
+    ws_dir = os.path.dirname(script_dir)         
+    camera_dir = os.path.join(ws_dir, "camera")  
 
-    # Cargar Workspaces
     setup_cmd = "source /opt/ros/humble/setup.bash && source ~/robot_ws/install/setup.bash && "
     
-    # 2. Perception Bridge (Nube de puntos / Cámaras)
+    # 1. Perception Bridge 
     p_bridge = subprocess.Popen(setup_cmd + "python3 simulator/perception_bridge.py", shell=True, executable='/bin/bash', cwd=script_dir)
     background_processes.append(p_bridge)
     
-    # 3. Núcleo MoveIt (Headless)
-    p_moveit = subprocess.Popen(setup_cmd + "ros2 launch g1_moveit_config demo.launch.py use_rviz:=false", shell=True, executable='/bin/bash', cwd=script_dir)
-    background_processes.append(p_moveit)
+    # 2. Núcleo MoveIt (Headless)
+    #p_moveit = subprocess.Popen(setup_cmd + "ros2 launch g1_moveit_config demo.launch.py use_rviz:=false", shell=True, executable='/bin/bash', cwd=script_dir)
+    #background_processes.append(p_moveit)
 
-    # 4. 🔥 Servidor de Emociones (Cinemática Inversa)
-    p_emotions = subprocess.Popen(["python3", "emotions_g1_mujoco.py"], cwd=camera_dir)
-    background_processes.append(p_emotions)
+    # 3. Servidor de Emociones (Cinemática Inversa)
+    #p_emotions = subprocess.Popen(["python3", "emotions_g1_mujoco.py"], cwd=camera_dir)
+    #background_processes.append(p_emotions)
 
     print("[INFO] Servicios ROS 2 y Servidor de Emociones lanzados.")
     time.sleep(0.1)
@@ -203,7 +200,6 @@ if __name__ == "__main__":
     sim_path = os.path.join(script_dir, "simulator")
     model_path = os.path.join(script_dir, "fastsac_g1_29dof.onnx")
     
-    # Iniciar ROS 2 para el puente de feedback
     rclpy.init()
     bridge_node = ROS2StateBridge()
     threading.Thread(target=lambda: rclpy.spin(bridge_node), daemon=True).start()
@@ -213,14 +209,11 @@ if __name__ == "__main__":
     background_processes.append(sim_proc)
     time.sleep(1.0)
 
-    # Lanzar servicios acoplados
     launch_background_services(script_dir)
 
-    # Oyentes de sockets
     threading.Thread(target=locomotion_listener, daemon=True).start()
     threading.Thread(target=external_arm_listener, daemon=True).start()
 
-    # Inicializar DDS de Unitree
     ChannelFactoryInitialize(1, "lo") 
     sub = ChannelSubscriber("rt/lowstate", LowState_)
     sub.Init(state_callback, 10)
@@ -229,7 +222,6 @@ if __name__ == "__main__":
 
     controller = HolosomaLocomotion(model_path=model_path)
     
-    # Ganancias PD
     kp = [40.18, 99.10, 40.18, 99.10, 28.50, 28.50]*2 + [40.18, 28.50, 28.50] + [14.25, 14.25, 14.25, 14.25, 16.78, 16.78, 16.78]*2
     kd = [2.56, 6.31, 2.56, 6.31, 1.81, 1.81]*2 + [2.56, 1.81, 1.81] + [0.91, 0.91, 0.91, 0.91, 1.07, 1.07, 1.07]*2
 
@@ -246,7 +238,6 @@ if __name__ == "__main__":
             t_start = time.time()
             cmd_msg = unitree_hg_msg_dds__LowCmd_() 
             
-            # Recolectar estado actual
             q_actual = [low_state.motor_state[i].q for i in range(29)]
             estado = {
                 'gyro': low_state.imu_state.gyroscope,
@@ -255,10 +246,8 @@ if __name__ == "__main__":
                 'joint_vel': [low_state.motor_state[i].dq for i in range(29)]
             }
 
-            # --- FEEDBACK PARA MOVEIT (CRÍTICO) ---
             bridge_node.publish_state(q_actual)
 
-            # Detección de caída
             if estado['gravity'][2] > -0.5:
                 print("🚨 Caída detectada. Reseteando...")
                 try:
@@ -271,7 +260,6 @@ if __name__ == "__main__":
                 controller.phase = np.array([0.0, math.pi], dtype=np.float32)
                 continue
             
-            # Cálculo de la IA + Mezcla con MoveIt
             targets = controller.get_target_positions(estado, comandos, external_arm_targets)
             
             for i in range(29):
@@ -283,20 +271,30 @@ if __name__ == "__main__":
                 
                 if i in external_arm_targets:
                     if i not in smoothed_arm_targets:
-                        # Iniciar suavemente desde donde esté el brazo en este momento
+                        # Iniciar desde donde esté el brazo físicamente
                         smoothed_arm_targets[i] = q_actual[i]
                         
-                    # Mezcla: 85% de inercia anterior + 15% del nuevo target de MoveIt
-                    smoothed_arm_targets[i] = (0.85 * smoothed_arm_targets[i]) + (0.15 * external_arm_targets[i])
+                    # ── ARREGLO 1 (EFECTO MUELLE ELIMINADO) ──
+                    # MoveIt y Emotions YA hacen la interpolación suave.
+                    # Aquí solo pasamos un mini-filtro (0.2) para el ruido UDP.
+                    smoothed_arm_targets[i] = (0.2 * smoothed_arm_targets[i]) + (0.8 * external_arm_targets[i])
                     cmd_msg.motor_cmd[i].q = smoothed_arm_targets[i]
                 else:
-                    cmd_msg.motor_cmd[i].q = targets[i]
                     if i in smoothed_arm_targets:
-                        del smoothed_arm_targets[i]
+                        # ── ARREGLO 2 (LATIGAZO AL SOLTAR EL BRAZO ELIMINADO) ──
+                        # En lugar de borrar de golpe y saltar a la pose natural, 
+                        # regresa progresivamente (0.95 de inercia) a la postura de la IA.
+                        smoothed_arm_targets[i] = (0.95 * smoothed_arm_targets[i]) + (0.05 * targets[i])
+                        cmd_msg.motor_cmd[i].q = smoothed_arm_targets[i]
+                        
+                        # Si ya casi ha llegado (margen de 0.05 rads), lo soltamos del todo
+                        if abs(smoothed_arm_targets[i] - targets[i]) < 0.05:
+                            del smoothed_arm_targets[i]
+                    else:
+                        cmd_msg.motor_cmd[i].q = targets[i]
             
             pub.Write(cmd_msg)
             
-            # Mantener 50Hz clavados
             time.sleep(max(0.0, (1.0 / 50.0) - (time.time() - t_start)))
             
     except KeyboardInterrupt:
