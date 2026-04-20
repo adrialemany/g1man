@@ -64,17 +64,27 @@ LIDAR_EXCLUDE_BODY = PELVIS_BODY_NAME
 # =====================================================================
 
 
+# ── Estado global de la cámara 3ª persona ────────────────────────────────────
+_thirdperson_enabled = [False]   # F5 para activar/desactivar
+
+# ── Key callback: F5 activa/desactiva cámara 3ª persona ─────────────────────
+def _key_callback(key):
+    # glfw key codes: C = 67, 4 = 52
+    if key == 67:   # tecla C
+        _thirdperson_enabled[0] = not _thirdperson_enabled[0]
+        state = "ON  🎮 (cámara 3ª persona)" if _thirdperson_enabled[0] else "OFF (cámara libre)"
+        print(f"\n[CAM] Tercera persona: {state}")
+    if config.ENABLE_ELASTIC_BAND:
+        elastic_band.MujuocoKeyCallback(key)
+
 if config.ENABLE_ELASTIC_BAND:
     elastic_band = ElasticBand()
     if config.ROBOT == "h1" or config.ROBOT == "g1":
         band_attached_link = mj_model.body("torso_link").id
     else:
         band_attached_link = mj_model.body("base_link").id
-    viewer = mujoco.viewer.launch_passive(
-        mj_model, mj_data, key_callback=elastic_band.MujuocoKeyCallback
-    )
-else:
-    viewer = mujoco.viewer.launch_passive(mj_model, mj_data)
+
+viewer = mujoco.viewer.launch_passive(mj_model, mj_data, key_callback=_key_callback)
 
 mj_model.opt.timestep = config.SIMULATE_DT
 num_motor_ = mj_model.nu
@@ -288,8 +298,63 @@ def SimulationThread():
 
 
 def PhysicsViewerThread():
+    """
+    Viewer con cámara opcional en tercera persona.
+    Pulsa F5 para activar/desactivar el modo seguimiento.
+
+    En modo libre (F5 off): cámara manual de MuJoCo como siempre.
+    En modo 3ª persona (F5 on): cámara orbita detrás del robot,
+    mirando hacia donde mira el robot.
+    """
+    CAM_DISTANCE  = 3.5    # metros de distancia al robot
+    CAM_ELEVATION = -20.0  # grados (negativo = mirar hacia abajo)
+    CAM_HEIGHT    = 0.3    # offset vertical sobre el pelvis (m)
+    CAM_SMOOTHING = 0.08   # 0..1 — más bajo = transición más suave
+
+    pelvis_id = mujoco.mj_name2id(mj_model, mujoco.mjtObj.mjOBJ_BODY, PELVIS_BODY_NAME)
+    smooth_az = [None]
+
     while viewer.is_running():
         locker.acquire()
+        try:
+            if _thirdperson_enabled[0]:
+                # ── Posición del pelvis ──────────────────────────────────
+                px, py, pz = mj_data.xpos[pelvis_id]
+
+                # ── Yaw del robot ────────────────────────────────────────
+                # xmat row-major 3x3: columna 0 = eje X del body = frente
+                xmat = mj_data.xmat[pelvis_id].reshape(3, 3)
+                robot_yaw_rad = np.arctan2(xmat[1, 0], xmat[0, 0])
+
+                # Convención MuJoCo: la cámara está en la dirección
+                # (sin(az), -cos(az)) desde el lookat.
+                # Para quedar DETRÁS del robot (opuesta al frente):
+                #   cam_dir = (-cos(yaw), -sin(yaw))
+                #   → az = atan2(-cos(yaw), sin(yaw))  = -(yaw + 90°)
+                # +90° corrige el offset de 90° observado empíricamente
+                target_az = np.degrees(
+                    np.arctan2(-np.cos(robot_yaw_rad), np.sin(robot_yaw_rad))
+                ) + 90.0
+
+                if smooth_az[0] is None:
+                    smooth_az[0] = target_az
+
+                # Interpolación circular suave (sin saltos en ±180°)
+                diff = (target_az - smooth_az[0] + 180.0) % 360.0 - 180.0
+                smooth_az[0] = (smooth_az[0] + diff * CAM_SMOOTHING) % 360.0
+
+                viewer.cam.lookat[0] = px
+                viewer.cam.lookat[1] = py
+                viewer.cam.lookat[2] = pz + CAM_HEIGHT
+                viewer.cam.distance  = CAM_DISTANCE
+                viewer.cam.elevation = CAM_ELEVATION
+                viewer.cam.azimuth   = smooth_az[0]
+            else:
+                smooth_az[0] = None   # reset para cuando se reactive
+
+        except Exception:
+            pass
+
         viewer.sync()
         locker.release()
         time.sleep(config.VIEWER_DT)
@@ -386,3 +451,4 @@ if __name__ == "__main__":
 
     print("\n[INFO] Todos los hilos arrancados.")
     print("[INFO] Pulsa tecla '3' en el visor MuJoCo para ver/ocultar muros (group 3)")
+    print("[INFO] Pulsa C en el visor MuJoCo para activar/desactivar cámara 3ª persona")
